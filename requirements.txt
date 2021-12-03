@@ -38,7 +38,7 @@ lib-registry==2.0.7
 matplotlib==3.4.2
 mysqlclient==2.0.3
 numpy==1.21.0
-pandas>=1.2.5
+pandas==1.2.5
 Pillow==8.2.0
 psycopg2==2.8.6
 pycares==4.0.0
@@ -51,6 +51,7 @@ PyQt5-sip==12.9.0
 python-bidi==0.4.2
 python-dateutil==2.8.2
 pytz==2021.1
+pywin32==302
 reportlab==3.6.2
 requests==2.26.0
 scikit-learn==0.24.2
