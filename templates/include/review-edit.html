@@ -1,0 +1,46 @@
+{% load filter_tags %}
+<div class="u-s-m-b-30 review-o" id="id-reviews-wrapper-{{review.id}}">
+    <form class="pd-tab__rev-f2">
+        {%csrf_token%}
+        <input type="hidden" name="user-id" value='{{user.id}}' required>
+        <input type="hidden" name="product-id" value='{{product.id}}' required>
+        <div class="u-s-m-b-30">
+            <div class="rev-f2__table-wrap gl-scroll">
+                <table class="rev-f2__table">
+                    <thead>
+                        <div class="product-o__rating gl-rating-style rating-star-container ">
+                            <label for="rating-star-1"><input type="radio" name="rating" value="1" id="rating-star-1" hidden {%if review.review_rating == 1 %} checked {%endif%}><a id='review-star-1' onclick="fill_rating_star('review-star-1');"><i class="far fa-star"></i></a></label>
+                            <label for="rating-star-2"><input type="radio" name="rating" value="2" id="rating-star-2" hidden {%if review.review_rating == 2 %} checked {%endif%}><a id='review-star-2' onclick="fill_rating_star('review-star-2');"><i class="far fa-star"></i></a></label>
+                            <label for="rating-star-3"><input type="radio" name="rating" value="3" id="rating-star-3" hidden {%if review.review_rating == 3 %} checked {%endif%}><a id='review-star-3' onclick="fill_rating_star('review-star-3');"><i class="far fa-star"></i></a></label>
+                            <label for="rating-star-4"><input type="radio" name="rating" value="4" id="rating-star-4" hidden {%if review.review_rating == 4 %} checked {%endif%}><a id='review-star-4' onclick="fill_rating_star('review-star-4');"><i class="far fa-star"></i></a></label>
+                            <label for="rating-star-5"><input type="radio" name="rating" value="5" id="rating-star-5" hidden {%if review.review_rating == 5 %} checked {%endif%}><a id='review-star-5' onclick="fill_rating_star('review-star-5');"><i class="far fa-star"></i></a></label>
+                        </div>
+                    </thead>
+                    <tbody>
+                        <div class='response-message' id="rating-response"></div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class='review-comment'>
+            <div class="rev-f2__group">
+                <div class="u-s-m-b-15">
+                    <label class="gl-label" for="reviewer-text">YOUR REVIEW *</label>
+                    <textarea class="text-area text-area--primary-style" name="review-text" id="reviewer-text" style="width:100%; height:6rem;" required>{{review.review_comment}}</textarea>
+                </div>
+            </div>
+            <div class='response-message' id="rating-text-response"></div>
+            <div class="d-flex">
+                <div class="mr-auto" style="font-size:x-large;">
+                    <!-- VOTING STORED IN INCLUDE FOLDER -->
+                    {% include "include/review-voting.html" %}
+                </div>
+                <div class="ml-auto">
+                    <button class="btn btn--e-brand-shadow" style="padding:10px 20px 10px 20px;" type="button" onclick="action_on_review('{{review.id}}','{{user.id}}','{{product.id}}','edit')"><i class="fas fa-edit"></i> Update</button>
+                    <button class="btn  btn--e-brand-shadow" style="padding:10px 20px 10px 20px;" type="button" onclick="action_on_review('{{review.id}}','{{user.id}}','{{product.id}}','delete')"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,87 @@
+<!--====== Dashboard Features ======-->
+{%load filter_tags%}
+<div class="{{ var }} some-content dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+    <div class="dash__pad-1">
+
+        <span class="dash__text u-s-m-b-16">Hello, {{user.first_name|capfirst}}</span>
+        <ul class="dash__f-list">
+            <li>
+
+                <a href="/dashboard/dashboard" id="#myAc" class='' onclick="myAc()"><i class="fas fa-cogs"></i> Manage My Account</a>
+            </li>
+            <li>
+
+                <a href="/dashboard/dashMyProfile" id="#myProfile" class='' onclick="myProfile()"><i class="fas fa-file-alt"></i> My Profile</a>
+            </li>
+            <li>
+
+                <a href="/dashboard/dashAddressBook" id="#addressBook" class='' onclick="addressBook()"><i class="fas fa-book"></i> Address Book</a>
+            </li>
+            <li>
+
+                <a href="/dashboard/dashTrackOrder" id="#trackOrder" class='' onclick="trackOrder()"><i class="fas fa-tachometer-alt"></i> Track Order</a>
+            </li>
+            <li>
+
+                <a href="/dashboard/dashMyOrder" id="#myOrder" class='' onclick="myOrder()"><i class="fas fa-briefcase"></i> My Orders</a>
+            </li>
+            <li>
+                <a href="/dashboard/returned-order" id="#returnOrder" class='' onclick="returnOrder()"><i class="fas fa-taxi"></i> My Returns </a>
+            </li>
+            <li>
+                <a href="/dashboard/dashCancellation" id="#returnAndCancellation" class='' onclick="returnAndCancellation()"><i class="fas fa-taxi"></i> My Cancellations</a>
+            </li>
+            <li>
+
+                <a href="/dashboard/dashPaymentOption" id="#myPaymentOption" class='' onclick="myPaymentOption()"><i class="fas fa-tablet-alt"></i> My Payment Options</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<div class="{{ var }} some-content dash__box dash__box--bg-white dash__box--shadow dash__box--w">
+    <div class="dash__pad-1">
+        <ul class="dash__w-list">
+            <li><a href="/dashboard/dashMyOrder">
+                <div class="dash__w-wrap">
+                    <span class="dash__w-icon dash__w-icon-style-1"><i
+                            class="fas fa-cart-arrow-down"></i></span>
+
+                    <span class="dash__w-text">{{user.id|get_my_order|counter}}</span>
+
+                    <span class="dash__w-name">Orders Placed</span>
+                </div>
+                </a>
+            </li>
+            <li><a href="/dashboard/dashCancellation">
+                <div class="dash__w-wrap">
+
+                    <span class="dash__w-icon dash__w-icon-style-2"><i
+                            class="fas fa-times"></i></span>
+
+                    <span class="dash__w-text">{{user.id|cancelled_checkout|counter}}</span>
+
+                    <span class="dash__w-name">Cancel Orders</span>
+                </div>
+                </a>
+            </li>
+            <li>
+                <div class="dash__w-wrap">
+                <a href="/wishlist/">
+                    <span class="dash__w-icon dash__w-icon-style-3"><i
+                            class="far fa-heart"></i></span>
+
+                    <span class="dash__w-text">{{user.id|wishlist_data|counter}}</span>
+
+                    <span class="dash__w-name">Wishlist</span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- <script>
+    function myfun(){
+        var v = document.getElementById("#myAc").classList.add("dash-active");
+    }
+</script> -->

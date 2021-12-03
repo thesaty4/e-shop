@@ -1,0 +1,54 @@
+{%load filter_tags%}       
+{% for product in product %}
+                                                    <div class="o-card product-wrapper-{{counter}}">
+                                                        <div class="o-card__flex">
+                                                            <div class="o-card__img-wrap">
+
+                                                                <img class="u-img-fluid"
+                                                                    src="{{MEDIA_URL}}{{product.image}}" alt="">
+                                                            </div>
+                                                            <div class="o-card__info-wrap">
+
+                                                                <span class="o-card__name">
+
+                                                                    <a href="/productDetails/{{product.id}}">{{product.title}}</a></span>
+                                                                
+                                                                
+
+                                                                <span class="o-card__quantity">Quantity x 1 </span>
+
+                                                                <div class='d-flex flex-row'>
+                                                                    <span class="o-card__price fas fa-rupee-sign">{{product.price|to_comma}}</span>
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;<del><span class="o-card__price fas fa-rupee-sign">{{product.m_r_p|to_comma}}</span></del>
+                                                                </div>
+
+                                                                <div class='d-flex flex-row shop-w'>
+                                                                    <div class="shop-w__wrap collapse show" id="s-color" style="padding:0px;">
+                                                                        <ul class="shop-w__list gl-scroll d-flex flex-row">
+                                                                            
+                                                                            {% for color in product.color_code|split_data:"," %}
+                                                                                    <li style="padding:0px;">
+                                                                                        <div class="color__check">
+                                
+                                                                                            <input type="radio" value="{{color}}" name="p-color-{{counter}}" id="p-color-{{color}}-{{counter}}" onclick="pickProductColor('{{color}}');" checked hidden="">
+                                
+                                                                                            <label class="color__check-label" for="p-color-{{color}}-{{counter}}"></label>
+                                                                                        </div>
+                                
+                                                                                    </li>
+                                                                            {% endfor %}
+                                                                            
+                                                                        </ul>
+                                                                    </div>                                                                    
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex flex-row">
+                                                            <a class="o-card__del fas fa-plus" onclick="duplicateOrder('{{product.id}}','{{product.price}}','{{product.m_r_p}}','{{product.tax}}','{{product.shipping_charge}}')"></a>
+                                                            <a class="o-card__del far fa-trash-alt" onclick="removeOrder('{{counter}}','{{product.id}}','{{product.price}}','{{product.m_r_p}}','{{product.tax}}','{{product.shipping_charge}}')"></a>
+                                                        </div>
+                                                    </div>
+{% endfor %}

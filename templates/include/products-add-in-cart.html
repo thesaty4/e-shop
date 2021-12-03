@@ -1,0 +1,25 @@
+{% load filter_tags %}
+<form class="pd-detail__form">
+    <div class="pd-detail-inline-2">
+        <div class="u-s-m-b-15">
+
+            <!--====== Input Counter ======-->
+            <div class="input-counter">
+
+                <span class="input-counter__minus fas fa-minus" onclick="value_minus('{{site_info_data.shop_name}}','one','{{product.id}}','{{product.price|discount_calculate:product.discount_percentage}}')"></span>
+
+                <input class="input-counter__text input-counter--text-primary-style" type="text" value="1" data-min="1" data-max="1000" id='product_quantity-{{product.id}}'>
+
+                <span class="input-counter__plus fas fa-plus" onclick="value_plus('{{site_info_data.shop_name}}','one','{{product.id}}','{{product.price|discount_calculate:product.discount_percentage}}')"></span>
+            </div>
+            <!--====== End - Input Counter ======-->
+        </div>
+        <div class="u-s-m-b-15">
+            <button class="btn btn--e-brand-b-2" type="button" onclick="add_cart('{{shop}}','{{product.id}}',$('#product_quantity-{{product.id}}').val(),'more')">Add to
+                Cart</button>
+             
+            <a class="btn btn--e-transparent-brand-b-2" href="/checkout/{{product.id}}">Checkout</a>
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,83 @@
+{% load filter_tags %}
+<div class="product-o product-o--hover-on product-o--radius">
+    <div class="product-o__wrap">
+        {% if product.discount_percentage > 0 %}
+            <div class="product-discount-wrapper" style="background-color:red;">
+                <span class="discount"><b>{{product.discount_percentage}}% OFF</b></span>
+            </div>
+        {% endif %}
+        <a class="aspect aspect--bg-grey aspect--square u-d-block"
+        href="/productDetails/{{product.id}}">
+        <img class="aspect__img" src="{{MEDIA_URL}}{{product.image}}"
+        alt=""></a>
+        <div class="product-o__action-wrap">
+            <ul class="product-o__action-list">
+                <li>
+
+                    <!-- <a data-modal="modal" data-modal-id="#quick-look"
+                        data-tooltip="tooltip" data-placement="top"
+                        title="Quick View"><i class="fas fa-search-plus"></i></a> -->
+                    <a data-tooltip="tooltip" data-placement="top" title="Quick View" onclick="quick_view('{{site_info_data.shop_name}}','{{product.id}}')"><i class="fas fa-search-plus"></i></a>
+                </li>
+                <li>
+
+                    <!-- <a data-modal="modal" data-modal-id="#add-to-cart"
+                        data-tooltip="tooltip" data-placement="top"
+                        title="Add to Cart"><i class="fas fa-plus-circle"></i></a> -->
+                    <a data-tooltip="tooltip" data-placement="top" title="Add to Cart" onclick="add_cart('{{site_info_data.shop_name}}','{{product.id}}',1,'one')"><i class="fas fa-plus-circle"></i></a>
+                </li>
+                <label for="wishlist-checkbox-{{product.id}}">
+                    <ul class='product-o__action-list'>
+                        <li>
+                            {% if user.is_authenticated %}
+                                {%if user.id|filter_wishlist:product.id%}
+                                    <input type="checkbox" id="wishlist-checkbox-{{product.id}}" hidden>
+                                    <a data-tooltip="tooltip" data-placement="top" title="Add to Wishlist" onclick="wishlist_check__action('{{user.id}}','{{product.id}}')" id='wishlist-enable__disable-{{product.id}}' ><i class="far fa-heart"></i></a>
+                                {%else%}
+                                    <input type="checkbox" id="wishlist-checkbox-{{product.id}}" hidden checked>
+                                    <a data-tooltip="tooltip" data-placement="top" title="Remove to Wishlist" onclick="wishlist_check__action('{{user.id}}','{{product.id}}')" id='wishlist-enable__disable-{{product.id}}' ><i class="fas fa-heart"></i></a>
+                                {%endif%}
+                            {%else%}
+                                <a data-tooltip="tooltip" data-placement="top" title="Add to Wishlist" onclick="window.location.href=('/accounts/login/')"><i class="far fa-heart"></i></a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </label>
+
+                <label for="product-subscribe-checkbox-{{product.id}}">
+                    <ul class='product-o__action-list'>
+                        <li>
+                            {% if user.is_authenticated %}
+                                {%if user.id|filter_subscriber:product.id%}
+                                    <input type="checkbox" id="product-subscribe-checkbox-{{product.id}}" hidden>
+                                    <a data-tooltip="tooltip" data-placement="top" title="Email me When the price drops" onclick="product_subscribe__action('{{user.id}}','{{product.id}}')" id='product-subscribe-enable__disable-{{product.id}}' ><i class="far fa-envelope"></i></a>
+                                {%else%}
+                                        <input type="checkbox" id="product-subscribe-checkbox-{{product.id}}" hidden checked>
+                                        <a data-tooltip="tooltip" data-placement="top" title="Unsubscribe this product" onclick="product_subscribe__action('{{user.id}}','{{product.id}}')" id='product-subscribe-enable__disable-{{product.id}}' ><i class="fas fa-envelope"></i></a>
+                                {%endif%}
+                            {%else%}
+                                <a data-tooltip="tooltip" data-placement="top" title="Email me When the price drops" onclick="window.location.href=('/accounts/login/')"><i class="far fa-envelope"></i></a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </label>
+            </ul>
+        </div>
+    </div>
+
+    <span class="product-o__category">
+
+        <a href="/shop/">{{product.category}}</a></span>
+
+    <span class="product-o__name">
+
+        <a href="/productDetails/{{product.id}}">{{product.title}}</a></span>
+    
+    <!-- RATING MANAGEMENT  -->
+    {% include "include/rating-management.html" %}
+
+    <span class="product-o__price"><i class="fas fa-rupee-sign"></i> {{product.price|to_comma}}
+    {% if product.discount_percentage != 0 %}
+    <span class="product-o__discount"><i class="fas fa-rupee-sign"></i> {{product.m_r_p|to_comma}}</span></span>
+    {% endif %}
+</div>

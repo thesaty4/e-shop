@@ -1,0 +1,140 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated%}
+{%if shipping_address.user == user%} <!--IF ANYONE REQUESTED UNEXCEPTED USER THEN, THIS PAGE REDIRECT FROM HERE-->
+    {%load widget_tweaks%}
+    <body>
+        <script>
+            window.addEventListener("load",myInit,true);function myInit(){
+                myAc();
+                select_default_country("{{shipping_address.country}}");
+                select_default_state("{{shipping_address.state}}");
+                insert_full_address("{{shipping_address.full_address}}")
+                set_logged_user("{{user.id}}")
+                set_address_id("{{shipping_address.id}}")
+            }
+            
+        </script>
+        <!--====== App Content ======-->
+        <div class="app-content">
+
+            <!--====== Section 1 ======-->
+            <div class="u-s-p-y-60">
+                <!--====== Section Content ======-->
+                {%with section1 as sec%}
+                {%include 'sectionBase.html'%}
+                {%endwith%}
+            </div>
+            <!--====== End - Section 1 ======-->
+
+
+            <!--====== Section 2 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="dash">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-12">
+
+                                    <!--====== Dashboard Features ======-->
+                                    {%with bas as var%}
+                                    {%include 'dashBase.html'%}
+                                    {%endwith%}
+                                    <!--====== End - Dashboard Features ======-->
+                                </div>
+                                <div class="col-lg-9 col-md-12">
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                        <div class="dash__pad-2">
+                                            <h1 class="dash__h1 u-s-m-b-14">Edit Address</h1>
+
+                                            <span class="dash__text u-s-m-b-30">We need an address where we could deliver
+                                                products.</span>
+                                            <span id='id-response' class="response-message"></span>
+                                            <form class="dash-address-manipulation" id="edit-address">
+                                                {%csrf_token%}
+                                                <div class="gl-inline">
+                                                    <div class="u-s-m-b-30">
+                                                        <label class="gl-label" for="address-fname">FIRST NAME *</label>
+                                                        {%render_field shipping_form.first_name class="input-text input-text--primary-style" value=shipping_address.first_name placeholder="First Name"%}
+                                                        <div id="fname-response" class="response-message"></div>
+                                                    </div>
+                                                    <div class="u-s-m-b-30">
+
+                                                        <label class="gl-label" for="address-lname">LAST NAME </label>
+
+                                                        {%render_field shipping_form.last_name class="input-text input-text--primary-style" value=shipping_address.last_name placeholder="Last Name"%}
+                                                        <div id="lname-response" class="response-message"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="gl-inline">
+                                                    <div class="u-s-m-b-30">
+
+                                                        <label class="gl-label" for="address-phone">PHONE *</label>
+
+                                                        {%render_field shipping_form.mobile class="input-text input-text--primary-style" value=shipping_address.mobile placeholder="Mobile"%}
+                                                        <div id="mobile-response" class="response-message">Mobile number should be International format +(00)-303948404</div>
+                                                    </div>
+                                                    <div class="u-s-m-b-30">
+        
+                                                        <!--====== Select Box ======-->
+        
+                                                        <label class="gl-label" for="address-country">COUNTRY
+                                                            *</label>
+                                                        {%render_field shipping_form.country class="select-box select-box--primary-style" value=shipping_address.full_address%}
+                                                        <div id="country-response" class="response-message"></div>
+                                                        <!--====== End - Select Box ======-->
+                                                    </div>
+                                                </div>
+                                                <div class="gl-inline">
+                                                    <div class="u-s-m-b-30">
+                                                        <label class="gl-label" for="address-state">STATE *</label>
+                                                        {%render_field shipping_form.state class="select-box select-box--primary-style" value=shipping_address.state%}
+                                                        <div id="state-response" class="response-message"></div>
+                                                    </div>
+                                                    <div class="u-s-m-b-30">
+                                                        <label class="gl-label" for="address-pincode">ZIP/POSTAL CODE *</label>
+                                                        {%render_field shipping_form.pin_code class="select-box select-box--primary-style" value=shipping_address.pin_code%}
+                                                        <div id="pincode-response" class="response-message"></div>
+                                                    </div>
+                                                </div>
+                                                
+                                                        
+                                                    <div class="u-s-m-b-30">
+                                                        <label class="gl-label" for="address-street">FULL ADDRESS
+                                                            *</label>
+                                                            
+                                                        {%render_field shipping_form.full_address class="input-text input-text--primary-style text-area" placeholder="Write your full Address, Its help to send delevery exact location.."%}
+                                                        <div id="address-response" class="response-message">Write your full Address, Its help to send delevery exact location..</div>
+                                                    </div>
+
+                                                <button class="btn btn--e-brand-b-2" type="submit">SAVE</button>
+                                                <button class="btn btn--e-brand-b-2" onclick="window.history.back()">Back</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 2 ======-->
+        </div>
+        <!--====== End - App Content ======-->
+
+        <div id="Modal"></div>
+
+    </body>
+    {%else%}
+    <script>
+        window.location.href="/dashboard/dashAddressBook/"
+    </script>
+    {%endif%}
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

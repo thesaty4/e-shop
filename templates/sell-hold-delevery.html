@@ -1,0 +1,117 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated%}
+{%load filter_tags%}
+<body>
+    <script>
+        window.addEventListener('load',init,true);function init(){
+            holdDelevery()
+            load_hold_graph({{process}},{{shipped}},{{deliverd}},{{cancel}},{{returns}},{{total_sells}})
+            remaining_and_selled({{total_sells}},{{user.id|get_filter_total_product}})
+        }
+    </script>
+    <!-- Start : Application Data  -->
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+            {%with section1 as sec%} {%include 'sell-section-base.html'%} {%endwith%}
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row" id="hold_delivery_wrapper">
+                            <div class="col-lg-3 col-md-12">
+                                <!-- Dashboard Feature -->
+                                {% with bar as var %} {% include 'sell-base.html' %} {% endwith %}
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+                            <div class="col-lg-9 col-md-12" >
+                                <div class='row' >
+                                    <div class="col-lg-6" style="margin-right:auto;width:350px;"><canvas id="hold_delivery_graph" width="100" height="100"></canvas> </div>
+                                    <div class="col-lg-6" style="margin-left:auto;width:350px;"><canvas id="remaining_and_selled" width="100" height="100"></canvas> </div>
+                                </div>
+                                <br>
+                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+                                    <div class='d-flex' style="background-color:gray;border-radius:20px 20px 0px 0px;">
+                                    <div><h2 class="dash__h2 u-s-p-xy-20" style="color:white;">PROCESSING DELIVERIES</h2></div>
+                                    </div>
+                                    <div class="dash__table-wrap gl-scroll ">
+                                        <table class="dash__table ">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order #</th>
+                                                    <th>Checkout Date</th>
+                                                    <th>Items</th>
+                                                    <th>Quantity</th>
+                                                    <th>Details</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {%for checkout in user.id|get_my_items_checkout%}
+                                                <tr id="checkout_processing_item_{{checkout.id}}">
+                                                    <td>{{checkout.id}}</td>
+                                                    <td>{{checkout.checkout_date_time|date:"d-m-Y"}}</td>
+                                                    <td><a href="/productDetails/{{checkout.id}}">
+                                                        <div class="dash__table-img-wrap ">
+                                                            <img class="u-img-fluid "
+                                                                src="{{MEDIA_URL}}{{checkout.product.image}} " alt=" ">
+                                                        </div>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <div class="dash__table-total ">
+                                                            <span>{{checkout.quantity}}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td><a onclick='view_checkout({{checkout.id}})' class='dash__link dash__link--brand fas fa-eye' style="color:blue;">View</a></td>
+                                                    <td>
+                                                        <div class="dash__table-total ">
+                                                            <div class="dash__link dash__link--brand ">
+                                                                <select id="hold_item_{{checkout.id}}" onchange="hold_item_action({{checkout.id}})">
+                                                                    <option value="">Take Action</option>
+                                                                    <option value="shipped_{{checkout.id}}">Approve</option>
+                                                                    <option value="cancel_{{checkout.id}}">Cancelled</option>
+                                                                </select>
+                                                                {% comment %} <a href="/selling_product/productEdit/">APPROVE</a> {% endcomment %}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {%endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="item-loader w-100" style="display: none;"><img class="ml-auto mr-auto" width='100px;' src="{%static 'images/loader/loading_with_setting.gif'%}" alt=""></div>
+
+                                <br><br>
+                                {% comment %} THIS DATA CAME AFTER CLICK VIEW BUTTON {% endcomment %}
+                                <div id="checkout_details"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+    <!-- End : Application Data  -->
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

@@ -1,0 +1,59 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{%load filter_tags%}
+{% block extrahead %}
+    {% comment %} <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> {% endcomment %}
+    {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script> {% endcomment %}
+    {% comment %} <script src="{%static 'js/chart.min.js'%}"></script> {% endcomment %}
+    <script>
+        {% comment %} var randomColorGenerator = function () {
+            return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+        };
+        var options = {
+            responsive: true,
+            maintainAspectRatio: true,
+            legend: {
+                position: 'left'
+            },
+            title: {
+                display: true
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        };
+        window.addEventListener("load", function() {
+            var ctx = document.getElementById("product-chart");
+            var lineChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total Accepted','Returns Items'],
+                datasets: [{
+                    label: '# Total Selled',
+                    data: [deliverd,returns],
+                    backgroundColor: [
+                        'green',
+                        'red'
+                    ],
+                    borderColor: [
+                        'green',
+                        'red'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+                options: options
+            });
+        }); {% endcomment %}
+    </script>
+    
+{% endblock %}
+
+{% block content %}
+    <img src="data:image/png;base64,{{''|bar_chart}}" height="350px" width="100%">
+    <h1> Graphs </h1>
+    <canvas id="product-chart" width='500px' height='500px'></canvas>
+    {{ block.super }}
+{% endblock %}

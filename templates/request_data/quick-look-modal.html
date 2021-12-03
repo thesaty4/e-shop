@@ -1,0 +1,170 @@
+{%load filter_tags%}
+<div class="modal fade" id="quick-look">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal--shadow">
+
+            <button class="btn dismiss-button fas fa-times" type="button" data-dismiss="modal"></button>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-5">
+
+                        <!--====== Product Breadcrumb ======-->
+                        <div class="pd-breadcrumb u-s-m-b-30">
+                            <ul class="pd-breadcrumb__list">
+                                <li class="has-separator">
+
+                                    <a href="/">Home</a>
+                                </li>
+                                <li class="has-separator">
+
+                                    <a href="/shop/items-query/?csrfmiddlewaretoken=UawiDaltR9JXw9YDFOwXoXmqEyULOfQS7gy4Szvo0DiKfUtErjnYCrktA1kWlInF&query={{product.subcategory}}">{{product.category|lower|capfirst}}</a>
+                                </li>
+                                <li class="has-separator">
+
+                                    <a href="/shop/items-query/?csrfmiddlewaretoken=UawiDaltR9JXw9YDFOwXoXmqEyULOfQS7gy4Szvo0DiKfUtErjnYCrktA1kWlInF&query={{product.subcategory}}">{{product.subcategory|lower|capfirst}}</a>
+                                </li>
+                                <li class="is-marked">
+
+                                    <a href="/productDetails/{{product.id}}">{{product.title}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--====== End - Product Breadcrumb ======-->
+
+
+                        <!--====== Product Detail ======-->
+                        <div class="pd u-s-m-b-30">
+                            <div class="pd-wrap">
+                                <div id="js-product-detail-modal">
+                                    {% if product.discount_percentage > 0 %}
+                                    <div class="product-discount-wrapper" style="background-color:red;">
+                                        <span class="discount"><b>{{product.discount_percentage}}% OFF</b></span>
+                                    </div>
+                                    {% endif %}
+                                    <div>
+                                        <img class="u-img-fluid" src="{{MEDIA_URL}}{{product.image}}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--====== End - Product Detail ======-->
+                    </div>
+                    <div class="col-lg-7">
+
+                        <!--====== Product Right Side Details ======-->
+                        <div class="pd-detail">
+                            <div>
+
+                                <span class="pd-detail__name">{{product.title}}</span>
+                            </div>
+                            <div>
+                                <div class="pd-detail__inline">
+
+                                    <span class="pd-detail__price"><i class="fas fa-rupee-sign"></i> {{product.price|to_comma}}</span>
+                                    
+                                    <span class="pd-detail__discount">({{product.discount_percentage}}% OFF)</span><del class="pd-detail__del"><i class="fas fa-rupee-sign"></i>{{product.m_r_p|to_comma}} </del>
+                                </div>
+                            </div>
+                            <div class="u-s-m-b-15">
+                                <!-- RATING MANAGEMENT -->
+                                {%include "include/rating-management.html"%}
+
+                                <span class="pd-detail__review u-s-m-l-4">
+
+                                <a href="/productDetails/{{product.id}}">{{product.id|product_rating}} Reviews</a></span>
+                                
+                            </div>
+                            <div class="u-s-m-b-15">
+                                <div class="pd-detail__inline">
+                                    {%if product.available_product == 0 %}
+                                        <span class="pd-detail__left">Out of stock</span>
+                                    {%elif product.available_product > 0 and product.available_product <= 20 %}
+                                        <span class="pd-detail__left">Only {{product.available_product}} left</span>
+                                    {%else%}
+                                        <span class="pd-detail__stock">{{product.available_product|cvt_comma}} in stock</span>
+                                    {%endif%}
+
+                                </div>
+                            </div>
+                            <div class="u-s-m-b-15">
+
+                                <span class="pd-detail__preview-desc">
+                                    {{product.discription}}
+                                </span>
+                            </div>
+                            <!-- <div class="u-s-m-b-15">
+                                <div class="pd-detail__inline">
+
+                                    <span class="pd-detail__click-wrap"><i class="far fa-heart u-s-m-r-6"></i>
+
+                                        <a href="signin.html">Add to Wishlist</a>
+
+                                        <span class="pd-detail__click-count">(222)</span></span>
+                                </div>
+                            </div>
+                            <div class="u-s-m-b-15">
+                                <div class="pd-detail__inline">
+
+                                    <span class="pd-detail__click-wrap"><i
+                                            class="far fa-envelope u-s-m-r-6"></i>
+
+                                        <a href="signin.html">Email me When the price drops</a>
+
+                                        <span class="pd-detail__click-count">(20)</span></span>
+                                </div>
+                            </div> -->
+                            <div class="u-s-m-b-15">
+                                <ul class="pd-social-list">
+                                    <li>
+                                        <a class="s-fb--color" href="https://www.facebook.com/sharer/sharer.php?u={{site_info_data.site_url_domain}}{{ request.path }}"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li>
+                                        <a class="s-tw--color" href="https://twitter.com/share?url={{site_info_data.site_url_domain}}{{ request.path }}&text=I read this blog, that was so intresting. You can visit as well, and find intresting things."><i class="fab fa-twitter"></i></a></li>
+                                
+                                    <li>
+                                        <a class="s-insta--color" href="https://www.instagram.com/share?url={{site_info_data.site_url_domain}}{{ request.path }}&text=summary=I read this blog, that was so intresting. You can visit as well, and find intresting things"><i class="fab fa-instagram"></i></a></li>
+                                    <li>
+                                        <a class="s-fb--color" href="https://www.linkedin.com/shareArticle?url={{site_info_data.site_url_domain}}{{ request.path }}&title={{blog_item.title}}&summary=I read this blog, that was so intresting. You can visit as well, and find intresting things"><i class="fab fa-linkedin"></i></a>
+                                    </li>
+                                    <!-- <li>
+
+                                        <a class="s-fb--color-hover" href="#"><i
+                                                class="fab fa-facebook-f"></i></a>
+                                    </li>
+                                    <li>
+
+                                        <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a>
+                                    </li>
+                                    <li>
+
+                                        <a class="s-insta--color-hover" href="#"><i
+                                                class="fab fa-instagram"></i></a>
+                                    </li>
+                                    <li>
+
+                                        <a class="s-wa--color-hover" href="#"><i
+                                                class="fab fa-whatsapp"></i></a>
+                                    </li>
+                                    <li>
+
+                                        <a class="s-gplus--color-hover" href="#"><i
+                                                class="fab fa-google-plus-g"></i></a>
+                                    </li> -->
+                                </ul>
+                            </div>
+                            <div class="u-s-m-b-15">
+                                {% include "include/products-add-in-cart.html" %}
+                            </div>
+                            <div class="u-s-m-b-15">
+
+                                <span class="pd-detail__label u-s-m-b-8">Product Policy:</span>
+                                <!-- PRODUCT POLICY STORED IN INCLUDE FOLDER -->
+                                {% include "include/product-policy.html" %}
+                            </div>
+                        </div>
+                        <!--====== End - Product Right Side Details ======-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

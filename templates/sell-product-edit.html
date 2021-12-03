@@ -1,0 +1,325 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated and product.customer_user.id == user.id%}
+{%load widget_tweaks%}
+<body>
+    <script>
+        window.addEventListener("load", myInit, true); function myInit(){
+            selledProduct();
+            $("#id_category").val("{{product.category.id}}")
+            $("#id_subcategory").val("{{product.subcategory.id}}")
+            $("#id_brand").val("{{product.brand.id}}")
+            $("#id_is_offer").val("{{product.is_offer}}")
+            $("#image-response").html("<a href='{{MEDIA_URL}}{{product.image}}'>YOUR UPLOADED IMAGE : 600x600</a>")
+            $("#id_product_policy").val(`{{product.product_policy}}`)
+            $("#id_tags").val(`{{product.tags}}`)
+            $("#id_discription").val(`{{product.discription}}`)
+            $("#id_extra_info").val(`{{product.extra_info}}`)
+            $("#id_tax").val(`{{product.tax}}`)
+        };
+    </script>
+        <!-- Start : Application Data  -->
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+            {%with section1 as sec%} {%include 'sell-section-base.html'%} {%endwith%}
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+                                <!-- Dashboard Feature -->
+                                {% with bar as var %} {% include 'sell-base.html' %} {% endwith %}
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+                            <div class="col-lg-9 col-md-12">
+                                {%if messages%}
+                                    {%for message in messages%}
+                                    <body onload="messageDismiss()">
+                                        {%if message.tags == 'success'%}
+                                            <div id='message' class="dash__box dash__box--shadow dash__box--bg-white" style="padding: 5px 20px 5px 20px; font-size:small;margin-bottom:10px; background:green; color:white;display:inline-flex; width:100%;justify-content:space-between;">
+                                                <div>{{message}}</div>
+                                                <div id='messageExit'><a style="color: white;">X</a></div>
+                                            </div>
+                                        {%else%}
+                                            <div id='message' class="dash__box dash__box--shadow dash__box--bg-white" style="padding: 5px 20px 5px 20px; font-size:small;margin-bottom:10px; background:red; color:white;display:inline-flex; width:100%;justify-content:space-between;">
+                                                <div>{{message}}</div>
+                                                <div id='messageExit'><a style="color: white;">X</a></div>
+                                            </div>
+                                        {%endif%}
+                                    </body>
+                                    {%endfor%}
+                                {%endif%}
+                                <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                    <div class="dash__pad-2">
+                                        <div class="d-flex flex-row justify-between" >
+                                            <h1 class="dash__h1 u-s-m-b-14">Edit Product</h1>
+                                            <span class="dash__text u-s-m-b-10"><a href='/selling_product/selledProduct/' style="color: black;"><b>Back</b> </a></span>
+                                        </div>
+                                        <span class="dash__text u-s-m-b-30">Your Product ID : #{{product.id}}</span>
+                                        <div class="row">
+                                            <div class="row w-100">
+                                                <div class="col-md-2">
+                                                    <div class="col-12">
+                                                            <div class="gl-s-api">
+                                                                <!-- ######################## Image Preveiw ########################### -->
+                                                                <div class="row" style=" display:flex;flex-direction:row;justify-content:center;">
+                                                                <div class="image_area" id="product_profile">
+                                                                <label for="upload_image">
+                                                                    {%if product.image%}
+                                                                    <img src="{{MEDIA_URL}}{{product.image}}" id="uploaded_image" class="img-responsive img-circle" />
+                                                                    {%else%}
+                                                                    <img src="{%static 'images/product/electronic/product1.jpg'%}" id="uploaded_image" class="img-responsive img-circle" />
+                                                                    {%endif%}
+                                                                    <div class="product-overlay">
+                                                                        <a style="font-size: 10px;" class="text"><b>Change</b></a>
+                                                                    </div>
+                                                                </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-12" style="text-align: center;">
+                                                        <form class="dash-edit-p" action='/selling_product/productEdit/{{product.id}}' method='POST' enctype="multipart/form-data" id='updateProfilePic'>
+                                                            {%csrf_token%}
+                                                            <span>
+                                                                <label for="upload_image">
+                                                                    <i class="fas fa-edit" id="uploaded_image" style="cursor:pointer; color: green; text-shadow:0px 0px 1px black;"></i><span style="color: black; cursor:pointer;"> Edit</span>
+                                                                    {%render_field product_img_form.image class='image' id="upload_image" name="profile_pic" style='width:25px; display:none;'%}
+                                                                </label>
+                                                            </span>
+                                                            {{product_img_form.x}}
+                                                            {{product_img_form.y}}
+                                                            {{product_img_form.width}}
+                                                            {{product_img_form.height}}
+                                                            <input type="hidden" name="loggedUserId" value="{{user.id}}">
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <!-- PRODUCT IMAGES -->
+                                                <div class="col-md-9 col-10" style="overflow-x: scroll; overflow-y:hidden;">
+                                                    <!-- IMAGES LOOPING -->
+                                                    <form class="dash-edit-p" action='/selling_product/productEdit/{{product.id}}' method='POST' enctype="multipart/form-data" id='updateProfilePic'>
+                                                        {%csrf_token%}
+                                                        {%if product_images%}
+                                                            <div class="d-flex flex-row">
+                                                                {%for img in product_images%}
+                                                                <div style="margin:5px; box-shadow:0px 0px 2.5px 0.2px black;" id="{{img.id}}">
+                                                                    <div class="col">
+                                                                        <img src="{{MEDIA_URL}}{{img.img_path}}" alt="" class='ml-auto mr-auto' style="width:55px;height:55px">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-row" style="justify-content: space-around;">
+                                                                        <!-- <div class="col-6" style="color: green; text-shadow:0px 0px 1px black; cursor:pointer;"><i class="fas fa-edit"></i></div> -->
+                                                                        <div style="color: red; text-shadow:0px 0px 1px black; cursor:pointer;" onclick="delete_my_image('{{img.id}}','{{product.id}}')"><i class="fas fa-trash"></i> Delete</div>
+                                                                    </div>
+                                                                </div>
+                                                                {%endfor%}
+                                                            </div>
+                                                        {%else%}
+                                                        <div style="width:100%;height:77px">
+                                                            <span style="padding: 2px; position:absolute;transform:translate(50%,50%)" class='error blink_me'> Please add images...</span>
+                                                        </div>
+                                                        <!-- <div style="padding: 5px;"><img src="{%static 'images/product/product-d-1.jpg'%}" alt="" width="200px"></div> -->
+                                                        {%endif%}
+                                                    </form>
+                                                </div>
+
+                                                <!-- ADD MORE PRODUCT IMAGES BUTTON -->
+                                                <div class="col-md-1 col-2">
+                                                    <form action="/selling_product/add-product-images/{{product.id}}" method="POST" enctype="multipart/form-data" id="product-images1" class="dash-edit-p">
+                                                        {%csrf_token%}
+                                                        <label for="id_img_path1">
+                                                            <span  class='col normal-text-shadow' style='color:black;font-size:30px; position:absolute; transform:translateY(50%); cursor:pointer;'>+</span>
+                                                            <input type="number" name='product' value="{{product.id}}" hidden=''>
+                                                            {%render_field product_images_form.img_path id='id_img_path1' hidden=''%}
+                                                        </label>
+                                                        {%render_field product_images_form.x id='id_x1'%}
+                                                        {%render_field product_images_form.y id='id_y1'%}
+                                                        {%render_field product_images_form.width id='id_width1'%}
+                                                        {%render_field product_images_form.height id='id_height1'%}
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <!-- PRODUCT FORM -->
+                                            <div class="col-lg-12" style="margin-top: 20px;">
+                                                <form class="dash-edit-p" action="/selling_product/productEdit/{{product.id}}" method="POST" id='product-edit-form'>
+                                                    {%csrf_token%}
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-accessories-name">ACCESSORIES NAME *</label>
+                                                            {%render_field product_form.title class="input-text input-text--primary-style" value=product.title placeholder="Accessories Name" %}
+                                                            <input type="hidden" name="customer_user" value="{{user.id}}" id='id_customer_user' required>
+                                                            <div class="response-message p-absolute" id="accessories-response"></div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-fname" placeholder="Nikon Camera"> -->
+                                                        </div>
+                                                        
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-color">COLOR *</label>
+                                                            {%render_field product_form.color_code class="input-text input-text--primary-style" value=product.color_code placeholder='Accessories Color Code - #ffff,#0000'%}
+                                                            <div class="response-message p-absolute" id="color-response"></div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Color code #fff000"> -->
+                                                        </div>
+                                                        
+                                                    </div>
+
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-category">CATEGORIES *</label>
+                                                            <!-- DATA FETCH FROM DATABASE -->
+                                                            {%render_field product_form.category class="select-box select-box--primary-style u-w-100"%}
+                                                            <div class="response-message p-absolute" id="category-response"></div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-subcategory">SUB-CATEGORIES *</label>
+                                                            {%render_field product_form.subcategory class="select-box select-box--primary-style u-w-100"%}
+                                                            <div class="response-message p-absolute" id="subcategory-response"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label for="new-offer" class="gl-label">IS OFFER *</label>
+                                                            {%render_field product_form.is_offer class='input-text input-text--primary-style'%}
+                                                            <div class="response-message p-absolute" id="offer-response"></div>
+                                                        </div>
+
+                                                        <div class="u-s-m-b-30" id="offer_end">
+                                                            <label for="id-offer_end" class="gl-label" id="offer-end-label">OFFER EXPIRE DATE</label>
+                                                            {% if product.is_offer == 'NO' %}
+                                                                {% if product.offer_end == 'None' %}
+                                                                    {%render_field product_form.offer_end value=product.offer_end class='input-text input-text--primary-style' placeholder='Not Needed' disabled='' %}
+                                                                {%else%}
+                                                                    {%render_field product_form.offer_end class='input-text input-text--primary-style' placeholder='Not Needed' disabled='' %}
+                                                                {% endif %}
+                                                            {%else%}
+                                                                {% if product.offer_end == 'None' %}
+                                                                    {%render_field product_form.offer_end class='input-text input-text--primary-style' placeholder='YYYY/MM/DD' %}
+                                                                {%else%}
+                                                                    {%render_field product_form.offer_end value=product.offer_end class='input-text input-text--primary-style' placeholder='YYYY/MM/DD' %}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            <div class="response-message p-absolute" id="offer-expire-response"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-available-product">NUMBER OF PRODUCT *</label>
+                                                            {%render_field product_form.available_product value=product.available_product class="input-text input-text--primary-style" placeholder='Number of product want sold' min=0%}
+                                                            <div class="response-message p-absolute" id="available-response"></div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-shipping-charge">SHIPPING CHARGE *</label>
+                                                            {%render_field product_form.shipping_charge class="input-text input-text--primary-style" value=product.shipping_charge placeholder='Shipping charge' min=0%}
+                                                            <div class="response-message p-absolute" id="shipping-charge-response"></div>
+                                                            <!-- <label class="gl-label" for="gender">PHOTOS & VIDEO *</label>
+                                                            <input class="input-text input-text--primary-style" type="file" id="reg-lname" accept="image/x-png, image/gif, image/jpeg"  multiple> -->
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="gl-inline">
+                                                            <div class="u-s-m-b-30">
+                                                                <label class="gl-label" for="id_m_r_p">M.R.P *</label>
+                                                                {%render_field product_form.m_r_p class="input-text input-text--primary-style" value=product.m_r_p min=0 placeholder='M.R.P of this product?' %}
+                                                                <div class="response-message p-absolute" id="mrp-response"></div>
+                                                            </div>
+                                                            <div class="u-s-m-b-30">
+                                                                <label class="gl-label" for="new-price">PRICE *</label>
+                                                                {%render_field product_form.price class="input-text input-text--primary-style" value=product.price placeholder='Price' min=0%}
+                                                                <div class="response-message p-absolute" id="price-response"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-price">TAX % </label>
+                                                            {%render_field product_form.tax class="input-text input-text--primary-style" value=product.tax placeholder='Tax %' %}
+                                                            <div class="response-message p-absolute" id="price-response"></div>
+                                                        </div>
+
+                                                    </div>
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-url">Embed VIDEO URL</label>
+                                                            {%render_field product_form.video_url class="input-text input-text--primary-style" value=product.video_url placeholder='https://youtube.com/c/idepth/Uckld4Ucdsweijng=view'%}
+                                                            <div class="response-message p-absolute" id="embed-response">Write your video URL</div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Write about your product..."> -->
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-brand">BRAND NAME *</label>
+                                                            {%render_field product_form.brand value=product.brand class="select-box select-box--primary-style u-w-100"%}
+                                                            <div class="response-message p-absolute" id="brandname-response"></div>
+                                                            <!-- DATA FETCH FROM DATABASE -->
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label for="new-policy" class="gl-label">PRODUCT POLICY *</label>
+                                                            {%render_field product_form.product_policy class='input-text input-text--primary-style text-area' rows='0' placeholder="Write your product policy..."%}
+                                                            <div class="response-message p-absolute" id="policy-response">Product policy could be more than one</div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label for="new-tag" class="gl-label">TAGS *</label>
+                                                            {%render_field product_form.tags class='input-text input-text--primary-style text-area' rows='0' placeholder="Ex- phone, mobile, brand name, electronics, etc" %}
+                                                            <div class="response-message p-absolute" id="tag-response">Tags should be CSV(Comma Seprated Value) Formate</div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-discription">EXTRA INFORMATION *</label>
+                                                            {%render_field product_form.extra_info class="input-text input-text--primary-style text-area" rows='0' placeholder="COLOR-RED BLUE GREEN, SIZE-LG XL XXL, WEIGHT-10gm, more..." %}
+                                                            <div class="response-message p-absolute" id="extra_info-response">KEY-VALUE1 VALUE2, KEY-VALUE1 VALUE2</div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Write about your product..."> -->
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-discription">DISCRIPTION *</label>
+                                                            {%render_field product_form.discription class="input-text input-text--primary-style text-area" rows='0' placeholder="Write about your product..." %}
+                                                            <div class="response-message p-absolute" id="discription-response"></div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Write about your product..."> -->
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <button class="btn btn--e-brand-b-2" type="submit">SAVE</button>
+                                                    <a class="btn btn--e-brand-b-2" href="/selling_product/selledProduct/">Back</a>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+    <!-- End : Application Data  -->
+    {%include "imageCropperModal.html"%}
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

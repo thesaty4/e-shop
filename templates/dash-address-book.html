@@ -1,0 +1,127 @@
+{% extends 'base.html'%}{%load static%}{% static 'images' as baseUrl%}{% block content %}
+{%if user.is_authenticated%}
+<body>
+    <script>
+        window.addEventListener("load",myInit,true);function myInit(){
+            addressBook();
+            set_logged_user("{{user.id}}")
+        }
+    </script>
+<!--====== App Content ======-->
+<div class="app-content">
+
+    <!--====== Section 1 ======-->
+    <div class="u-s-p-y-60">
+        <!--====== Section Content ======-->
+        {%with section1 as sec%}
+        {%include 'sectionBase.html'%}
+        {%endwith%}
+    </div>
+    <!--====== End - Section 1 ======-->
+
+
+    <!--====== Section 2 ======-->
+    <div class="u-s-p-b-60">
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="dash">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+
+                            <!--====== Dashboard Features ======-->
+                            {%with bas as var%}
+                            {%include 'dashBase.html'%}
+                            {%endwith%}
+                            <!--====== End - Dashboard Features ======-->
+                        </div>
+                        <div class="col-lg-9 col-md-12">
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                <div class="dash__pad-2">
+                                    <div class="dash__address-header">
+                                        <h1 class="dash__h1">Address Book</h1>
+                                        <div>
+
+                                            <span class="dash__link dash__link--black u-s-m-r-8">
+
+                                                <a href="/dashboard/dashAddMakeDefault/">Make default shipping
+                                                    address</a></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius u-s-m-b-30">
+                                <div class="dash__table-2-wrap gl-scroll">
+                                    <table class="dash__table-2">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Full Name</th>
+                                                <th>Address</th>
+                                                <th>Region</th>
+                                                <th>Phone Number</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <script>console.log("{{billing_info.user}}")</script>
+                                            {%if billing_info%}
+                                                {%for address in billing_info%}
+                                                    {%if address.user == user%}
+                                                        <tr id="{{address.id}}">
+                                                            <td>
+                                                                {%csrf_token%}
+                                                                <a class="address-book-edit btn--e-transparent-platinum-b-2"
+                                                                href="/dashboard/dashAddressEdit/{{address.id}}/">Edit</a>
+                                                                <a class="address-book-edit btn--e-transparent-platinum-b-2"
+                                                                onclick='delete_address("{{address.id}}")'><b class="">&#10006;</b></a>
+                                                            </td>
+                                                            <td>{{address.first_name|capfirst}} {{address.last_name|capfirst}}</td>
+                                                            <td>{{address.full_address|capfirst}}</td>
+                                                            <td>{{address.country|capfirst}} - {{address.state}}</td>
+                                                            <td>{{address.mobile}}</td>
+                                                            <td>
+                                                                {%if address.is_shipping_details%}
+                                                                <div class="gl-text">Default Shipping Address</div>
+                                                                {%endif%}
+                                                                {%if address.is_billing_details%}
+                                                                <div class="gl-text">Default Billing Address</div>
+                                                                {%endif%}
+                                                            </td>
+                                                        </tr>
+                                                    {%endif%}
+                                                {%endfor%}
+                                            {%endif%}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+
+                                <a class="dash__custom-link btn--e-brand-b-2" href="/dashboard/dashAddressAdd/"><i
+                                        class="fas fa-plus u-s-m-r-8"></i>
+
+                                    <span>Add New Address</span></a>
+
+                                <a class="dash__custom-link btn--e-brand-b-2" onclick="window.history.back()">Back</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section Content ======-->
+    </div>
+    <!--====== End - Section 2 ======-->
+</div>
+<!--====== End - App Content ======-->
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

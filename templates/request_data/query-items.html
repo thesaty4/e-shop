@@ -1,0 +1,64 @@
+{% load filter_tags %}
+{% for product in products %}
+<div class="col-lg-4 col-md-6 col-sm-6">
+    <div class="product-m">
+        <div class="product-m__thumb">
+
+            {% if product.discount_percentage > 0 %}
+                <div class="product-discount-wrapper" style="background-color:red;">
+                    <span class="discount"><b>{{product.discount_percentage}}% OFF</b></span>
+                </div>
+            {% endif %}
+            <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/productDetails/{{product.id}}">
+
+                <img class="aspect__img" src="{{MEDIA_URL}}{{product.image}}" alt=""></a>
+            <div class="product-m__quick-look">
+                <a data-tooltip="tooltip" data-placement="top" title="Quick View" onclick="quick_view('{{shop_name}}','{{product.id}}')"><i class="fas fa-search-plus"></i></a>
+               </div>
+            <div class="product-m__add-cart"> 
+
+                <a class="btn--e-brand" data-modal="modal"  onclick="add_cart('{{shop_name}}','{{product.id}}',1,'one')">Add to Cart</a></div>
+        </div>
+        <div class="product-m__content">
+            <div class="product-m__category">
+
+                <a href="/shop/">{{product.category|lower|capfirst}}</a></div>
+            <div class="product-m__name">
+
+                <a href="/productDetails/{{product.id}}">{{product.title}}</a></div>
+            <div class="product-m__rating gl-rating-style">
+                {% include "include/rating-management.html" %}
+            </div>
+            <div class="d-flex flex-row">
+                <div class="product-m__price fas fa-rupee-sign">{{product.price|to_comma}}</div>
+                {% if product.discount_percentage != 0 %}
+                    <div class="product-m__price product-o__discount fas fa-rupee-sign">{{product.m_r_p|to_comma}}</div>
+                    
+                {% endif %}
+            </div>
+            <div class="product-m__hover">
+                <div class="product-m__preview-description">
+
+                    <span>{{product.discription|capfirst}}</span></div>
+                <div class="product-m__wishlist">
+                {% if user.is_authenticated %}
+                    {% if user.id|filter_wishlist:product.id %}
+                    <label for="wishlist-checkbox-{{product.id}}">
+                        <input type="checkbox" id="wishlist-checkbox-{{product.id}}" hidden>
+                        <a id="wishlist-enable__disable-{{product.id}}" onclick="wishlist_check__action('{{user.id}}','{{product.id}}')" data-tooltip="tooltip" data-placement="top" title="Remove to Wishlist"><i class="far fa-heart"></i></a>
+                    </label>
+                    {%else%}
+                    <label for="wishlist-checkbox-{{product.id}}">
+                        <input type="checkbox" id="wishlist-checkbox-{{product.id}}" checked hidden>
+                        <a id="wishlist-enable__disable-{{product.id}}" onclick="wishlist_check__action('{{user.id}}','{{product.id}}')" data-tooltip="tooltip" data-placement="top" title="Add to Wishlist"><i class="fas fa-heart"></i></a>
+                    </label>
+                    {% endif %}
+                {%else%}
+                    <a class="far fa-heart" href="/accounts/login/" data-tooltip="tooltip" data-placement="top" title="Add to Wishlist"><i class="far fa-heart"></i></a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

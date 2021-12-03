@@ -1,0 +1,8 @@
+{% load filter_tags %}
+<ul class="pd-detail__policy-list">
+    {%for policy in product.product_policy|split_data:'.'%}
+    <li><i class="fas fa-check-circle u-s-m-r-8"></i>
+        <span>{{policy|lower|capfirst}}.</span>
+    </li>
+    {%endfor%}
+</ul>

@@ -1,0 +1,954 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+<!-- Start : Application Data  -->
+{%load filter_tags%}
+<body>
+    <script>
+        window.addEventListener('load',myInit,true);function myInit(){
+            homeIcon()
+        }
+    </script>
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+
+        {%if slider%}
+        <!--====== Primary Slider ======-->
+        <!-- IF SLIDER HAVE HAVE IMAGE THEN -->
+        <div class="s-skeleton s-skeleton--h-600 s-skeleton--bg-grey">
+            <div class="owl-carousel primary-style-1" id="hero-slider">
+                <!-- ################################DYNAMIC SLIDER############################## -->
+                {%for img_data in slider%}
+                    <div class="hero-slide"
+                        style='background-image: url("{{MEDIA_URL}}{{img_data.image}}");'>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="slider-content slider-content--animation normal-text-shadow">
+                                        <span class="content-span-1 u-c-white">{{img_data.offer_title}}</span>
+
+                                        <span class="content-span-2 u-c-white">{{img_data.offer}}</span>
+
+                                        <span class="content-span-3 u-c-white">{{img_data.offer_desc}}</span>
+
+                                        
+                                        {%if img_data.is_blog%}
+                                        <a class="shop-now-link btn--e-brand normal-box-shadow" href="/blogs/blogContaint/">
+                                            <b>LET'S SEE BLOG</b></a>
+                                        {%else%}
+                                            <span class="content-span-4 u-c-white">Starting At
+                                            <span class="u-c-brand fas fa-rupee-sign">{{img_data.offer_start_at|to_comma}}</span></span>
+                                            <a class="shop-now-link btn--e-brand normal-box-shadow" href="/shop/">
+                                            <b>SHOP NOW</b></a>
+                                        {%endif%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {%endfor%}
+            </div>
+        </div>
+        <!--====== End - Primary Slider ======-->
+        {%else%}
+        <!--====== SECONDRY Slider ======-->
+        <!-- IF SLIDER HAVE HAVEN'T IMAGE THEN DEFAULT SLIDER SHOW-->
+        <div class="s-skeleton s-skeleton--h-600 s-skeleton--bg-grey">
+            <div class="owl-carousel primary-style-1" id="hero-slider">
+                <div class="hero-slide hero-slide--1"
+                    style='background-image: url("{{MEDIA_URL}}inbuilt-images/slider/slide-1.jpg");'>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="slider-content slider-content--animation">
+
+                                    <span class="content-span-1 u-c-secondary">Latest Update Stock</span>
+
+                                    <span class="content-span-2 u-c-secondary">30% Off On Electronics</span>
+
+                                    <span class="content-span-3 u-c-secondary">Find electronics on best prices, Also
+                                        Discover most selling products of electronics</span>
+
+                                    <span class="content-span-4 u-c-secondary">Starting At
+
+                                        <span class="u-c-brand">$1050.00</span></span>
+
+                                    <a class="shop-now-link btn--e-brand" href="/shop/">SHOP NOW</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-slide hero-slide--2"
+                    style='background-image: url("{{MEDIA_URL}}inbuilt-images/slider/slide-2.jpg");'>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="slider-content slider-content--animation">
+
+                                    <span class="content-span-1 u-c-white">Find Top Brands</span>
+
+                                    <span class="content-span-2 u-c-white">10% Off On Electronics</span>
+
+                                    <span class="content-span-3 u-c-white">Find electronics on best prices, Also
+                                        Discover most selling products of electronics</span>
+
+                                    <span class="content-span-4 u-c-white">Starting At
+
+                                        <span class="u-c-brand">$380.00</span></span>
+
+                                    <a class="shop-now-link btn--e-brand" href="/shop/">SHOP NOW</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-slide hero-slide--3"
+                    style='background-image: url("{{MEDIA_URL}}inbuilt-images/slider/slide-3.jpg");'>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="slider-content slider-content--animation">
+
+                                    <span class="content-span-1 u-c-secondary">Find Top Brands</span>
+
+                                    <span class="content-span-2 u-c-secondary">10% Off On Electronics</span>
+
+                                    <span class="content-span-3 u-c-secondary">Find electronics on best prices, Also
+                                        Discover most selling products of electronics</span>
+
+                                    <span class="content-span-4 u-c-secondary">Starting At
+
+                                        <span class="u-c-brand">$550.00</span></span>
+
+                                    <a class="shop-now-link btn--e-brand" href="/shop/">SHOP NOW</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - SECONDRY Slider ======-->
+        {%endif%}
+
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+
+            <!--====== Section Intro ======-->
+            <div class="section__intro u-s-m-b-46">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section__text-wrap">
+                                <h1 class="section__heading u-c-secondary u-s-m-b-12">SHOP BY DEALS</h1>
+
+                                <span class="section__span u-c-silver">BROWSE FAVOURITE DEALS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Intro ======-->
+
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 u-s-m-b-30">
+
+                            <a class="collection" href="/items-query/?csrfmiddlewaretoken=aZiwuXm00ZLC7xP4NquBFPmOLiySMI9FRvtGkFysnPyXVaArjKyCND4HGYq39G0q&query=electronic">
+                                <div class="aspect aspect--bg-grey aspect--square">
+                                    {% with site_info_data.id|get_image_of__shop_by_deal:1 as sbd_img %}
+                                    <img class="aspect__img collection__img" src="{{MEDIA_URL}}{{sbd_img.image}}" alt="">
+                                    {%endwith%}
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-7 col-md-7 u-s-m-b-30">
+
+                            <a class="collection" href="/items-query/?csrfmiddlewaretoken=aZiwuXm00ZLC7xP4NquBFPmOLiySMI9FRvtGkFysnPyXVaArjKyCND4HGYq39G0q&query=women+clothing">
+                                <div class="aspect aspect--bg-grey aspect--1286-890">
+                                    {% with site_info_data.id|get_image_of__shop_by_deal:2 as sbd_img %}
+                                    <img class="aspect__img collection__img" src="{{MEDIA_URL}}{{sbd_img.image}}" alt="">
+                                    {%endwith%}
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-7 col-md-7 u-s-m-b-30">
+
+                            <a class="collection" href="/items-query/?csrfmiddlewaretoken=aZiwuXm00ZLC7xP4NquBFPmOLiySMI9FRvtGkFysnPyXVaArjKyCND4HGYq39G0q&query=cloth">
+                                <div class="aspect aspect--bg-grey aspect--1286-890">
+                                    {% with site_info_data.id|get_image_of__shop_by_deal:3 as sbd_img %}
+                                    <img class="aspect__img collection__img" src="{{MEDIA_URL}}{{sbd_img.image}}" alt="">
+                                    {%endwith%}
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-5 col-md-5 u-s-m-b-30">
+
+                            <a class="collection" href="/items-query/?csrfmiddlewaretoken=aZiwuXm00ZLC7xP4NquBFPmOLiySMI9FRvtGkFysnPyXVaArjKyCND4HGYq39G0q&query=kids+wear">
+                                <div class="aspect aspect--bg-grey aspect--square">
+                                    {% with site_info_data.id|get_image_of__shop_by_deal:4 as sbd_img %}
+                                    <img class="aspect__img collection__img" src="{{MEDIA_URL}}{{sbd_img.image}}" alt="">
+                                    {%endwith%}
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--====== Section Content ======-->
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Intro ======-->
+            <div class="section__intro u-s-m-b-16">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section__text-wrap">
+                                <h1 class="section__heading u-c-secondary u-s-m-b-12">TOP TRENDING</h1>
+
+                                <span class="section__span u-c-silver">CHOOSE CATEGORY</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Intro ======-->
+
+
+            <!--====== Section Content ======-->
+            
+            {% with "'" as single_quote %}
+            <div class="section__content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="filter-category-container">
+                                <div class="filter__category-wrapper">
+                                    <button class="btn filter__btn filter__btn--style-1 js-checked" type="button"
+                                        data-filter="*">ALL</button>
+                                </div>
+                                {% for category in product_meta_data.category  %}
+                                    {% if category|get_all_item_by_category|object_count != 0 %}
+                                        <div class="filter__category-wrapper">
+
+                                            <button class="btn filter__btn filter__btn--style-1" type="button"
+                                                data-filter='.{{category.category|split_data:" "|get_data_from_split:0|split_data:single_quote|get_data_from_split:0|lower}}'>{{category}}</button>
+                                        </div>
+                                    {%endif%}
+                                {% endfor %}
+                            </div>
+                            <div class="filter__grid-wrapper u-s-m-t-30">
+                                <div class="row">
+                                    {% for category in product_meta_data.category  %}
+                                        {% if category|get_all_item_by_category|object_count != 0 %}
+                                            {% for product in category.id|get_all_item_by_category|slice:8 %}
+                                                <div class='col-xl-3 col-lg-4 col-md-6 col-sm-6 u-s-m-b-30 filter__item {{category.category|split_data:" "|get_data_from_split:0|split_data:single_quote|get_data_from_split:0|lower}}'>
+                                                    {% include "include/single-item.html" %}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="load-more">
+                                <button class="btn btn--e-brand" onclick="window.location.href=('/shop/')" type="button">Load More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        {% endwith %}
+        <!--====== End - Section 2 ======-->
+
+
+        <!--====== Section 3 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Intro ======-->
+            <div class="section__intro u-s-m-b-46">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section__text-wrap">
+                                <h1 class="section__heading u-c-secondary u-s-m-b-12">DEAL OF THE DAY</h1>
+
+                                <span class="section__span u-c-silver">BUY DEAL OF THE DAY, HURRY UP! THESE NEW
+                                    PRODUCTS WILL EXPIRE SOON.</span>
+
+                                <span class="section__span u-c-silver">ADD THESE ON YOUR CART.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Intro ======-->
+
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="row">
+                        {% include "include/deal-of-the-day-item.html" %}
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 3 ======-->
+
+
+        <!--====== Section 4 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Intro ======-->
+            <div class="section__intro u-s-m-b-46">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section__text-wrap">
+                                <h1 class="section__heading u-c-secondary u-s-m-b-12">NEW ARRIVALS</h1>
+
+                                <span class="section__span u-c-silver">GET UP FOR NEW ARRIVALS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Intro ======-->
+
+
+            <!--====== Section Content ======-->
+            {% comment %}
+                {% show_users_table %} <!-- INCLUSION TAGS-DATA CAME FROM inclusion_tags/user.html -->
+                {%current_time "%d/%m/%Y %H:%M:%S %p"%}
+                {%get_host_ip%}
+            {% endcomment %}
+
+        
+            <div class="section__content">
+                <div class="container">
+                    <div class="slider-fouc">
+                        <div class="owl-carousel product-slider"  data-item="4">
+                            <!-- NEW ARRIVAL PRODUCT SHOWS -->
+                            {% if user.is_authenticated %}
+                            
+                                {%for product in user.id|new_arrival_product_logged:'-id'|slice:10%}
+                                    {% include "include/new-arrival-product.html" %}
+                                {%endfor%}
+                            {% else %}
+                                {%for product in ''|host_details|new_arrival_product_anonymous:'-id'|slice:10%}
+                                    {% include "include/new-arrival-product.html" %}
+                                {%endfor%}
+                            {% endif %}
+                                <div id="new-arrival-product-next">
+                                    <button onclick="get_more_new_arrival_product()"><span><strong>Get More >></strong></span></button>
+                                </div>
+                            {%csrf_token%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 4 ======-->
+
+
+        <!--====== Section 5 ======-->
+        {%if background_banner%}<!-- IF BANNER HAVE IMAGE -->
+            <div class="banner-bg" style="padding: 7em 0;
+            position: relative;
+            background: #f5f5f5 url('{{MEDIA_URL}}{{background_banner.image}}') repeat fixed center center;
+            background-size: cover;">
+        {%else%}<!-- IF BANNER HAVEN'T IMAGE -->
+            <div class="banner-bg" style="padding: 7em 0;
+                position: relative;
+                background: #f5f5f5 url({{MEDIA_URL}}inbuilt-images/banners/banner-bg.jpg) repeat fixed center center;
+                background-size: cover;">
+        {%endif%}
+        <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="banner-bg__countdown">
+                                    <div class="countdown countdown--style-banner"
+                                        data-countdown="{{myoffer.offer_end}}"></div>
+                                </div>
+                                <div class="banner-bg__wrap">
+                                    <div class="banner-bg__text-1">
+
+                                        <span class="u-c-white normal-text-shadow">{{myoffer.offer_title}}</span>
+
+                                        <span class="normal-text-shadow orange-color">Offers</span>
+                                    </div>
+                                    <div class="banner-bg__text-2">
+
+                                        <span class="normal-text-shadow orange-color">Official Launch</span>
+
+                                        <span class="u-c-white normal-text-shadow">Don't Miss!</span>
+                                    </div>
+
+                                    <span class="banner-bg__text-block banner-bg__text-3 normal-text-shadow"
+                                        style="color: white;"><b>
+                                            {{myoffer.offer_name}}
+                                        </b></span>
+
+                                    <a class="banner-bg__shop-now background-orange  normal-box-shadow"
+                                        style="color:white;" href="/shop/">Shop
+                                        Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 5 ======-->
+
+            <!--====== Section 6 ======-->
+            <div class="u-s-p-y-60">
+
+                <!--====== Section Intro ======-->
+                <div class="section__intro u-s-m-b-46">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="section__text-wrap">
+                                    <h1 class="section__heading u-c-secondary u-s-m-b-12">FEATURED PRODUCTS</h1>
+
+                                    <span class="section__span u-c-silver">FIND NEW FEATURED PRODUCTS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Intro ======-->
+
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            {% for product in 4|featured_products  %}
+                                {% include "include/featured-product.html" %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 6 ======-->
+
+
+            <!--====== Section 7 ======-->
+            <div class="u-s-p-b-60">
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-6 u-s-m-b-30">
+                                <a class="promotion" href="/shop/">
+                                    <div class="aspect aspect--bg-grey aspect--square">
+
+                                        <img class="aspect__img promotion__img" src="{%static 'static-images/720x800/photo-1574722772540-edb7c6d49fa3.jpg'%}"
+                                            alt="">
+                                    </div>
+                                    <div class="promotion__content">
+                                        <div class="promotion__text-wrap">
+                                            <div class="promotion__text-1">
+
+                                                <span class="u-c-secondary">ACCESSORIES FOR YOUR EVERYDAY</span>
+                                            </div>
+                                            <div class="promotion__text-2">
+
+                                                <span class="u-c-secondary">GET IN</span>
+
+                                                <span class="u-c-brand">TOUCH</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <div class="col-lg-4 col-md-4 col-sm-6 u-s-m-b-30">
+
+                                <a class="promotion" href="/shop/">
+                                    <div class="aspect aspect--bg-grey aspect--square">
+
+                                        <img class="aspect__img promotion__img" src="{%static 'static-images/720x800/photo-1567401893414-76b7b1e5a7a5.jpg'%}"
+                                            alt="">
+                                    </div>
+                                    <div class="promotion__content">
+                                        <div class="promotion__text-wrap">
+                                            <div class="promotion__text-1">
+
+                                                <span class="u-c-secondary">CLOTHING</span>
+
+                                                <span class="u-c-brand">FASHION</span>
+                                            </div>
+                                            <div class="promotion__text-2">
+
+                                                <span class="u-c-secondary">NEW ARRIVALS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 u-s-m-b-30">
+
+                                <a class="promotion" href="/shop/">
+                                    <div class="aspect aspect--bg-grey aspect--square">
+
+                                        <img class="aspect__img promotion__img" src="{%static 'static-images/1970x900/gadget.jpg'%}"
+                                            alt="">
+                                    </div>
+                                    <div class="promotion__content">
+                                        <div class="promotion__text-wrap">
+                                            <div class="promotion__text-1">
+
+                                                <span class="u-c-secondary">{%get_highest_discount_category%}</span>
+                                            </div>
+                                            <div class="promotion__text-2">
+
+                                                <span class="u-c-brand">GET UP TO {%get_highest_discount%}% OFF</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 7 ======-->
+
+
+            <!--====== Section 8 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-sm-6 u-s-m-b-30">
+                                <div class="column-product">
+
+                                    <span class="column-product__title u-c-secondary u-s-m-b-25">SPECIAL PRODUCTS</span>
+                                    <ul class="column-product__list">
+                                        {% for product in 3|get_special_products %}
+                                            <li class="column-product__item">
+                                                <div class="product-l">
+                                                    <div class="product-l__img-wrap">
+
+                                                        <a class="aspect aspect--bg-grey aspect--square u-d-block product-l__link"
+                                                            href="/productDetails/{{product.id}}">
+
+                                                            <img class="aspect__img"
+                                                                src="{{MEDIA_URL}}{{product.image}}" alt=""></a>
+                                                    </div>
+                                                    <div class="product-l__info-wrap">
+
+                                                        <span class="product-l__category">
+
+                                                            <a href="/shop/">{{product.category|lower|capfirst}}</a></span>
+
+                                                        <span class="product-l__name">
+
+                                                            <a href="/productDetails/{{product.id}}">{{product.title}}</a></span>
+
+                                                        <span class="product-l__price fas fa-rupee-sign">{{product.price|to_comma}}</span>
+                                                        <span class="product-l__price fas fa-rupee-sign" style="color: #ff4500; margin-top:5px;">{{product.discount_percentage}}%OFF</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6 u-s-m-b-30">
+                                <div class="column-product">
+
+                                    <span class="column-product__title u-c-secondary u-s-m-b-25">WEEKLY PRODUCTS</span>
+                                    <ul class="column-product__list">
+                                        {% for product in 3|get_weekly_products %}
+                                            <li class="column-product__item">
+                                                <div class="product-l">
+                                                    <div class="product-l__img-wrap">
+
+                                                        <a class="aspect aspect--bg-grey aspect--square u-d-block product-l__link"
+                                                            href="/productDetails/{{product.id}}">
+
+                                                            <img class="aspect__img"
+                                                                src="{{MEDIA_URL}}{{product.image}}" alt=""></a>
+                                                    </div>
+                                                    <div class="product-l__info-wrap">
+
+                                                        <span class="product-l__category">
+
+                                                            <a href="/shop/">{{product.category|lower|capfirst}}</a></span>
+
+                                                        <span class="product-l__name">
+
+                                                            <a href="/productDetails/{{product.id}}">{{product.title}}</a></span>
+
+                                                        <span class="product-l__price fas fa-rupee-sign">{{product.price|to_comma}}
+
+                                                            <span class="product-l__discount fas fa-rupee-sign">{{product.m_r_p|to_comma}}</span></span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6 u-s-m-b-30">
+                                <div class="column-product">
+
+                                    <span class="column-product__title u-c-secondary u-s-m-b-25">FLASH PRODUCTS</span>
+                                    <ul class="column-product__list">
+                                        {% for product in 3|get_flash_products  %}
+                                            <li class="column-product__item">
+                                                <div class="product-l">
+                                                    <div class="product-l__img-wrap">
+                                                        {% if product.discount_percentage > 0 %}
+                                                        <div class="product-discount-wrapper" style="background-color:red;">
+                                                            <span class="discount"><b>{{product.discount_percentage}}% OFF</b></span>
+                                                        </div>
+                                                        {% endif %}
+                                                        <a class="aspect aspect--bg-grey aspect--square u-d-block product-l__link"
+                                                            href="/productDetails/{{product.id}}">
+
+                                                            <img class="aspect__img"
+                                                                src="{{MEDIA_URL}}{{product.image}}" alt=""></a>
+                                                    </div>
+                                                    <div class="product-l__info-wrap">
+                                                        <div class="product-l__rating gl-rating-style">
+                                                        {% include "include/rating-management.html" %}    
+                                                        </div>
+
+                                                        <span class="product-l__category">
+
+                                                            <a href="/shop/">{{product.category|lower|capfirst}}</a></span>
+
+                                                        <span class="product-l__name">
+
+                                                            <a href="/productDetails/{{product.id}}">{{product.title}}</a></span>
+
+                                                        <span class="product-l__price fas fa-rupee-sign">{{product.price|to_comma}}</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 8 ======-->
+
+
+            <!--====== Section 9 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="service u-h-100">
+                                    <div class="service__icon"><i class="fas fa-truck"></i></div>
+                                    <div class="service__info-wrap">
+
+                                        <span class="service__info-text-1">Free Shipping</span>
+
+                                        <span class="service__info-text-2">Free shipping on all INDIA order and order above
+                                            <i class="fas fa-rupee-sign"></i>200</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="service u-h-100">
+                                    <div class="service__icon"><i class="fas fa-redo"></i></div>
+                                    <div class="service__info-wrap">
+
+                                        <span class="service__info-text-1">Shop with Confidence</span>
+
+                                        <span class="service__info-text-2">Our Protection covers your purchase from
+                                            click to delivery</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="service u-h-100">
+                                    <div class="service__icon"><i class="fas fa-headphones-alt"></i></div>
+                                    <div class="service__info-wrap">
+
+                                        <span class="service__info-text-1">24/7 Help Center</span>
+
+                                        <span class="service__info-text-2">Round-the-clock assistance for a smooth
+                                            shopping experience</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 9 ======-->
+
+
+            <!--====== Section 10 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Intro ======-->
+                <div class="section__intro u-s-m-b-46">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="section__text-wrap">
+                                    <h1 class="section__heading u-c-secondary u-s-m-b-12">LATEST FROM BLOG</h1>
+
+                                    <span class="section__span u-c-silver">START YOU DAY WITH FRESH AND LATEST
+                                        NEWS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Intro ======-->
+
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            {% for blog_item in 3|get_blogs %}
+                                <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                    <div class="bp-mini bp-mini--img u-h-100">
+                                        <div class="bp-mini__thumbnail">
+                                            {% if blog_item.image %}
+                    
+                                            <!--====== Image Code ======-->
+                                            <div class="aspect aspect--bg-grey aspect--1366-768">
+                    
+                                                <img class="aspect__img" src="{{MEDIA_URL}}{{blog_item.image}}" alt=""></div>
+                                                <!--====== End - Image Code ======-->
+                                            {%elif blog_item.audio%}
+                                                <div class="aspect aspect--bg-grey aspect--1366-768">
+                                                    <img class="aspect__img" src="{%static '/images/music-gif/1fTO.gif' %}" alt="">
+                                                </div>
+                                                <!--====== Audio ======-->
+                                                <audio controls>
+                                                    <source src="{{MEDIA_URL}}{{blog_item.audio}}"></audio>
+                                                <!--====== End - Audio ======-->
+                                            {%elif blog_item.video%}
+                                                <!--====== Embed Video Youtube ======-->
+                                                <!-- <iframe src="https://www.youtube.com/embed/qKqSBm07KZk" allowfullscreen></iframe> -->
+                                                <iframe src="{{blog_item.video}}" allowfullscreen></iframe>
+                                                <!--====== End - Embed Video Youtube ======-->
+                                            {%else%}
+                                                <a class="aspect aspect--bg-grey aspect--1366-768 u-d-block" href="/blogs/blogDetails/{{blog_item.id}}">
+                                    
+                                                    <img class="aspect__img" src="{%static 'images/blog/blog.jpg'%}" alt=""></a>
+                                
+                                            {% endif %}
+                                        </div>
+                                        <div class="bp-mini__content">
+                                            <div class="bp-mini__stat">
+                                                <span class="blog-vote-wrapper">
+                                                    {% include "include/blog/blog-vote.html" %}
+                                                </span>
+
+                                                <span class="bp-mini__stat-wrap">
+
+                                                    <span class="bp-mini__publish-date">
+
+                                                        <a>
+
+                                                            <span><i class="fas fa-calendar-alt"></i> {{blog_item.at_date_time|date:"y F Y"}}</span></a>
+                                                    </span>
+                                                </span>
+                                            </div>
+
+                                            <span class="bp-mini__h1">
+                                                <a href="/blogs/blogDetails/{{blog_item.id}}">{{blog_item.title|capfirst}}</a></span>
+                                                {% if blog_item.audio %}
+                                                <p class="bp-mini__p">{{blog_item.discription|capfirst|striptags|nbsp2space|slice:100}}...</p>
+                                                {%else%}
+                                                <p class="bp-mini__p">{{blog_item.discription|capfirst|striptags|nbsp2space|slice:200}}...</p>
+                                                {% endif %}
+                                            <div class="blog-t-w">
+
+                                                {% for tag in blog_item.tags|split_data:","|slice:3 %}
+                                                <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q={{tag}}">{{tag|lower|capfirst}}</a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+                <div class="col-lg-12">
+                    <div class="load-more">
+                        <button class="btn btn--e-brand" onclick="window.location.href=('/blogs/blogContaint/')" type="button">Load More</button>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section 10 ======-->
+
+            {%if usr_feedback%}
+            <!--====== Section 11 ======-->
+                {% include "feedback-bash.html" %}
+            <!--====== End - Section 11 ======-->
+            {%endif%}
+
+            <!--====== Section 12 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+
+                        <!--====== Brand Slider ======-->
+                        <div class="slider-fouc">
+                            <div class="owl-carousel" id="brand-slider" data-item="5">
+                                <div class="brand-slide">
+
+                                    <a href="shop-side-version-2.html">
+
+                                        <img src="images/brand/b1.png" alt=""></a>
+                                </div>
+                                <div class="brand-slide">
+
+                                    <a href="shop-side-version-2.html">
+
+                                        <img src="images/brand/b2.png" alt=""></a>
+                                </div>
+                                <div class="brand-slide">
+
+                                    <a href="shop-side-version-2.html">
+
+                                        <img src="images/brand/b3.png" alt=""></a>
+                                </div>
+                                <div class="brand-slide">
+
+                                    <a href="shop-side-version-2.html">
+
+                                        <img src="images/brand/b4.png" alt=""></a>
+                                </div>
+                                <div class="brand-slide">
+
+                                    <a href="shop-side-version-2.html">
+
+                                        <img src="images/brand/b5.png" alt=""></a>
+                                </div>
+                                <div class="brand-slide">
+
+                                    <a href="shop-side-version-2.html">
+
+                                        <img src="images/brand/b6.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--====== End - Brand Slider ======-->
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 12 ======-->
+        </div>
+        <!--====== End - App Content ======-->
+        <!-- End : Application Data  -->
+        {%if user.is_authenticated == False%}
+        <!--====== Newsletter Subscribe Modal ======-->
+        <div class="modal fade new-l" id="newsletter-modal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal--shadow">
+
+                    <button class="btn new-l__dismiss fas fa-times" type="button" data-dismiss="modal"></button>
+                    <div class="modal-body">
+                        <div class="row u-s-m-x-0">
+                            <div class="col-lg-6 new-l__col-1 u-s-p-x-0">
+
+                                <a class="new-l__img-wrap u-d-block" href="/shop/">
+                                    <a class="new-l__img-wrap u-d-block" href="/shop/">
+                                    {%if newsletter%}
+                                        <!-- IF NEWSLETTER IMAGE IS AVAILABLE IN DATABASE -->
+                                        <img class="u-img-fluid u-d-block"
+                                            src="{{MEDIA_URL}}{{newsletter.image}}"
+                                            alt="">
+                                    {%else%}
+                                    </a>
+                                    <!-- IF NEWSLETTER IMAGE IS NOT AVAILABLE IN DATABASE -->
+                                    <img class="u-img-fluid u-d-block"
+                                        src="{{MEDIA_URL}}inbuilt-images/newsletter/newsletter.jpg" alt="">
+                                    {%endif%}
+                                </a>
+                            </div>
+                            <div class="col-lg-6 new-l__col-2">
+                                <div class="new-l__section u-s-m-t-30">
+                                    <div class="u-s-m-b-8 new-l--center">
+                                        <h3 class="new-l__h3">Newsletter</h3>
+                                    </div>
+                                    <div class="u-s-m-b-30 new-l--center">
+                                        <p class="new-l__p1">Sign up for emails to get the scoop on new arrivals,
+                                            special sales and more.</p>
+                                    </div>
+                                    <form class="new-l__form">
+                                        <div class="u-s-m-b-15">
+
+                                            <input class="news-l__input" type="text" placeholder="E-mail Address">
+                                        </div>
+                                        <div class="u-s-m-b-15">
+                                            <!-- <a href="/accounts/register/" style="display: flex; background-color:red;">Sign Up!</a> -->
+                                            <a class="btn btn--e-brand-b-2" href="/accounts/register/"
+                                                style="display: flex; align-items:center;">Sign up!</a>
+                                        </div>
+                                    </form>
+                                    <div class="u-s-m-b-15 new-l--center">
+                                        <p class="new-l__p2">By Signing up, you agree to receive Reshop
+                                            offers,<br />promotions and other commercial messages. You may unsubscribe
+                                            at any time.</p>
+                                    </div>
+                                    <div class="u-s-m-b-15 new-l--center">
+
+                                        <a class="new-l__link" data-dismiss="modal">No Thanks</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Newsletter Subscribe Modal ======-->
+        <!--====== End - Modal Section ======-->
+        {%endif%}
+    <!-- SHARE BLOG MODAL -->
+    <div class="blog-share-modal">
+        {% include "include/blog/blog-share-modal.html" %}
+    </div>
+</body>
+{% endblock %}

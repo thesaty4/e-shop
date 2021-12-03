@@ -1,0 +1,376 @@
+/* body{
+  scroll-behavior: smooth;
+} */
+*{
+  scroll-behavior: smooth;
+}
+.normal-text-shadow{
+  text-shadow:1px 1px 5px black;
+}
+.normal-box-shadow{
+  box-shadow: black 0px 0px 6px 0px;
+}
+.orange-color{
+  color: rgb(255, 115, 0); 
+}
+.background-orange{
+    background-color: rgb(255, 115, 0);
+    
+}
+.alert-message{
+    padding: 10px 0px 10px 0px;
+    
+}
+.p-absolute{
+  position: absolute;
+}
+/* .success{
+    background-color: rgb(73, 255, 143);
+}
+.error{
+    background-color: rgb(255, 73, 73);
+} */
+.success{
+  color: green;
+}
+.error{
+  color: red;
+}
+#id_profile_pic{
+  width: 100%;
+  margin-top: 8px;
+}
+.valid{
+    color:green;
+}
+.invalid{
+    color:red;
+}
+.response-message{
+    font-size: 10px;
+    margin-left: 20px;
+}
+
+
+
+
+/* PROFILE IMAGE STYLE */
+.image_area {
+   position: relative;
+ }
+
+ img {
+       display: block;
+       max-width: 100%;
+ }
+
+
+ .overlay {
+   position: absolute;
+   bottom: 0px;
+   left: 0;
+   right: 0;
+   background-color: rgba(165, 161, 161, 0.74);
+   overflow: hidden;
+   height: 0px;
+   transition: .5s ease;
+   width: 100%;
+   cursor: pointer;
+   border-radius: 0px 0px 110px 110px;
+   box-shadow: 0px 0px 0px 0px black;
+ }
+  
+ .image_area:hover .overlay {
+  height: 40%;
+  cursor: pointer;
+}
+
+ .product-overlay {
+   position: absolute;
+   bottom: 0px;
+   left: 0;
+   right: 0;
+   background-color: rgba(165, 161, 161, 0.74);
+   overflow: hidden;
+   height: 0%;
+   transition: .5s ease;
+   width: 100%;
+   cursor: pointer;
+   /* border-radius: 0px 0px 110px 110px; */
+   /* box-shadow: 0px 0px 0px 0px black; */
+ }
+ 
+ .image_area:hover .product-overlay {
+   height: 40%;
+   cursor: pointer;
+ }
+
+ .product-text {
+   color: #333;
+   font-size: 20px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   -webkit-transform: translate(-50%, -50%);
+   -ms-transform: translate(-50%, -50%);
+   transform: translate(-50%, -50%);
+   text-align: center;
+ }
+
+ .text {
+   color: #333;
+   font-size: 20px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   -webkit-transform: translate(-50%, -50%);
+   -ms-transform: translate(-50%, -50%);
+   transform: translate(-50%, -50%);
+   text-align: center;
+ }
+
+
+/* Bootstrap Modal Design */
+.modal-header{
+ padding: 20px;
+ padding: 10px 20px 10px 20px;
+}
+
+.modal-content .col .btn{
+ padding: 5px;
+ box-shadow: 0px 0px 0.4px 0px black;
+}
+
+.js-zoom-in, .js-zoom-out{
+ font-size: 14px;
+}
+
+.modal-footer .btn-group{
+/*   background-color: red; */
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between;
+ width: 70px;
+}
+
+#reg_profile{
+ height: 88px;
+ width: 88px;
+ box-shadow: 0px 0px 3px 0px black;
+ border-radius: 50%;
+}
+#product_profile{
+ height: 88px;
+ width: 88px;
+}
+
+
+#reg_profile img{
+ height: 88px;
+ width: 88px;
+ border-radius: 50%;
+}
+
+#product_profile img{
+ height: 88px;
+ width: 88px;
+}
+
+.help_text{
+  font-size: 10px;
+  margin-left: 20px;
+}
+
+.text-red{
+  color: red;
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+.messages{
+  padding: 0px;
+  text-align: center;
+}
+
+.bg-blue{
+  background-color: blue;
+}
+.bg-red{
+  background-color: red;
+}
+.bg-pink{
+  color: pink;
+}
+.w-100{
+  width: 100%;
+}
+.d-flex{
+  display: flex;
+}
+.flex-row{
+  flex-direction: row;
+}
+.flex-col{
+  flex-direction: column;
+}
+.justify-around{
+  justify-content: space-around;
+}
+.justify-between{
+  justify-content: space-between;
+}
+.justify-evenly{
+  justify-content: space-evenly;
+}
+.ml-auto{
+  margin-left: auto;
+}
+.mr-auto{
+  margin-right: auto;
+}
+
+/* .tags{
+  background-color: lightgrey;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 20px 10px 20px;
+  height: 50px;
+  margin: 10px;
+  width: auto;
+} */
+/* .tags:hover{
+  transition-delay: 0.0001s;
+  box-shadow: 0px 0px 2px 0px black;
+} */
+
+.tags{
+  height: 50px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.tags span{
+/*   background-color:blue; */
+  width: 50px;
+/*   font-size: 15px; */
+}
+.tags-container{
+  padding: 10px;
+/*   height: 20rem; */
+/*   overflow-y: scroll; */
+}
+
+
+/* #ff4500 */
+
+
+.rating-star-container{
+  color: #ff4500;
+}
+.rating-star-container i{
+  font-size: 30px;
+  text-shadow: 0.1px 0.1px 1.3px black;
+}
+
+.load-more-review button:hover{
+  box-shadow: 0px 0px 1px 0px black;
+}
+
+#new-arrival-product-next{
+/*  background: red; */
+  width: auto;
+/*   margin-left: 20px; */
+}
+  #new-arrival-product-next button{
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    margin-top: 1px;
+    height: 400px;
+    border-radius: 0px 100px 100px 0px;
+  }
+#new-arrival-product-next span:hover{
+  box-shadow: 0px 0px 1px 0px black;
+}
+#new-arrival-product-next span{
+  background-color: #ff4500;
+  padding: 20px 30px;
+  color: white;
+  border-radius:50px; 
+  font-size: 13px;
+  box-shadow: 0px 0px 1px 0px black;
+}
+
+/* #new-arrival-product-wrapper{
+  width: 100%;
+  background-color: #ff4500;
+} */
+.product-discount-wrapper{
+  position: absolute;
+  z-index: 1;
+  width: 60px;
+  border-radius: 0px 10px 10px 0px;
+  padding: 5px 5px 5px 5px;
+  display: flex;
+  margin-top: 20px;
+  box-shadow: 0px 0px 1px 0px black;
+  cursor: pointer;
+}
+.product-discount-wrapper:hover{
+  transition:400ms ;
+  width: 70px;
+}
+
+.product-discount-wrapper >span{
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  font-size: 10px;
+}
+
+.product-discount-wrapper-mini{
+  position: absolute;
+  z-index: 1;
+  width: 40px;
+  border-radius: 0px 10px 10px 0px;
+  padding: 5px 5px 5px 5px;
+  display: flex;
+  /* margin-top: 10px; */
+  box-shadow: 0px 0px .5px 0px black;
+  cursor: pointer;
+}
+.product-discount-wrapper-mini:hover{
+  transition:400ms ;
+  width: 50px;
+}
+
+.product-discount-wrapper-mini >span{
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  font-size: 7px;
+}
+
+.d-none{
+  display: none;
+}
+.d-block{
+  display: block;
+}
+
+.notification{
+  color:red;
+  font-weight: bold;
+  text-shadow: 0px 0px 1px black;
+  font-size: 10px;
+  margin-left: 5px;
+
+}

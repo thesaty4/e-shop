@@ -1,0 +1,17 @@
+python3
+pip3
+pillow
+django-countries
+django-country-dialcode
+django-jazzmin
+django-widget-tweaks
+verify_email
+validate_email
+pandas
+numpy
+requests
+socket
+pip install pandas
+pip install numpy
+pip install -U scikit-learn
+

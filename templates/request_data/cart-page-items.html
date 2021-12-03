@@ -1,0 +1,55 @@
+
+{%load filter_tags%}
+<!--====== Row ======-->
+<tr class='cart-id-{{product.id}}'>
+    <td>
+        <div class="table-p__box">
+            <div class="table-p__img-wrap">
+                <img class="u-img-fluid" src="{{MEDIA_URL}}{{product.image}}" alt=""></div>
+            <div class="table-p__info">
+                <span class="table-p__name">
+                    <a href="/productDetails/{{product.id}}">{{product.title}}</a></span>
+                <span class="table-p__category">
+                    <a href="shop-side-version-2.html">{{product.category|lower|capfirst}}</a></span>
+                <ul class="table-p__variant-list">
+                    <li>
+                        <span>Discount: {{product.discount_percentage}}%</span></li>
+                    <li>
+                        <span>
+                            {%if product.available_product == 0 %}
+                              <span class="pd-detail__left">Out of stock</span>
+                            {%elif product.available_product > 0 and product.available_product <= 20 %}
+                              <span class="pd-detail__left">Only {{product.available_product}} left</span>
+                            {%else%}
+                              <span class="pd-detail__stock">{{product.available_product}} in stock</span>
+                            {%endif%}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </td>
+    <td>
+        <span class="table-p__price"><i class='fas fa-rupee-sign'></i> <span  id='cart-product-total-price-{{product.id}}'>{{product.price|mul:quantity|to_comma}}</span></span></td>
+    <td>
+        <div class="table-p__input-counter-wrap">
+            <!--====== Input Counter ======-->
+            <div class="input-counter">
+                <span class="input-counter__minus fas fa-minus" onclick="value_minus('{{site_info_data.shop_name}}','one','{{product.id}}','{{product.price}}')"></span>
+                <input class="input-counter__text input-counter--text-primary-style" id='product_quantity-{{product.id}}' type="text" value="{{quantity}}" data-min="1" data-max="1000">
+                <span class="input-counter__plus fas fa-plus" onclick="value_plus('{{site_info_data.shop_name}}','one','{{product.id}}','{{product.price}}')"></span></div>
+            <!--====== End - Input Counter ======-->
+        </div>
+    </td>
+    <td>
+        <div class="pd-detail__form">
+            <a class="btn btn--e-transparent-brand-b-2" href="/checkout/{{product.id}}/{{quantity}}">CHECKOUT</a>
+        </div>
+    </td>
+    <td>
+        <div class="table-p__del-wrap">
+            <a class="far fa-trash-alt table-p__delete-link" onclick="remove_cart_item('{{site_info_data.shop_name}}','{{product.id}}')"></a>
+        </div>
+    </td>
+</tr>
+<!--====== End - Row ======-->

@@ -1,0 +1,24 @@
+{%load filter_tags%}
+<div style="background-color: rgb(228, 228, 228);">
+    <div style="margin: 20px; background-color: #fff;">
+
+Hi {{ checkout.customer_user.first_name|capfirst }},<br>
+Your order with order id: <strong>{{checkout.order_id}}</strong> has been placed successfully.<br>
+Your order consists of - <br>
+Product:<b>{{checkout.product.title}}</b> <br> Quantity:{{checkout.quantity}} <br>MRP:{{checkout.product.m_r_p|to_comma}}<br>
+Price:{{checkout.product.price|to_comma}} <br>Tax:{{checkout.product.tax}} <br>
+Shipping Charge:{{checkout.product.shipping_charge}} <br>Discount:{{checkout.product.discount}}% <br><br>
+
+Total:{{checkout.product.price|add:checkout.product.tax|mul:checkout.quantity|add:checkout.product.shipping_charge|to_comma}}<br><br>
+
+Order will reach to you in 5-7 days.<br>
+
+We have attached the invoice for your order with this mail.<br>
+
+Thanks for trusting us and using our services!<br>
+
+Sincerely,<br>
+{{shop.shop_name|upper}} Team
+
+    </div>
+</div>

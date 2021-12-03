@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated and product_id%}
+{%load  widget_tweaks%}
+<body>
+    <script>
+        window.addEventListener("load", myInit, true); function myInit(){
+            sellMoreProduct();
+            set_logged_username_id('{{user.id}}',"{{user.username}}");
+        };
+    </script>
+        <!-- Start : Application Data  -->
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+            {%with section1 as sec%} {%include 'sell-section-base.html'%} {%endwith%}
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+                                <!-- Dashboard Feature -->
+                                {% with bar as var %} {% include 'sell-base.html' %} {% endwith %}
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+                            
+                            <div class="col-lg-9 col-md-12">
+                                <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                    <div class="dash__pad-2">
+                                        <h1 class="dash__h1 u-s-m-b-14">PRODUCT IMAGES</h1>
+                                        <span class="dash__text u-s-m-b-30">Note : Add images, Recommended Resolution 1600x1600..</span>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <form action="/selling_product/add-product-img/{{product_id}}" method="POST" enctype="multipart/form-data" id="product-images" class="dash-edit-p">
+                                                    {%csrf_token%}
+                                                    <input type="number" name='product' value="{{product_id}}" hidden=''>
+                                                    {%render_field form.img_path class='error blink_me'%}
+                                                    {{form.x}}
+                                                    {{form.y}}
+                                                    {{form.width}}
+                                                    {{form.height}}
+                                                </form>
+                                            </div>
+                                            <div><span class="response-message error">MORE IMAGE SELECT FROM HERE...</span></div>
+                                            <div class="col-lg-12" style="display: flex; flex-direction:row; padding:20px; position:relative;">
+                                                {%if images%}
+                                                    {%for img in images%}
+                                                    <div style="padding: 5px;"><img src="{{MEDIA_URL}}{{img.img_path}}" alt="" width="200px"></div>
+                                                    {%endfor%}
+                                                {%else%}
+                                                
+                                                <div style="padding: 5px;" class='error blink_me'> Please add image, You can add multiple images, one by one.</div>
+                                                <!-- <div style="padding: 5px;"><img src="{%static 'images/product/product-d-1.jpg'%}" alt="" width="200px"></div> -->
+                                                {%endif%}
+                                            </div>
+                                            <div class="col-lg-12 dash-edit-p">
+                                                {%if images%}
+                                                <a href="/selling_product/selledProduct/"><button class="btn btn--e-brand-b-2" style="width: 100%;">Done</button></a>
+                                                {%else%}
+                                                    <button class="btn btn--e-brand-b-2" style="width: 100%;">Please Add Image</button>
+                                                {%endif%}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+    <!-- End : Application Data  -->
+
+    {%include 'imageCropperModal.html'%}
+
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

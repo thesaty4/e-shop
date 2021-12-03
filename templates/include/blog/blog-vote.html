@@ -1,0 +1,52 @@
+{% load filter_tags %}
+{% if user.is_authenticated %}
+<div class="blog-voting-wrapper d-flex flex-row" style="font-size: x-15px;">
+    <div class="upvote-wrapper"  title="Like">
+        <label for="upvote-checkbox-{{blog_item.id}}"><i id="upvote-icon-{{blog_item.id}}" onclick="blog_voting('{{blog_item.id}}','up-vote')" {% if blog_item.id|concat_limit:user.id|get_blog_vote:'upvote' %} class='fas fa-arrow-alt-circle-up' style="color: rgb(38, 110, 243);;" {%else%} class='far fa-arrow-alt-circle-up' {% endif %}></i></label>
+        <span id="blog-upvote-{{blog_item.id}}" style="font-size: 10px;">{{blog_item.id|get_blog_total_vote:'upvote'|object_count}}</span>
+        <div id="upvote-checkbox-wrapper-{{blog_item.id}}">
+            <input type="checkbox" id="upvote-checkbox-{{blog_item.id}}" name="upvote-of-{{blog_item.id}}" hidden>
+        </div>
+    </div>
+    <div class="downvote-wrapper" style="margin-left: 7px;"  title="Dislike">
+        <label for="downvote-checkbox-{{blog_item.id}}"><i id="downvote-icon-{{blog_item.id}}" onclick="blog_voting('{{blog_item.id}}','down-vote')" {% if blog_item.id|concat_limit:user.id|get_blog_vote:'downvote' %} class='fas fa-arrow-alt-circle-down' style="color: rgb(38, 110, 243);;" {%else%} class='far fa-arrow-alt-circle-down' {% endif %}></i></label>
+        <span id="blog-downvote-{{blog_item.id}}" style="font-size: 10px;">{{blog_item.id|get_blog_total_vote:'downvote'|object_count}}</span>
+        <div id="downvote-checkbox-wrapper-{{blog_item.id}}">
+            <input type="checkbox" id="downvote-checkbox-{{blog_item.id}}" name="downvote-of-{{blog_item.id}}" hidden>
+        </div>
+    </div>
+
+    <div class="comment-wrapper" style="margin-left: 7px;">
+        <a title="Comment" href="/blogs/blogDetails/{%if blog%}{{blog.id}}{%else%}{{blog_item.id}}{%endif%}#comment_form" style="color: rgba(31, 28, 28, 0.678);">
+            <span class="far fa-comments u-s-m-r-4" ><span style="font-size: 10px;"> &nbsp;{{blog_item.id|get_blog_comments|object_count}}</span></span>
+        </a>
+    </div>
+
+    <div class="comment-wrapper" style="margin-left: 7px;">
+        <a onclick="share_my_blog('{{site_info_data.site_url_domain}}','{{blog_item.id}}')" title="Share" style="color:rgba(31, 28, 28, 0.678);"><i class="fas fa-paper-plane u-s-m-r-4"></i>
+        </a>
+    </div>
+</div>
+{%else%}
+<div class="blog-voting-wrapper d-flex flex-row" style="font-size: x-15px;">
+    <a href="/accounts/login/" class="upvote-wrapper" style="color:#676565;"  title="Like">
+        <label for="upvote-icon-{{blog_item.id}}"><i id="upvote-icon-{{blog_item.id}}" class='far fa-arrow-alt-circle-up'></i></label>
+        <span id="blog-upvote-{{blog_item.id}}" style="font-size: 10px;">{{blog_item.id|get_blog_total_vote:'upvote'|object_count}}</span>
+    </a>
+    <a href="/accounts/login/" class="downvote-wrapper" style="margin-left: 7px; color:#676565;"  title="Dislike">
+        <label for="downvote-icon-{{blog_item.id}}"><i id="downvote-icon-{{blog_item.id}}" class='far fa-arrow-alt-circle-down'></i></label>
+        <span id="blog-downvote-{{blog_item.id}}" style="font-size: 10px;">{{blog_item.id|get_blog_total_vote:'downvote'|object_count}}</span>
+    </a>
+
+    <div class="comment-wrapper" style="margin-left: 7px;">
+        <a title="Comment" href="/blogs/blogDetails/{%if blog%}{{blog.id}}{%else%}{{blog_item.id}}{%endif%}#comment_form" style="color: rgba(31, 28, 28, 0.678);">
+            <span class="far fa-comments u-s-m-r-4" ><span style="font-size: 10px;"> &nbsp;{{blog_item.id|get_blog_comments|object_count}}</span></span>
+        </a>
+    </div>
+
+    <div class="comment-wrapper" style="margin-left: 7px;">
+        <a onclick="share_my_blog('{{site_info_data.site_url_domain}}','{{blog_item.id}}')" title="Share" style="color:rgba(31, 28, 28, 0.678);"><i class="fas fa-paper-plane u-s-m-r-4"></i>
+        </a>
+    </div>
+</div>
+{% endif %}

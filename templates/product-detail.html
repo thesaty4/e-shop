@@ -1,0 +1,462 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%load filter_tags%}
+<body>
+    <script>
+        window.addEventListener('load',myInit,true);function myInit(){
+            auto_fill_rating_star('{%for review in product.id|get_review_by_user:user.id%}{{review.review_rating}}{%endfor%}')
+            add_host_id('{%get_host_ip%}','{{product.id}}','{{user.id}}')
+        }
+    </script>
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-t-90">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5">
+
+                        <!--====== Product Breadcrumb ======-->
+                        <div class="pd-breadcrumb u-s-m-b-30">
+                            <ul class="pd-breadcrumb__list">
+                                <li class="has-separator">
+
+                                    <a href="/">Home</a></li>
+                                <li class="has-separator">
+
+                                    <a href="/items-query/?csrfmiddlewaretoken=0MNoVc7IcGcohTgo5G8cQeBpt3A36uEKjZ0hNiOVlus9DNsBs1qDPuudRvWdrq79&query={{product.category|lower}}">{{product.category|lower|capfirst}}</a></li>
+                                <li class="has-separator">
+
+                                    <a href="/items-query/?csrfmiddlewaretoken=0MNoVc7IcGcohTgo5G8cQeBpt3A36uEKjZ0hNiOVlus9DNsBs1qDPuudRvWdrq79&query={{product.subcategory|lower}}">{{product.subcategory|lower|capfirst}}</a></li>
+                                <li class="is-marked">
+
+                                    <a href="/items-query/?csrfmiddlewaretoken=0MNoVc7IcGcohTgo5G8cQeBpt3A36uEKjZ0hNiOVlus9DNsBs1qDPuudRvWdrq79&query={{product.title}}">{{product.title}}</a></li>
+                            </ul>
+                        </div>
+                        <!--====== End - Product Breadcrumb ======-->
+
+
+                        <!--====== Product Detail Zoom ======-->
+                        <div class="pd u-s-m-b-30">
+                            <div class="slider-fouc pd-wrap">
+                                <div id="pd-o-initiate">
+                                    {%for images in product_images%}
+                                        <div class="pd-o-img-wrap" data-src="{{MEDIA_URL}}{{images.img_path}}">
+                                            <img class="u-img-fluid" src="{{MEDIA_URL}}{{images.img_path}}" data-zoom-image="{{MEDIA_URL}}{{images.img_path}}" alt="">
+                                        </div>
+                                    {%endfor%}
+                                </div>
+
+                                <span class="pd-text">Click for larger zoom</span>
+                            </div>
+                            <div class="u-s-m-t-15">
+                                <div class="slider-fouc">
+                                    <div id="pd-o-thumbnail">
+                                        {%for images in product_images%}
+                                            <div>
+                                                <img class="u-img-fluid" src="{{MEDIA_URL}}{{images.img_path}}" alt="">
+                                            </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--====== End - Product Detail Zoom ======-->
+                    </div>
+                    <div class="col-lg-7">
+
+                        <!--====== Product Right Side Details ======-->
+                        <div class="pd-detail">
+                            <div>
+
+                                <span class="pd-detail__name">{{product.title}}</span></div>
+                            <div>
+                                <div class="pd-detail__inline">
+
+                                    <span class="pd-detail__price"><i class="fas fa-rupee-sign"></i>{{product.price|to_comma}}</span>
+
+                                    <span class="pd-detail__discount">({{product.discount_percentage}}% OFF)</span><del class="pd-detail__del"><i class="fas fa-rupee-sign"></i>{{product.m_r_p|to_comma}}</del></div>
+                            </div>
+                            <div class="u-s-m-b-15">
+                                {% include "include/rating-management.html" %}
+                                    <span class="pd-detail__review u-s-m-l-4">
+
+                                            <a data-click-scroll="#view-review">({{product.id|product_rating}}) Reviews</a></span></div>
+                            </div>
+                            <div class="u-s-m-b-15">
+                                <div class="pd-detail__inline">
+                                    <!-- SHOWING AVAILABLE STOCK -->
+                                    {% include "include/stock-management.html" %}
+                                </div>
+                            </div>
+                            <div class="u-s-m-b-15">
+
+                                <span class="pd-detail__preview-desc">{{product.discription}}</span></div>
+                            <div class="u-s-m-b-15">
+
+                                <div class="pd-detail__inline">
+
+                                    <label for="wishlist-checkbox-{{product.id}}">
+                                        <span class='pd-detail__click-wrap'>
+                                            {%if user.id|filter_wishlist:product.id%}
+                                                <input type="checkbox" id="wishlist-checkbox-{{product.id}}" hidden>
+                                                <a data-tooltip="tooltip" data-placement="top" title="Add to Wishlist" onclick="wishlist_check__action('{{user.id}}','{{product.id}}')" id='wishlist-enable__disable-{{product.id}}' ><i class="far fa-heart"></i></a><a> &nbsp;Add to Wishlist&nbsp;</a><span class="pd-detail__click-count">({{product.id|total_product_wishlist}})</span>
+                                            {%else%}
+                                                <input type="checkbox" id="wishlist-checkbox-{{product.id}}" hidden checked>
+                                                <a onclick="wishlist_check__action('{{user.id}}','{{product.id}}')" id='wishlist-enable__disable-{{product.id}}' ><i class="fas fa-heart"></i></a> <a> &nbsp;Remove from wishlist&nbsp;</a><span class="pd-detail__click-count">({{product.id|total_product_wishlist}})</span>
+                                            {%endif%}
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="u-s-m-b-15">
+                                <div class="pd-detail__inline">
+                                    
+                                    <label for="product-subscribe-checkbox-{{product.id}}">
+                                        <span class='pd-detail__click-wrap'>
+                                            {%if user.id|filter_subscriber:product.id%}
+                                                <input type="checkbox" id="product-subscribe-checkbox-{{product.id}}" hidden>
+                                                <a title="Email me When the price drops" onclick="product_subscribe__action('{{user.id}}','{{product.id}}')" id='product-subscribe-enable__disable-{{product.id}}' ><i class="far fa-envelope"></i></a>
+                                                <a>&nbsp;Email me When the price drops&nbsp;</a><span class="pd-detail__click-count">({{product.id|total_product_subscriber}})</span>    
+                                            {%else%}
+                                                <input type="checkbox" id="product-subscribe-checkbox-{{product.id}}" hidden checked>
+                                                <a title="Unsubscribe this product" onclick="product_subscribe__action('{{user.id}}','{{product.id}}')" id='product-subscribe-enable__disable-{{product.id}}' ><i class="fas fa-envelope"></i></a>
+                                                <a>&nbsp;Unsubscribe this product&nbsp;</a><span class="pd-detail__click-count">({{product.id|total_product_subscriber}})</span>                   
+                                            {%endif%}
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="u-s-m-b-15">
+                                <ul class="pd-social-list">
+                                    <li>
+
+                                        <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li>
+
+                                        <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li>
+
+                                        <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
+                                    <li>
+
+                                        <a class="s-wa--color-hover" href="#"><i class="fab fa-whatsapp"></i></a></li>
+                                    <li>
+
+                                        <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                </ul>
+                            </div>
+
+                            {% comment %} <div class="u-s-m-b-15 " style="margin-bottom:30px;">
+                                <form class='pd-detail__form'>
+                                    <a class="btn btn--e-transparent-brand-b-2" href="/checkout/{{product.id}}">Checkout</a>
+                                </form>
+                            </div> {% endcomment %}
+                            <div class="u-s-m-b-15">
+                                {% include "include/products-add-in-cart.html" %}
+                            </div>
+                            
+                            <div class="u-s-m-b-15">
+
+                                <span class="pd-detail__label u-s-m-b-8">Product Policy:</span>
+                                <!-- PRODUCT POLICY STORED IN INCLUDE FOLDER -->
+                                {% include "include/product-policy.html" %}
+
+                            </div>
+                        </div>
+                        <!--====== End - Product Right Side Details ======-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--====== Product Detail Tab ======-->
+        <div class="u-s-p-y-90">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="pd-tab">
+                            <div class="u-s-m-b-30">
+                                <ul class="nav pd-tab__list">
+                                    <li class="nav-item">
+
+                                        <a class="nav-link active" data-toggle="tab" href="#pd-desc">DESCRIPTION</a></li>
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" data-toggle="tab" href="#pd-tag">TAGS</a></li>
+                                    <li class="nav-item">
+
+                                        <a class="nav-link" id="view-review" data-toggle="tab" href="#pd-rev">REVIEWS
+
+                                                <span>({{product.id|filter_review|object_count}})</span></a></li>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+
+                                <!--====== Tab 1 ======-->
+                                <div class="tab-pane fade show active" id="pd-desc">
+                                    <div class="pd-tab__desc">
+                                        <div class="u-s-m-b-15">
+                                            <p>{{product.discription}}</p>
+                                        </div>
+                                        <div class="u-s-m-b-30"><iframe src="{{product.video_url}}" allowfullscreen></iframe></div>
+                                        <div class="u-s-m-b-30">
+                                            <ul>
+                                                {%for policy in product.product_policy|split_data:"."%}
+                                                <li>
+                                                    <i class="fas fa-check u-s-m-r-8"></i><span>{{policy}}</span>.
+                                                </li>
+                                                {%endfor%}
+                                            </ul>
+                                        </div>
+                                        <div class="u-s-m-b-15">
+                                            <h4>PRODUCT INFORMATION</h4>
+                                        </div>
+                                        <div class="u-s-m-b-15">
+                                            <div class="pd-table gl-scroll">
+                                                <table>
+                                                    <tbody>
+                                                        {%for info in product.extra_info|split_data:","%}
+                                                        <tr>
+                                                            {%for meta_data in info|split_data:"-"%}
+                                                            <td>{{meta_data}}</td>
+                                                            {%endfor%}
+                                                        </tr>
+                                                        {%endfor%}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--====== End - Tab 1 ======-->
+
+
+                                <!--====== Tab 2 ======-->
+                                <div class="tab-pane" id="pd-tag">
+                                    <div class="pd-tab__tag">
+                                        {% if product.customer_user.id == user.id %}
+                                            <h2 class="u-s-m-b-15">ADD YOUR TAGS</h2>
+                                            <div class="u-s-m-b-15">
+                                                <form>
+
+                                                    <input class="input-text input-text--primary-style" id='add-new-tag' type="text">
+
+                                                    <button type="button" class="btn btn--e-brand-b-2" onclick="add_new_tag('{{product.id}}','{{user.id}}')">ADD TAGS</button>
+                                                </form>
+                                            </div>
+
+                                            <span class="gl-text">Use comman (,) to separate tags.</span>
+                                            <!-- SET MY TAGS INTO DATABASE -->
+                                        {% endif %}
+                                        <!-- TAGS SHOWING CONTAINER -->
+                                        <div class="row tags-container" id='tag-wrapper'>
+                                            {% for tag in tags %}
+                                                {% if tag.product.id == product.id %}
+                                                    <div class="tags input-counter" id='id-tag-{{tag.id}}'>
+                                                        <input type="text" class="input-counter__text input-counter--text-primary-style" value="{{tag.tag|lower}}" {% if product.customer_user.id == user.id %} style="padding-left: 20px; padding-right: 33px" {%else%} style='padding-left: 15px;padding-right:15px;' {%endif%}>
+                                                        {% if product.customer_user.id == user.id %}
+                                                        <span class="input-counter__plus fas fa-trash" style="color: red;" onclick="remove_my_tag('{{tag.id}}','{{tag.tag}}','{{product.id}}','{{user.id}}')"></span>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--====s== End - Tab 2 ======-->
+
+
+                                <!--====== Tab 3 ======-->
+                                <div class="tab-pane" id="pd-rev">
+                                    <div class="pd-tab__rev">
+                                        <div class="u-s-m-b-30">
+                                            <div class="pd-tab__rev-score">
+                                                <div class="u-s-m-b-8">
+                                                    <h2>{{product.id|filter_review|object_count}} Reviews - {{product.id|rating_avg}} (Overall)</h2>
+                                                </div>
+                                                <div class="gl-rating-style-2 u-s-m-b-8">
+                                                    {% if product.id|rating == 0 %}
+                                                        <i class="far fa-star"></i><i
+                                                        class="far fa-star"></i><i class="far fa-star"></i><i
+                                                        class="far fa-star"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 0 and product.id|rating <= 0.5 %}
+                                                            <i class="fas fa-star-half-alt"></i><i
+                                                            class="far fa-star"></i><i class="far fa-star"></i><i
+                                                            class="far fa-star"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 0.5 and product.id|rating <= 1 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="far fa-star"></i><i class="far fa-star"></i><i
+                                                            class="far fa-star"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 1 and product.id|rating <= 1.5 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i
+                                                            class="far fa-star"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 1.5 and product.id|rating <= 2 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="far fa-star"></i><i
+                                                            class="far fa-star"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 2 and product.id|rating <= 2.5 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i
+                                                            class="far fa-star"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 2.5 and product.id|rating <= 3 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                                            class="far fa-star"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 3 and product.id|rating <= 3.5 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                                            class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 3.5 and product.id|rating <= 4 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="far fa-star"></i>
+                                                        {% elif product.id|rating > 4 and product.id|rating <= 4.5 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                                        {% elif product.id|rating > 4.5 and product.id|rating <= 5 %}
+                                                            <i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                                                        {%endif%}
+
+                                                </div>
+                                                <div class="u-s-m-b-8">
+                                                    <h4>We want to hear from you!</h4>
+                                                </div>
+
+                                                <span class="gl-text">Tell us what you think about this item</span>
+                                            </div>
+                                        </div>
+                                        <div class="u-s-m-b-30">
+                                            <form class="pd-tab__rev-f1">
+                                                <div class="rev-f1__group">
+                                                    <div class="u-s-m-b-15">
+                                                        <h2>{{product.id|filter_review|object_count}} Review(s) for {{product.title}}</h2>
+                                                    </div>
+                                                    <div class="u-s-m-b-15">
+                                                        <label for="sort-review">
+                                                            <select class="select-box select-box--primary-style" name="review-sort-by" id="sort-review">
+                                                                <option onclick="sort_review('-review_rating','{{user.id}}','{{product.id}}')" value="best-worst" selected>Sort by: Best Rating</option>
+                                                                <option onclick="sort_review('review_rating','{{user.id}}','{{product.id}}')" value="worst-best">Sort by: Worst Rating</option>
+                                                            </select>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="rev-f1__review">
+                                                    {% for review  in product.id|get_review_by_user:user.id %}
+                                                        {% include "include/review-edit.html" %}
+                                                    {% endfor %}
+
+                                                    <div id="review-data-container">
+                                                    <!-- <div id="review-data-container" style="height: 40rem; overflow-y:scroll;"> -->
+                                                    <!-- REVIEW DATA FETCHED FROM INCLUDE FOLDER-->
+                                                        {% include "include/review-data.html" %}
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <input type="text" id="total-review-value" value="{{product.id|filter_review|object_count}}" hidden>
+                                            {% if product.id|filter_review|object_count > 5 %}
+                                            <div id="load-more-review" class="load-more-review col col-lg-7"> 
+                                                <button id="load-more-review-btn" type="button" onclick="fetch_more_review('{{product.id}}','{{user.id}}')" class="btn btn--e-brand-shadow" style="width: 100%; padding:10px;">Read More</button>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        {% if user.is_authenticated == False or product.id|check_review:user.id == 0 %}                                        
+                                            <div class="u-s-m-b-30">
+                                                <form class="pd-tab__rev-f2" method="POST" action="/add-new-review/" onsubmit="return review_field_validate()">
+                                                    {%csrf_token%}
+                                                    <input type="hidden" name="user-id" value='{{user.id}}' required>
+                                                    <input type="hidden" name="product-id" value='{{product.id}}' required>
+                                                    <h2 class="u-s-m-b-15">Add a Review</h2>
+                                                    <span class="gl-text u-s-m-b-15">Tell us and people about this product, What is your experiance about it.</span>
+                                                    <div class="u-s-m-b-30">
+                                                        <div class="rev-f2__table-wrap gl-scroll">
+                                                            <table class="rev-f2__table">
+                                                                <thead>
+                                                                    <div class="product-o__rating gl-rating-style rating-star-container ">
+                                                                        <label for="rating-star-1"><input type="radio" name="rating" value="1" id="rating-star-1" hidden><a id='review-star-1' onclick="fill_rating_star('review-star-1');"><i class="far fa-star"></i></a></label>
+                                                                        <label for="rating-star-2"><input type="radio" name="rating" value="2" id="rating-star-2" hidden><a id='review-star-2' onclick="fill_rating_star('review-star-2');"><i class="far fa-star"></i></a></label>
+                                                                        <label for="rating-star-3"><input type="radio" name="rating" value="3" id="rating-star-3" hidden><a id='review-star-3' onclick="fill_rating_star('review-star-3');"><i class="far fa-star"></i></a></label>
+                                                                        <label for="rating-star-4"><input type="radio" name="rating" value="4" id="rating-star-4" hidden><a id='review-star-4' onclick="fill_rating_star('review-star-4');"><i class="far fa-star"></i></a></label>
+                                                                        <label for="rating-star-5"><input type="radio" name="rating" value="5" id="rating-star-5" hidden><a id='review-star-5' onclick="fill_rating_star('review-star-5');"><i class="far fa-star"></i></a></label>
+                                                                    </div>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <div class='response-message' id="rating-response"></div>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class='review-comment'>
+                                                        <div class="rev-f2__group">
+                                                            <div class="u-s-m-b-15">
+        
+                                                                <label class="gl-label" for="reviewer-text">YOUR REVIEW *</label>
+                                                                <textarea class="text-area text-area--primary-style" name="review-text" id="reviewer-text" required></textarea>
+                                                            </div>
+                                                            <div class='response-message' id="rating-text-response"></div>
+                                                        </div>
+                                                        <div>
+                                                            {% if user.is_authenticated %}
+                                                                <button class="btn btn--e-brand-shadow" type="submit">SUBMIT</button>
+                                                            {%else%}
+                                                                <a class="btn btn--e-brand-shadow" type="button" href="/accounts/login/">SUBMIT</a>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <!--====== End - Tab 3 ======-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Product Detail Tab ======-->
+        <div class="u-s-p-b-90">
+
+            <!--====== Section Intro ======-->
+            <div class="section__intro u-s-m-b-46">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section__text-wrap">
+                                <h1 class="section__heading u-c-secondary u-s-m-b-12">CUSTOMER ALSO VIEWED</h1>
+
+                                <span class="section__span u-c-grey">PRODUCTS THAT CUSTOMER VIEWED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Intro ======-->
+
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="slider-fouc">
+                        <div class="owl-carousel product-slider" data-item="4">
+                            {% comment %}{% customer_also_viewed user.id site_info_data %}{% endcomment %}
+                            {% for product in products %}
+                              {% include "include/new-arrival-product.html" %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 1 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+</body>
+{%endblock%}

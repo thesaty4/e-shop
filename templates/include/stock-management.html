@@ -1,0 +1,8 @@
+{% load filter_tags %}
+{%if product.available_product == 0%}
+<span class="pd-detail__left">Out of stock</span>
+{%elif product.available_product <= 20%}
+<span class="pd-detail__left">Only {{product.available_product}} left</span>
+{%elif product.available_product > 20%}
+<span class="pd-detail__stock">{{product.available_product}} in stock</span>
+{%endif%}

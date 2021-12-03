@@ -1,0 +1,61 @@
+{% load filter_tags %}
+{%for review in product.id|filter_review|slice:5 %}
+    {% if user.id != review.customer_user.id %}
+    <div class="review-o u-s-m-b-15" id='id-reviews-wrapper-{{review.id}}'>
+        <div class="review-o__info u-s-m-b-8 d-flex justify-between">
+            <div>
+                <span class="review-o__name">{{review.customer_user.first_name|lower|capfirst}} {{review.customer_user.last_name|lower|capfirst}}</span>
+                <span class="review-o__date">{{review.review_date_time}}</span>
+            </div>
+            {% comment %}
+                {% if user.id == review.customer_user.id %}
+                    <div>
+                        <a style="padding-right: 10px;" onclick="action_on_review('{{review.id}}','{{user.id}}','{{product.id}}','edit')"><i class="fas fa-edit"></i></a>
+                        <a style="padding-right: 10px;" onclick="action_on_review('{{review.id}}','{{user.id}}','{{product.id}}','delete')"><i class="fas fa-trash-alt" style="color: red;"></i></a>
+                    </div>
+                {% endif %}
+            {% endcomment %}
+        </div>
+        <div  id='id-review-data-wrapper-{{review.id}}'>
+        <div class="review-o__rating gl-rating-style u-s-m-b-8">
+            {% if review.review_rating == 0 %}
+                <i class="far fa-star"></i><i
+                class="far fa-star"></i><i class="far fa-star"></i><i
+                class="far fa-star"></i><i class="far fa-star"></i>
+            {% elif review.review_rating == 1%}
+                <i class="fas fa-star"></i><i
+                class="far fa-star"></i><i class="far fa-star"></i><i
+                class="far fa-star"></i><i class="far fa-star"></i>
+            {% elif review.review_rating == 2%}
+                <i class="fas fa-star"></i><i
+                class="fas fa-star"></i><i class="far fa-star"></i><i
+                class="far fa-star"></i><i class="far fa-star"></i>
+            {% elif review.review_rating == 3%}
+                <i class="fas fa-star"></i><i
+                class="fas fa-star"></i><i class="fas fa-star"></i><i
+                class="far fa-star"></i><i class="far fa-star"></i>
+            {% elif review.review_rating == 4%}
+                <i class="fas fa-star"></i><i
+                class="fas fa-star"></i><i class="fas fa-star"></i><i
+                class="fas fa-star"></i><i class="far fa-star"></i>
+            {% elif review.review_rating == 5%}
+                <i class="fas fa-star"></i><i
+                class="fas fa-star"></i><i class="fas fa-star"></i><i
+                class="fas fa-star"></i><i class="fas fa-star"></i>
+            {%endif%}
+            <span>({{review.review_rating}})</span>
+            </div>
+            <p class="review-o__text">
+                <span>
+                    {{review.review_comment|lower|capfirst|slice:75}} 
+                </span>
+                <span id="review-comment-wrapper-data-{{review.id}}" class="collapse">
+                    {{review.review_comment|lower|capfirst|slice:"75:"}} 
+                </span>
+                <a data-toggle="collapse" data-target="#review-comment-wrapper-data-{{review.id}}" style="cursor: pointer;"><strong style="color: #ff4500;">Read More</strong></a></p>
+                <!-- VOTING STORED IN INCLUDE FOLDER -->
+                {% include "include/review-voting.html" %}
+        </div>
+    </div>
+    {% endif %}
+{%endfor%}  

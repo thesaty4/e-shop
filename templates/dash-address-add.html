@@ -1,0 +1,127 @@
+
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated%}
+{%load widget_tweaks%}
+<body>
+    <script>
+        window.addEventListener("load",myInit,true);function myInit(){
+            addressBook();
+            set_logged_user("{{user.id}}")
+        }
+    </script>
+        <!--====== App Content ======-->
+        <div class="app-content">
+
+            <!--====== Section 1 ======-->
+            <div class="u-s-p-y-60">
+                <!--====== Section Content ======-->
+                {%with section1 as sec%}
+                {%include 'sectionBase.html'%}
+                {%endwith%}
+            </div>
+            <!--====== End - Section 1 ======-->
+
+
+            <!--====== Section 2 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="dash">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-12">
+
+                                    <!--====== Dashboard Features ======-->
+                                    {%with bas as var%}
+                                    {%include 'dashBase.html'%}
+                                    {%endwith%}
+                                    <!--====== End - Dashboard Features ======-->
+                                </div>
+                                <div class="col-lg-9 col-md-12">
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                        <div class="dash__pad-2">
+                                            <h1 class="dash__h1 u-s-m-b-14"><i class="fas fa-address-book"></i> Add new Address</h1>
+
+                                            <span class="dash__text u-s-m-b-30">We need an address where we could deliver products.</span>
+                                            <form class="dash-address-manipulation" id="add-new-address">
+                                                {%csrf_token%}
+                                                <div class="gl-inline">
+                                                    <div class="u-s-m-b-30">
+                                                        <label class="gl-label" for="address-fname"><i class="fas fa-book"></i> FIRST NAME *</label>
+                                                        {%render_field address_form.first_name class="input-text input-text--primary-style" placeholder="First Name"%}
+                                                        <div id="fname-response" class="response-message"></div>
+                                                    </div>
+                                                    <div class="u-s-m-b-30">
+
+                                                        <label class="gl-label" for="address-lname"><i class="fas fa-book"></i> LAST NAME </label>
+
+                                                        {%render_field address_form.last_name class="input-text input-text--primary-style" placeholder="Last Name"%}
+                                                        <div id="lname-response" class="response-message"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="gl-inline">
+                                                    <div class="u-s-m-b-30">
+
+                                                        <label class="gl-label" for="address-phone"><i class="fas fa-mobile-alt"></i> PHONE *</label>
+
+                                                        {%render_field address_form.mobile class="input-text input-text--primary-style" placeholder="Mobile"%}
+                                                        <div id="mobile-response" class="response-message">Mobile number should be International format +(00)-303948404</div>
+                                                    </div>
+                                                    <div class="u-s-m-b-30">
+        
+                                                        <!--====== Select Box ======-->
+        
+                                                        <label class="gl-label" for="address-country"><i class="fas fa-map-marked"></i> COUNTRY
+                                                            *</label>
+                                                        {%render_field address_form.country class="select-box select-box--primary-style"%}
+                                                        <div id="country-response" class="response-message"></div>
+                                                        <!--====== End - Select Box ======-->
+                                                    </div>
+                                                </div>
+                                                <div class="gl-inline">
+                                                    <div class="u-s-m-b-30">
+                                                        <label class="gl-label" for="address-state"><i class="fas fa-map-marked"></i> STATE *</label>
+                                                        {%render_field address_form.state class="select-box select-box--primary-style"%}
+                                                        <div id="state-response" class="response-message"></div>
+                                                    </div>
+                                                    <div class="u-s-m-b-30">
+                                                        <label class="gl-label" for="address-pincode"><i class="fas fa-map-marked"></i> ZIP/POSTAL CODE *</label>
+                                                        {%render_field address_form.pin_code class="select-box select-box--primary-style"%}
+                                                        <div id="pincode-response" class="response-message"></div>
+                                                    </div>
+                                                </div>
+                                                
+                                                        
+                                                    <div class="u-s-m-b-30">
+                                                        <label class="gl-label" for="address-street"><i class="fas fa-address-book"></i> FULL ADDRESS
+                                                            *</label>
+                                                            
+                                                        {%render_field address_form.full_address class="input-text input-text--primary-style text-area" placeholder="Write your full Address, Its help to send delevery exact location.."%}
+                                                        <div id="address-response" class="response-message">Write your full Address, Its help to send delevery exact location..</div>
+                                                    </div>
+
+                                                <button class="btn btn--e-brand-b-2" type="submit"><i class="fas fa-plus u-s-m-r-8"></i> Add</button>
+                                                <button class="btn btn--e-brand-b-2" onclick="window.location.href='/dashboard/dashAddressBook/'">Back</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 2 ======-->
+        </div>
+        <!--====== End - App Content ======-->
+
+        <div id="Modal"></div>
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login/"
+</script>
+{%endif%}
+{%endblock%}

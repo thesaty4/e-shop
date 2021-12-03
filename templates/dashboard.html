@@ -1,0 +1,187 @@
+{%extends 'base.html'%} {%load static%} {% static 'images' as baseUrl%} {% block content%}
+{%if user.is_authenticated%}
+{%load filter_tags%}
+<body onload="myAc()">
+    <!-- Start : Application Data  -->
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+            {%with section1 as sec%} {%include 'sectionBase.html'%} {%endwith%}
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+                                <!-- Dashboard Feature -->
+                                {% with bar as var %} {% include 'dashBase.html' %} {% endwith %}
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+                            <div class="col-lg-9 col-md-12">
+                                <div class="dash__box dash__box--shadow
+                                    dash__box--radius dash__box--bg-white
+                                    u-s-m-b-30">
+                                    <div class="dash__pad-2">
+                                        <h1 class="dash__h1 u-s-m-b-14"><i class="fas fa-cogs"></i> Manage My Account</h1>
+
+                                        <span class="dash__text u-s-m-b-30">From
+                                            your My Account Dashboard you have
+                                            the
+                                            ability to view a snapshot of your
+                                            recent account activity and update
+                                            your
+                                            account information. Select a link
+                                            below to view or edit information.</span>
+                                        <div class="row">
+                                            <div class="col-lg-4 u-s-m-b-30">
+                                                <div class="dash__box
+                                                    dash__box--bg-grey
+                                                    dash__box--shadow-2
+                                                    u-h-100">
+                                                    <div class="dash__pad-3">
+                                                        <h2 class="dash__h2
+                                                            u-s-m-b-8">PERSONAL PROFILE
+                                                        </h2>
+                                                        <div class="dash__link
+                                                            dash__link--secondary
+                                                            u-s-m-b-8">
+
+                                                            <a href="/dashboard/dashEditProfile/"><i class="fas fa-edit"></i> Edit</a>
+                                                        </div>
+
+                                                        <span class="dash__text">{{user.first_name|capfirst}} {{user.last_name|capfirst}}</span>
+
+                                                        <span class="dash__text">{{user.email}}</span>
+                                                        <span class="dash__text">{{user.dob}}</span>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 u-s-m-b-30">
+                                                <div class="dash__box
+                                                    dash__box--bg-grey
+                                                    dash__box--shadow-2
+                                                    u-h-100">
+                                                    <div class="dash__pad-3">
+                                                        <h2 class="dash__h2
+                                                            u-s-m-b-8">ADDRESS BOOK
+                                                        </h2>
+
+                                                        <span class="dash__text-2
+                                                            u-s-m-b-8">Default
+                                                            Shipping Address</span>
+                                                        
+                                                        <div class="dash__link dash__link--secondary u-s-m-b-8">
+                                                        {%if billing_info%}
+                                                            {%for billing_data in billing_info%}
+                                                                {%if billing_data.user.id == user.id and billing_data.is_shipping_details%}
+                                                                <div class="dash__link dash__link--secondary" style="display:flex;justify-content:space-between;" >
+                                                                    <a href="/dashboard/dashAddressBook/"><i class="fas fa-edit"></i> Edit</a>
+                                                                    <span>|</span>
+                                                                    <a href="/dashboard/dashAddMakeDefault/"><i class="fas fa-recycle"></i> Change</a>
+                                                                </div>
+                                                        </div> <!-- dash link close-->
+                                                                    <span class="dash__text">{{billing_data.full_address|lower}}</span>
+                                                                    <span class="dash__text">{{billing_data.mobile}}</span>
+                                                                {%endif%}
+                                                            {%endfor%}
+                                                        {%else%}
+                                                            <a href="/dashboard/dashAddressAdd/">Add Address</a>
+                                                            </div> <!-- dash link close-->
+                                                            <span class="dash__text">No Address available !</span>
+                                                        {%endif%}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 u-s-m-b-30 ">
+                                                <div class="dash__box dash__box--bg-grey dash__box--shadow-2 u-h-100 ">
+                                                    <div class="dash__pad-3 ">
+                                                        <h2 class="dash__h2 u-s-m-b-8 ">BILLING ADDRESS
+                                                        </h2>
+
+                                                        <span class="dash__text-2 u-s-m-b-8 ">Default
+                                                            Billing Address</span>
+                                                        {%if billing_info%}
+                                                            {%for billing_data in billing_info%}
+                                                                {%if billing_data.user.id == user.id and billing_data.is_billing_details%}
+                                                                    <span class="dash__text">{{billing_data.full_address|lower}}</span>
+                                                                    <span class="dash__text">{{billing_data.mobile}}</span>
+                                                                {%endif%}
+                                                            {%endfor%}
+                                                        {%else%}
+                                                        <span class="dash__text-2">No Address found</span>
+                                                        {%endif%}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+                                    <h2 class="dash__h2 u-s-p-xy-20 "><i class="fas fa-clock"></i> RECENT 10 ORDERS
+                                    </h2>
+                                    <table class="dash__table ">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:left;">Order #</th>
+                                                <th style="text-align:left;">Placed On</th>
+                                                <th style="text-align:left;">Items</th>
+                                                <th style="text-align:left;">Total</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="dash__table-wrap gl-scroll">
+                                        <table class="dash__table">
+                                            <tbody>
+                                                {%for order in user.id|get_my_order|slice:10%}
+                                                    <tr>
+                                                        <td>{{order.id}}</td>
+                                                        <td>{{order.checkout_date_time|date:"d-M-Y"}}</td>
+                                                        <td>
+                                                            <div class="dash__table-img-wrap ">
+                                                                <img class="u-img-fluid " src="{{MEDIA_URL}}{{order.product.image}}" alt=" ">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="dash__table-total ">
+                                                                <span class="fas fa-rupee-sign">{{order.product.price|to_comma}}</span>
+                                                                <div class="dash__link dash__link--brand ">
+                                                                    <a href="/dashboard/dashManageOrder/{{order.order_id}}">MANAGE</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {%endfor%}
+                                                <tr><td></td><td></td><td></td><td style="text-align:center; background-color:red;"><a href='/dashboard/dashMyOrder' style="color:orange;">Load More</a></td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+    <!-- End : Application Data  -->
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>s
+{%endif%}
+{% endblock %}

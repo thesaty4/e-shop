@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated%}
+{%load filter_tags%}
+<body>
+    <script>
+        window.addEventListener('load',init,true);function init(){
+            topSells()
+            load_top_sells_graph('{%for product in products%}{{product}},{%endfor%}','{%for sells in sells%}{{sells}},{%endfor%}')
+        }
+    </script>
+    <!-- Start : Application Data  -->
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+            {%with section1 as sec%} {%include 'sell-section-base.html'%} {%endwith%}
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+            
+                            <div class="col-lg-3 col-md-12">
+                                <!-- Dashboard Feature -->
+                                {% with bar as var %} {% include 'sell-base.html' %} {% endwith %}
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+                            <div class="col-lg-9 col-md-12" id="sells_wrapper">
+                                <div style="margin-left:auto;margin-right:auto;width:400px;"><canvas id="top_sells_graph" width="200" height="200"></canvas> </div>
+                                <br><br>
+                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+                                    <h2 class="dash__h2 u-s-p-xy-20 ">TOP SELL ITEMS</h2>
+                                        <div class="dash__table-wrap gl-scroll ">
+                                        <table class="dash__table ">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID #</th>
+                                                    <th>Product</th>
+                                                    <th>Item</th>
+                                                    <th>Quantity</th>
+                                                    <th>Details</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {%for checkout in checkouts%}
+                                                <tr id="checkout_processing_item_{{checkout.id}}">
+                                                    <td><a style="color:black;" href="/productDetails/{{checkout.id}}">{{checkout.id}}</a></td>
+                                                    <td><a style="color:black;" href="/productDetails/{{checkout.id}}">{{checkout.title}}</a></td>
+                                                    <td><a style="color:black;" href="/productDetails/{{checkout.id}}">
+                                                        <div class="dash__table-img-wrap ">
+                                                            <img class="u-img-fluid "
+                                                                src="{{MEDIA_URL}}{{checkout.image}} " alt=" ">
+                                                        </div>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <div class="dash__table-total ">
+                                                            <span>{{checkout.id|item_qty}}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td><a href="/productDetails/{{checkout.id}}" class='dash__link dash__link--brand fas fa-eye' style="color:blue;"> View</a></td>
+                                                    <td><a href="/selling_product/productEdit/{{checkout.id}}" class='dash__link dash__link--brand fas fa-edit' style="color:blue;"> Edit</a></td>
+                                                </tr>
+                                                {%endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+    <!-- End : Application Data  -->
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

@@ -1,0 +1,219 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated%}
+{%load  widget_tweaks%}
+<body>
+    <script>
+        window.addEventListener("load", myInit, true); function myInit(){
+            sellMoreProduct();
+            set_logged_username_id('{{user.id}}',"{{user.username}}");
+        };
+    </script>
+        <!-- Start : Application Data  -->
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+            {%with section1 as sec%} {%include 'sell-section-base.html'%} {%endwith%}
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+                                <!-- Dashboard Feature -->
+                                {% with bar as var %} {% include 'sell-base.html' %} {% endwith %}
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+                            
+                            <div class="col-lg-9 col-md-12">
+                                <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                    <div class="dash__pad-2">
+                                        <h1 class="dash__h1 u-s-m-b-14">SELL PRODUCT</h1>
+                                        <span class="dash__text u-s-m-b-30">Note : Please fill all data carefully..</span>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <form class="dash-edit-p" action="/selling_product/sellMoreProduct/" method="POST" id='add-product' enctype="multipart/form-data">
+                                                    {%csrf_token%}
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-accessories-name"><i class="fas fa-spa"></i> ACCESSORIES NAME *</label>
+                                                            {%render_field product_form.title class="input-text input-text--primary-style" placeholder="Accessories Name" %}
+                                                            <input type="hidden" name="customer_user" value="{{user.id}}" id='id_customer_user' required>
+                                                            <div class="response-message p-absolute" id="accessories-response"></div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-fname" placeholder="Nikon Camera"> -->
+                                                        </div>
+                                                        
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-color"><i class="fas fa-certificate"></i> COLOR *</label>
+                                                            {%render_field product_form.color_code class="input-text input-text--primary-style" placeholder='Accessories Color Code - #ffff,#0000'%}
+                                                            <div class="response-message p-absolute" id="color-response"></div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Color code #fff000"> -->
+                                                        </div>
+                                                        
+                                                    </div>
+
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-category"><i class="fas fa-passport"></i> CATEGORIES *</label>
+                                                            <!-- DATA FETCH FROM DATABASE -->
+                                                            {%render_field product_form.category class="select-box select-box--primary-style u-w-100"%}
+                                                            <div class="response-message p-absolute" id="category-response"></div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-subcategory"><i class="fas fa-passport"></i> SUB-CATEGORIES *</label>
+                                                            {%render_field product_form.subcategory class="select-box select-box--primary-style u-w-100"%}
+                                                            <div class="response-message p-absolute" id="subcategory-response"></div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="gl-inline">
+                                                        <div class="gl-inline">
+                                                            <div class="u-s-m-b-30">
+                                                                <label class="gl-label" for="new-brand"><i class="fas fa-trophy"></i> BRAND NAME *</label>
+                                                                {%render_field product_form.brand class="select-box select-box--primary-style u-w-100"%}
+                                                                <div class="response-message p-absolute" id="brandname-response"></div>
+                                                                <!-- DATA FETCH FROM DATABASE -->
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="gl-inline">
+                                                            <div class="u-s-m-b-30">
+                                                                <label for="new-offer" class="gl-label"><i class="fas fa-gift"></i> IS OFFER *</label>
+                                                                {%render_field product_form.is_offer class='input-text input-text--primary-style'%}
+                                                                <div class="response-message p-absolute" id="offer-response"></div>
+                                                            </div>
+    
+                                                            <div class="u-s-m-b-30" id="offer_end" id="offer_end">
+                                                                <label for="id-offer_end" class="gl-label" id="offer-end-label"><i class="fas fa-calendar-alt"></i> OFFER EXPIRE DATE</label>
+                                                                {%render_field product_form.offer_end class='input-text input-text--primary-style' placeholder='YYYY/MM/DD' %}
+                                                                <div class="response-message p-absolute" id="offer-expire-response"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-available-product"><i class="fas fa-shopping-bag"></i> NUMBER OF PRODUCT *</label>
+                                                            {%render_field product_form.available_product class="input-text input-text--primary-style" placeholder='Number of product want sold' min=0%}
+                                                            <div class="response-message p-absolute" id="available-response"></div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-shipping-charge"><i class="fas fa-money-bill-alt"></i> SHIPPING CHARGE *</label>
+                                                            {%render_field product_form.shipping_charge class="input-text input-text--primary-style" placeholder='Shipping charge' min=0%}
+                                                            <div class="response-message p-absolute" id="shipping-charge-response"></div>
+                                                            <!-- <label class="gl-label" for="gender">PHOTOS & VIDEO *</label>
+                                                            <input class="input-text input-text--primary-style" type="file" id="reg-lname" accept="image/x-png, image/gif, image/jpeg"  multiple> -->
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="gl-inline">
+                                                            <div class="u-s-m-b-30">
+                                                                <label class="gl-label" for="id_m_r_p"><i class="fas fa-rupee-sign"></i> M.R.P *</label>
+                                                                {%render_field product_form.m_r_p class="input-text input-text--primary-style" placeholder='M.R.P of product' min=0 %}
+                                                                <div class="response-message p-absolute" id="mrp-response"></div>
+                                                            </div>
+                                                            <div class="u-s-m-b-30">
+                                                                <label class="gl-label" for="id_price"><i class="fas fa-rupee-sign"></i> PRICE *</label>
+                                                                {%render_field product_form.price class="input-text input-text--primary-style" placeholder='Price' min=0%}
+                                                                <div class="response-message p-absolute" id="price-response"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="id_tax"><i class="fas fa-plane"></i> TAX % </label>
+                                                            {%render_field product_form.tax class="input-text input-text--primary-style" value=product.tax placeholder='Tax %' %}
+                                                            <div class="response-message p-absolute" id="price-response"></div>
+                                                        </div>
+                                                    </div>
+                                                
+
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-image"><i class="fas fa-images"></i> PUBLIC IMAGE *</label>
+                                                            {%render_field product_form.image class="input-text input-text--primary-style" multiple=''%}
+                                                            {{product_form.x}}
+                                                            {{product_form.y}}
+                                                            {{product_form.width}}
+                                                            {{product_form.height}}
+                                                            <div class="response-message p-absolute" id="image-response">Recomended Resolution - 600x600 </div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Write about your product..."> -->
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-url"><i class="fas fa-link"></i> Embed VIDEO URL</label>
+                                                            {%render_field product_form.video_url class="input-text input-text--primary-style" placeholder='https://youtube.com/c/idepth/Uckld4Ucdsweijng=view'%}
+                                                            <div class="response-message p-absolute" id="embed-response">Write your video URL</div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Write about your product..."> -->
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label for="new-policy" class="gl-label"><i class="fas fa-check-circle"></i> PRODUCT POLICY *</label>
+                                                            {%render_field product_form.product_policy class='input-text input-text--primary-style text-area' rows='0' placeholder="Write your product policy..."%}
+                                                            <div class="response-message p-absolute" id="policy-response">Product policy could be more than one</div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label for="new-tag" class="gl-label"><i class="fas fa-tags"></i> TAGS *</label>
+                                                            {%render_field product_form.tags class='input-text input-text--primary-style text-area' rows='0'  placeholder="Ex- phone, mobile, brand name, electronics, etc" %}
+                                                            <div class="response-message p-absolute" id="tag-response">Tags should be CSV(Comma Seprated Value) Formate</div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-discription"><i class="fas fa-address-book"></i> EXTRA INFORMATION *</label>
+                                                            {%render_field product_form.extra_info class="input-text input-text--primary-style text-area" rows='0' placeholder="COLOR-RED BLUE GREEN, SIZE-LG XL XXL, WEIGHT-10gm, more..." %}
+                                                            <div class="response-message p-absolute" id="extra_info-response">KEY-VALUE1 VALUE2, KEY-VALUE1 VALUE2</div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Write about your product..."> -->
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="new-discription"><i class="fas fa-pen"></i> DISCRIPTION *</label>
+                                                            {%render_field product_form.discription class="input-text input-text--primary-style text-area" rows='0' placeholder="Write about your product..." %}
+                                                            <div class="response-message p-absolute" id="discription-response"></div>
+                                                            <!-- <input class="input-text input-text--primary-style" type="text" id="reg-lname" placeholder="Write about your product..."> -->
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <button class="btn btn--e-brand-b-2" type="submit">SAVE</button>
+                                                    <a class="btn btn--e-brand-b-2" href="/selling_product/selledProduct/">Back</a>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+    <!-- End : Application Data  -->
+
+    {%include 'imageCropperModal.html'%}
+
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

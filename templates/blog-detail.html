@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+{% load filter_tags %}
+<body  id="blog-wrapper">
+    <!--====== App Content ======-->
+    <div class="app-content">
+        {% include "include/blog/blog-post-data.html" %}
+    </div>
+    <!--====== End - App Content ======-->
+</body>
+{%endblock%}

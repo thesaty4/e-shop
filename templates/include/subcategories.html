@@ -1,0 +1,57 @@
+{% load filter_tags %}
+<li class="has-list">
+            
+    <a href="#">{{category.category|lower|capfirst}}</a>
+
+    <span class="category-list__text u-s-m-l-6">({{category.id|subcategory|object_count}})</span>
+    
+    {% if category.id|subcategory|object_count != 0 %}
+        <span class="js-shop-category-span fas fa-plus u-s-m-l-6"></span>
+    {% endif %}
+    <!-- <span class="js-shop-category-span is-expanded fas fa-plus u-s-m-l-6"></span> -->
+    <ul>
+    <!-- <ul style="display:block"> -->
+        {% for subcat in category.id|subcategory  %}
+            {% if subcat.id|get_product_by_subcategory|object_count != 0 %}
+                <li class="has-list">
+
+                    <a href="#">{{subcat|lower|capfirst}}</a>
+
+                    {% if subcat.id|get_product_by_subcategory|object_count != 0 %}
+                        <span class="js-shop-category-span fas fa-plus u-s-m-l-6"></span>
+                    {%else%}
+                        <span class="category-list__text u-s-m-l-6">(0)</span>
+                    {% endif %}
+                    <ul>
+                        {% for product in subcat.id|get_product_by_subcategory  %}
+                        <li>
+                            <a href="/productDetails/{{product.id}}">{{product.title}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% for subcat in category.id|subcategory  %}
+            {% if subcat.id|get_product_by_subcategory|object_count == 0 %}
+                <li class="has-list">
+
+                    <a href="#">{{subcat|lower|capfirst}}</a>
+
+                    {% if subcat.id|get_product_by_subcategory|object_count != 0 %}
+                        <span class="js-shop-category-span fas fa-plus u-s-m-l-6"></span>
+                    {%else%}
+                        <span class="category-list__text u-s-m-l-6">(0)</span>
+                    {% endif %}
+                    <ul>
+                        {% for product in subcat.id|get_product_by_subcategory  %}
+                        <li>
+                            <a href="/shop/">{{product.title}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</li>

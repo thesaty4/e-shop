@@ -1,0 +1,209 @@
+<!-- // @Author SATYA NARAYAN MISHRA -->
+{%extends 'base.html'%}{% load crispy_forms_tags%}  {% load static %} {%load widget_tweaks%}{% static 'images' as baseUrl%}{%load  filter_tags %}{%block content%}
+{%if user.is_authenticated == False%}
+<!--====== App Content ======-->
+<div class="app-content">
+
+    <!--====== Section 1 ======-->
+    <div class="u-s-p-y-60">
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="container">
+                <div class="breadcrumb">
+                    <div class="breadcrumb__wrap">
+                        <ul class="breadcrumb__list">
+                            <li class="has-separator">
+
+                                <a href="/">Home</a>
+                            </li>
+                            <li class="is-marked">
+
+                                <a href="/accounts/register">Signup</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====== End - Section 1 ======-->
+
+    <!--====== Section 2 ======-->
+    <div class="u-s-p-b-60">
+
+        <!--====== Section Intro ======-->
+        <div class="section__intro u-s-m-b-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section__text-wrap">
+                            <h1 class="section__heading u-c-secondary">CREATE AN ACCOUNT</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section Intro ======-->
+
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="container">
+                <div class="row row--center">
+                    <div class="col-lg-6 col-md-8 u-s-m-b-30">
+                        <div class="l-f-o">
+                            <div class="l-f-o__pad-box">
+                                <!-- <h1 class="gl-h1">PERSONAL INFORMATION</h1> onsubmit="return verify_registration();" -->
+                                <form class="l-f-o__form" action="/accounts/register/" method="POST" id="registration-form" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="gl-s-api">
+                                    <!-- ######################## Image Previou ########################### -->
+                                      <div class="row" style=" display:flex;flex-direction:row;justify-content:center;">
+                                          <div>
+                                            <div class="image_area" id="reg_profile">
+                                                <label for="upload_image">
+                                                  <img src="{%static 'images/user-icon.png'%}" id="uploaded_image" class="img-responsive img-circle" />
+                                                  <div class="overlay">
+                                                    <a href="#id_last_name" style="font-size: 10px;" onclick="change_my_profile();" class="text"><b>Change</b></a>
+                                                  </div>
+                                                  <!-- <input type="file" name="image" class="image" id="upload_image" style="display:none" /> -->
+                                                </label>
+                                            </div>
+                                        </div>
+                                      </div>
+                                        <!-- <div class="u-s-m-b-15">
+
+                                            <button class="gl-s-api__btn gl-s-api__btn--fb" type="button"><i
+                                                    class="fab fa-facebook-f"></i>
+
+                                                <span>Signup with Facebook</span></button>
+                                        </div>
+                                        <div class="u-s-m-b-30">
+
+                                            <button class="gl-s-api__btn gl-s-api__btn--gplus" type="button"><i
+                                                    class="fab fa-google"></i>
+
+                                                <span>Signup with Google</span></button>
+                                        </div> -->
+                                        <div class="u-s-m-b-30">
+                                            {% if messages %}
+                                                <ul class="messages">
+                                                    {% for message in messages %}
+                                                    <span {% if message.tags %} class="{{ message.tags }} blink_me"{% endif %}>{{ message }}</span>
+                                                        {%if message.tags == "success"%}
+                                                        <body onload="redirect_at_login()"></body>
+                                                        {%endif%}
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label">Username * :</label>
+                                        {{reg_form.username.errors}}
+                                        {%render_field reg_form.username class='input-text input-text--primary-style' placeholder="username" autocomplete="off"%}
+                                        <div id="username-validate-response"></div>
+                                    </div>
+
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label">First Name * :</label>
+                                        {{reg_form.first_name.errors}}
+                                        {%render_field reg_form.first_name class='input-text input-text--primary-style' placeholder="First Name"%}
+                                        <div id="fname-validate-response"></div>
+                                    </div>
+
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label">Last name :</label>
+                                        {{reg_form.last_name.errors}}
+                                        {%render_field reg_form.last_name class='input-text input-text--primary-style' placeholder="Last Name"%}
+                                        <div id="lname-validate-response"></div>
+                                    </div>
+
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label">Gender * :</label>
+                                        {{reg_form.gender.errors}}
+                                        {%render_field reg_form.gender class='input-text input-text--primary-style'%}
+                                        <div id="gender-validate-response"></div>
+                                    </div>
+
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label">Date Of Birth * :</label>
+                                        {{reg_form.dob.errors}}
+                                        {%render_field reg_form.dob class='input-text input-text--primary-style' placeholder="YYYY-MM-DD"%}
+                                        <div id="dob-validate-response"></div>
+                                    </div>
+
+                                    <div class="u-s-m-b-30" id="my_profile_pic">
+                                        <label class="gl-label">Profile Picture :</label>
+                                        {{reg_form.profile_pic.errors}}
+                                        <div class="input-text input-text--primary-style">
+                                            {%render_field reg_form.profile_pic required="False"%}
+                                            {{reg_form.x}}
+                                            {{reg_form.y}}
+                                            {{reg_form.width}}
+                                            {{reg_form.height}}
+                                        </div>
+                                        <div class="help_text text-red blink_me" id="profile_pic_help_text"></div>
+                                    </div>
+
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label">Email * :</label>
+                                        {{reg_form.email.errors}}
+                                        {%render_field reg_form.email class='input-text input-text--primary-style' placeholder="Email" autocomplete="off"%}
+                                        <div id="email-validate-response"></div>
+                                    </div>
+
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label">Country * :</label>
+                                        {{reg_form.country.errors}}
+                                        {%render_field reg_form.country class='input-text input-text--primary-style'%}
+                                        <div id="country-validate-response"></div>
+                                    </div>
+
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label">Password * :</label>
+                                        {{reg_form.password.errors}}
+                                        {%render_field reg_form.password class='input-text input-text--primary-style' placeholder="Password"%}
+                                        <div id="password-validate-response"></div>
+                                    </div>
+
+                                    <!-- <div class="u-s-m-b-30">
+                                        <label class="gl-label" for="reg-password">CONFIRM PASSWORD * :</label>
+                                        <input class="input-text input-text--primary-style" type="password"
+                                            id="reg-password2" placeholder="Re-Type Password" name="pass2">
+                                    </div> -->
+                                </form>
+                                <div class="u-s-m-b-15">
+                                    <button class="btn btn--e-transparent-brand-b-2"  id="submit-registration-form">CREATE</button>
+                                </div>
+
+                                <a class="gl-link" href="/">Return to Store</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section Content ======-->
+    </div>
+    <!--====== End - Section 2 ======-->
+</div>
+<!--====== End - App Content ======-->
+
+<!-- ######################################## IMAGE CROPPER ########################################### -->
+ <!-- MODAL TO CROP THE IMAGE -->
+ {%include 'imageCropperModal.html'%}
+
+
+{%else%}
+<script>
+    window.location.href="/"
+</script>
+{%endif%}
+{%endblock%}
+
+
+{% block javascript %}
+<script src="{% static 'my_actions/crop.js'%}"></script>
+{% endblock %}

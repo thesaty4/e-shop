@@ -1,0 +1,197 @@
+{% load static %}
+{% load filter_tags %}
+        <!--====== Section 1 ======-->
+        {%csrf_token%}
+        <div class="u-s-p-y-90">
+
+            <!--====== Detail Post ======-->
+            <div class="detail-post">
+                <div class="bp-detail">
+                    <div class="bp-detail__thumbnail">
+                        {% if blog_item.image %}
+                    
+                        <!--====== Image Code ======-->
+                        <div class="aspect aspect--bg-grey aspect--1366-768">
+
+                            <img class="aspect__img" src="{{MEDIA_URL}}{{blog_item.image}}" alt=""></div>
+                            <!--====== End - Image Code ======-->
+                        {%elif blog_item.audio%}
+                            <div class="aspect aspect--bg-grey aspect--1366-768">
+                                <img class="aspect__img" src="{%static '/images/music-gif/A8rF.gif' %}" alt="">
+                            </div>
+                            <!--====== Audio ======-->
+                            <audio controls>
+                                <source src="{{MEDIA_URL}}{{blog_item.audio}}"></audio>
+                            <!--====== End - Audio ======-->
+                        {%elif blog_item.video%}
+                            <!--====== Embed Video Youtube ======-->
+                            <!-- <iframe src="https://www.youtube.com/embed/qKqSBm07KZk" allowfullscreen></iframe> -->
+                            
+                            <!-- <iframe class="w-100" src="{{blog_item.video}}" allowfullscreen></iframe> -->
+                            <iframe src="{{blog_item.video}}" allowfullscreen></iframe>
+                            <!--====== End - Embed Video Youtube ======-->
+                        {%else%}
+                            <a class="aspect aspect--bg-grey aspect--1366-768 u-d-block" href="/blogs/blogDetails/{{blog.id}}">
+                
+                                <img class="aspect__img" src="{%static 'images/blog/blog.jpg'%}" alt=""></a>
+            
+                        {% endif %}
+
+                    </div>
+                    <div class="bp-detail__info-wrap" id="blog-wrapper">
+                        <div class="bp-detail__stat">
+                            <span class="blog-vote-wrapper">
+                                {% include "include/blog/blog-vote.html" %}
+                            </span>
+
+                            <span class="bp-detail__stat-wrap">
+                                <span class="bp-detail__publish-date">
+                                    <a href="/blogs/blogContaint/">
+                                        <span><i class="fas fa-calendar-alt"></i> {{blog_item.at_date_time|date:'y F Y'}}</span>
+                                    </a>
+                                </span>
+                            </span>
+
+                            <span class="bp-detail__stat-wrap">
+                                <span class="bp-detail__author">
+                                    <a href="/blogs/blogContaint/">{{blog_item.customer_user.first_name}}</a>
+                                </span>
+                            </span>
+                            
+
+                            
+                                <!-- <span class="bp-detail__stat-wrap">
+    
+                                        <span class="bp-detail__category">
+                                            <a href="blog-right-sidebar.html">Learning</a>
+    
+                                            <a href="blog-right-sidebar.html">News</a>
+    
+                                            <a href="blog-right-sidebar.html">Health</a></span></span> -->
+                                        
+                            </div>
+                        
+                            <span class="bp-detail__h1">
+
+                                    <a href="/blogs/blogDetails/{{blog_item.id}}">{{blog_item.title|lower|capfirst}}</a></span>
+                            <div class="blog-t-w">
+                                {% for tag in blog_item.tags|split_data:","|slice:3 %}
+                                <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q={{tag}}">{{tag|lower|capfirst}}</a>
+                                {% endfor %}
+                            </div>
+                            <!-- <p class="bp-detail__p"> -->
+                                {{blog_item.discription|safe}}
+                            <!-- SHERE ON THE SOCIAL MEDIA -->
+                            <div class="post-center-wrap">
+                                <ul class="bp-detail__social-list">
+                                    <li>
+                                        <!-- https://www.facebook.com/sharer/sharer.php?u=<URL> -->
+                                        <a class="s-fb--color" href="https://www.facebook.com/sharer/sharer.php?u={{site_info_data.site_url_domain}}{{ request.path }}"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li>
+                                        <!-- https://twitter.com/share?url=<URL>&text=<TEXT>via=<USERNAME> -->
+                                        <a class="s-tw--color" href="https://twitter.com/share?url={{site_info_data.site_url_domain}}{{ request.path }}&text=I read this blog, that was so intresting. You can visit as well, and find intresting things."><i class="fab fa-twitter"></i></a></li>
+                                    <li>
+                                        <a class="s-insta--color" href="https://www.instagram.com/share?url={{site_info_data.site_url_domain}}{{ request.path }}&text=summary=I read this blog, that was so intresting. You can visit as well, and find intresting things"><i class="fab fa-instagram"></i></a></li>
+                                    <li>
+                                        <a class="s-fb--color" href="https://www.linkedin.com/shareArticle?url={{site_info_data.site_url_domain}}{{ request.path }}&title={{blog_item.title}}&summary=I read this blog, that was so intresting. You can visit as well, and find intresting things"><i class="fab fa-linkedin"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+
+                        <div class="gl-l-r bp-detail__postnp">
+                            <div>
+
+                                <a onclick="get_blog('{{blog_item.id}}','prev')">Previous Post</a></div>
+                            <div>
+
+                                <a onclick="get_blog('{{blog_item.id}}','next')">Next Post</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Detail Post ======-->
+        <div class="u-s-p-b-60">
+            <div class="d-meta">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="d-meta__comment-arena">
+                                <span class="d-meta__text u-s-m-b-36">{{blog_item.id|get_blog_comments|object_count}} thoughts on "{{blog_item.title|capfirst|slice:":30"}}..."</span>
+                                <div class="d-meta__comments u-s-m-b-30" 
+                                    {% if blog_item.id|get_blog_comments|object_count|gt:10 %}
+                                        style="height: 500px; overflow-y: scroll;"
+                                    {% endif %}>
+                                    <ol>
+                                        <li>
+                                            {% with blog_item.id|get_blog_comments as blog_comments  %}
+                                                {% for comment in user.id|get_blog_comment_by_user:blog_item.id %}
+                                                    <!-- IF CURRENT USER ARE COMMENTED SOMTHING IN THIS POST -->
+                                                    <div id="comment-wrapper-{{comment.id}}">
+                                                        {% include "include/blog/comments.html" %}
+                                                    </div>
+                                                {% endfor %}
+
+                                                {% for comment in blog_comments %}
+                                                    <!-- IF CURRENT USER ARE COMMENTED SOMTHING IN THIS POST -->
+                                                    {% if user.id != comment.customer_user.id %}
+                                                        <div id="comment-wrapper-{{comment.id}}">
+                                                            {% include "include/blog/comments.html" %}
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                                {% if blog_comments|object_count == 0 %}
+                                                        <span style="padding: 30px;"> No comment avialable here !</span>
+                                                {% endif %}
+                                                {%if messages%}
+                                                    <br>
+                                                    <span id="msg" class="blink_me" style="padding: 30px; color:red;"> {%for msg in messages%}{{msg}}{%endfor%}</span>
+                                                {%endif%}
+                                            {%endwith%}
+
+                                        </li>
+                                    </ol>
+                                </div>
+                                <div id="comment_form" >
+                                    {% if user.id|get_blog_comment:blog_item.id|object_count == 0 %}
+                                        
+                                        <span class="d-meta__text-2 u-s-m-b-6">Join the Conversation</span>
+
+                                        <span class="d-meta__text-3 u-s-m-b-16">Your email address will not be published. Required fields are marked *</span>
+                                        <form class="respond__form" action="/blogs/blog-comment/" method="GET" id="comment-form">
+                                            <div class="respond__group">
+                                                <div class="u-s-m-b-15">
+                                                    
+                                                    <label class="gl-label" for="comment">COMMENT *</label><textarea name="comment" class="text-area text-area--primary-style" id="comment" ></textarea>
+                                                </div>
+                                                <div>
+                                                    <input type="hidden" name="blog-id" id="blog-id" value="{{blog_item.id}}">
+                                                </div>
+                                            </div>
+                                            <div>
+
+                                                <button class="btn btn--e-brand-shadow" 
+                                                {% if not user.is_authenticated %}
+                                                    onclick="window.location.href=('/accounts/login/');"
+                                                {%else%}
+                                                    type="submit"
+                                                {% endif %}>POST COMMENT</button>
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section 1 ======-->
+        
+    <!-- SHARE BLOG MODAL -->
+    <div class="blog-share-modal">
+        {% include "include/blog/blog-share-modal.html" %}
+    </div>
