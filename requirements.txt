@@ -38,7 +38,7 @@ lib-registry==2.0.7
 matplotlib==3.4.2
 mysqlclient==2.0.3
 numpy==1.21.0
-pandas==1.2.5
+pandas==2.7.3
 Pillow==8.2.0
 psycopg2==2.8.6
 pycares==4.0.0
