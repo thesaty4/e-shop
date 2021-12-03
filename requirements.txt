@@ -51,11 +51,7 @@ PyQt5-sip==12.9.0
 python-bidi==0.4.2
 python-dateutil<=2.8.2
 pytz>=2021.1
-pywin32==221 
-pypiwin32==221
-six>=1.11.0
-cheroot>=5.9.1
-portend>=2.1.1
+pypiwin32==219
 reportlab==3.6.2
 requests==2.26.0
 scikit-learn==0.24.2
