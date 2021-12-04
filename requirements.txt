@@ -68,4 +68,4 @@ whitenoise==5.3.0
 WMI==1.5.1
 wrapt==1.13.3
 xhtml2pdf==0.2.5
-pypiwin32==302
+pypiwin32==219
