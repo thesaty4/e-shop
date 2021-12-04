@@ -27,7 +27,7 @@ fpdf==1.7.2
 future==0.18.2
 gunicorn==20.1.0
 h5py==3.3.0
-heroku==0.1.4
+heroku>=0.1.4
 html5lib==1.1
 idna==3.2
 joblib==1.0.1
