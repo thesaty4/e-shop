@@ -1,0 +1,87 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{% load filter_tags %}
+<body>
+    <script>
+        window.addEventListener("load",myInit,true);function myInit(){
+            blogTextFun()
+            boldBlog()
+        }
+    </script>
+    <!--====== App Content ======-->
+        <!--====== App Content ======-->
+        <div class="app-content">
+            <div class="u-s-p-y-90">
+                <div class="container">
+                <!--====== Section 1 ======-->
+                    <div class="row">
+                        {% include "include/blog/left-sidebar-bash.html" %}
+                        <div class="col-lg-9 col-md-8 col-sm-12">
+                            <div class="u-s-p-y-60">
+                                <div class="container">
+                                    <div class="blog-m" id="blogs-containt-wrapper-area">
+                                        <div class="row blog-m-init">
+                                            {% if blogs %}
+                                                {% for blog in blogs|slice:9 %}
+                                                    {% include "include/blog/blog-containt.html" %}
+                                                {% endfor %}
+                                            {%else%}
+                                                {% for blog in 9|get_blogs %}
+                                                    {% include "include/blog/blog-containt.html" %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <!-- <div class="row blog-m-init" id="new-blogs-containt-wrapper-area"></div> -->
+                                    </div>
+                                    <nav class="post-center-wrap u-s-p-y-60">
+                                        
+                                        <!--====== Pagination ======-->
+                                        <ul class="blog-pg w-100">
+                                            <!--====== Pagination ======-->
+                                            <!-- <span class='col-12 d-flex flex-row w-100 bg-blue'> -->
+                                                <a class="col-1 fas fa-angle-left" id="pagination-btn_left" style="margin-top:13px;"></a>
+                                                <ul class="col-9 blog-pg ml-auto mr-auto" id="pagination-content" style="overflow:hidden;">
+                                                    <!-- PAGINATION DATA CAME FROM JAVASCRIPT FUNCTION SET_PAGINATION -->
+                                                    {% if blogs %}
+                                                    <!-- CHECK IS THIS ANY QUERY EXISTS, IF YES THEN REQUEST DATA WITH QUERY TOO -->
+                                                        {% with  blogs|object_count|div:9 as total_pages %}
+                                                        {% if  total_pages|gt:9 %}                                                        
+                                                            {% for page in 123|make_list%}
+                                                                {% include "include/blog/pagination.html" %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                        {%endwith%}
+                                                    {%else%}
+                                                        {% with  ''|get_all_blogs_count|div:9 as total_pages %}
+                                                        {% for page in total_pages|make_list %}
+                                                            {% include "include/blog/pagination.html" %}
+                                                        {%endfor%}
+                                                        {% endwith %}
+                                                    {% endif %}
+                                                </ul>
+                                                <a class="col-1 fas fa-angle-right" id="pagination-btn_right" style="margin-top:13px;"></a>
+                                            <!-- </span> -->
+                                            <!--====== End - Pagination ======-->
+                                        </ul>
+                                        <!--====== End - Pagination ======-->
+
+
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!--====== End - Section 1 ======-->
+                </div>
+            </div>
+        </div>
+        <!--====== End - App Content ======-->
+
+    <!--====== End - App Content ======-->
+
+
+    <!-- SHARE BLOG MODAL -->
+    <div class="blog-share-modal">
+        {% include "include/blog/blog-share-modal.html" %}
+    </div>
+</body>
+{%endblock%}

@@ -1,0 +1,36 @@
+<thead>
+    <tr>
+        <th>#ID</th>
+        <th>DATE</th>
+        <th>ITEMS</th>
+        <th>AVAILABLE</th>
+    </tr>
+</thead>
+{%if products%}
+<tbody>
+    {%for product in products%}
+        {%if product.customer_user.id == user.id%}
+        <tr>
+            <td>{{product.id}}</td>
+            <td>{{product.add_date_time|date:'d M Y'}}</td>
+            <td style="display:flex; justify-content:space-around;">
+                <!-- <div class="das__table-img-wrap" style="background-color: rebeccapurple;"> -->
+                    <img src="{{MEDIA_URL}}{{product.image}}" alt="" width="40px">
+                <!-- </div> -->
+            </td>
+            <td>
+                <div class="dash__table-total">
+                    <span>{{product.available_product}} Stock</span>
+                    <div class="dash__link dash__link--brand ">
+                        <a href="/selling_product/productEdit/{{product.id}}">MANAGE</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {%endif%}
+    {%endfor%}
+    <tr><td>No Data Available</td></tr>
+</tbody>
+{%else%}
+<tbody><tr><td>No Data Available</td></tr></tbody>
+{%endif%}

@@ -1,0 +1,28 @@
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('productEdit/<int:productId>',views.productEdit,name="sell-product-edit"),
+    path('selledProduct/',views.selledProduct,name="selled-product"),
+    path('sellMoreProduct/',views.sellMoreProduct,name="sell-more-product"),
+    path('topSells/',views.topSells,name="top-sells"),
+    path('holdDelevery/',views.holdDelevery,name="hold-delever"),
+    path('deleverdProduct/',views.deleverdProduct,name="deleverd-product"),
+    path('returns-product/',views.returnsProduct),
+    path('clientList/',views.clientList,name="client-list"),
+    path("get-dropdown/",views.dropdown,name="drop down menu"),
+    path("add-product-img/<str:reqID>",views.addProductImage,name='Product Image'),
+    path("add-product-images/<str:reqID>",views.addProductImages,name='Product Images'),
+    path("get-product/",views.getProductById,name='Search Product By Id'),
+    path("delete-product-images/",views.deleteImages,name='Delete Images'),
+    path("delete-entire-product/",views.deleteProduct,name='Delete entire product'),
+    path("get-one-product/",views.getOneProduct,name='get product'),
+    path("get-cart-product/",views.getCartProduct,name='get cart product'),
+    path("get-products/",views.getProducts,name='get product'),
+    path("add-my-wishlist/",views.addMywishlist,name='add my wishlist'),
+    path("clear-my-wishlist/",views.clearMyWishlist,name='clear my wishlist'),
+    path("remove-wishlist-item/",views.removeWishlist,name='remove my wishlist'),
+    path("add-product-subscriber/",views.addProductSubscriber,name='add product subscriber'),
+    path("order-action/",views.orderAction),
+    path("view-checkout/",views.viewCheckout),
+    path("view-client/",views.viewClient),
+]

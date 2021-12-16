@@ -1,0 +1,92 @@
+{% load widget_tweaks %}
+    <div class="gl-inline " style="margin-top: 20px;">
+        {% if at_blog_update %}
+        <div class="u-s-m-b-30">
+            <label class="gl-label" for="blog_id">Blog ID*</label>
+            <input id="blog_id" type="number" min="0" class="input-text input-text--primary-style" name="blog-id" placeholder="Blog id">
+            <input type="hidden" id="media-url" value="{{MEDIA_URL}}">
+        </div>
+        {% endif %}
+        <div class="u-s-m-b-30">
+            <label class="gl-label fas fa-paper-plane" for="id_title"> Blog Media *</label>
+            
+            <div class="radio-box newsletter__radio">
+
+                <input type="radio" id="none" name="blog-media" class="gender" value="none" checked>
+                <div class="radio-box__state radio-box__state--primary">
+
+                    <label class="radio-box__label" style="color: black;" for="none"><i class="fas fa-scarf"></i> No Media</label>
+                </div>
+            </div>
+            <div class="radio-box newsletter__radio">
+
+
+                <input type="radio" id="photo" name="blog-media" class="gender" value="image">
+                <div class="radio-box__state radio-box__state--primary">
+
+                    <label class="radio-box__label" style="color: black;" for="photo"><i class="fas fa-image"></i> Photo</label>
+                </div>
+            </div>
+            <div class="radio-box newsletter__radio">
+
+                <input type="radio" id="audio" name="blog-media" class="gender" value="audio">
+                <div class="radio-box__state radio-box__state--primary">
+
+                    <label class="radio-box__label" style="color: black;" for="audio"><i class="fas fa-microphone"></i> Audio</label>
+                </div>
+            </div>
+            <div class="radio-box newsletter__radio">
+
+                <input type="radio" id="video" name="blog-media" class="gender" value="video">
+                <div class="radio-box__state radio-box__state--primary">
+
+                    <label class="radio-box__label" style="color: black;" for="video"><i class="fas fa-paperclip"></i> Video</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gl-inline">
+        <div class="u-s-m-b-30">
+            <label class="gl-label fas fa-pen-nib" for="id_title"> Blog Title *</label>
+            {%render_field new_blog_form.title class="input-text input-text--primary-style w-100" placeholder='Title of your blog'%}
+            <div class="response-message"><div id="title-validate-response" style="position: absolute;"></div></div>
+        </div>
+        <div class="u-s-m-b-30" id="blog-media-image">
+            <label class="gl-label fas fa-image" for="id_image"> Image</label>
+            {%render_field new_blog_form.image class="input-text input-text--primary-style w-100" value="{{MEDIA_URL}}{{blog_item.image}}" disabled='' id="id_image_blog"%}
+            <input type="hidden" name="customer_user" value="{{user.id}}">
+            {%render_field new_blog_form.x value="0"%}
+            {%render_field new_blog_form.y value="0"%}
+            {%render_field new_blog_form.height value="0"%}
+            {%render_field new_blog_form.width value="0"%}
+            <div class="response-message"><div id="image-validate-response" style="position: absolute;">Please ignore this field...</div></div>
+        </div>
+    </div>
+    <div class="gl-inline">
+        <div class="u-s-m-b-30" id="blog-media-audio">
+            <label class="gl-label fas fa-microphone" for="id_audio"> Audio</label>
+            {%render_field new_blog_form.audio class="input-text input-text--primary-style w-100" value="{{MEDIA_URL}}{{blog_item.audio}}" disabled=''%}
+            <div class="response-message"><div id="audio-validate-response" style="position: absolute;">Please ignore this field...</div></div>
+        </div>
+        <div class="u-s-m-b-30" id="blog-media-video">
+            <label class="gl-label fas fa-paperclip" for="id_video"> Video URL</label>
+            {%render_field new_blog_form.video class="input-text input-text--primary-style w-100" disabled='' placeholder='Put your video URL here, if it is...' %}
+            <div class="response-message"><div id="video-validate-response" style="position: absolute;">Please ignore this field...</div></div>
+        </div>
+    </div>
+    <div class="gl-inline">
+        <div class="u-s-m-b-30">
+            <label class="gl-label fas fa-tags" for="id_tags"> Tags *</label>
+            {%render_field new_blog_form.tags class="input-text input-text--primary-style text-area" rows='0' placeholder='Tags will help to find your blog to users...' %}
+            <div class="response-message"><div id="tag-validate-response" style="position: absolute;">Tags should be CSV Ex- tag1,tag2,tag3...</div></div>
+        </div>
+    </div>
+    <!-- <div class="gl-inline"> -->
+    <div class="u-s-m-b-30">
+        <label class="gl-label fas fa-clipboard" for="id_discription"> Discription *</label>
+        {%render_field new_blog_form.discription class='text-area' placeholder='Tell us, About your blog...' %}
+        <!-- {{new_blog_form.discription}} -->
+        <div class="response-message"><div id="dis-validate-response" style="position: absolute;">Discription may help to people understanding your blogs.</div></div>
+    </div>
+    <!-- </div> -->

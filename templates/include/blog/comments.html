@@ -1,0 +1,123 @@
+{% load filter_tags %}
+<!--====== Comment ======-->
+<div class="d-meta__p-comment" id="blog-comment-id-{{comment.id}}">
+    <div class="p-comment__wrap1">
+        <div class="aspect aspect--square p-comment__img-wrap">
+
+            <img src="{{MEDIA_URL}}{{comment.customer_user.profile_pic}}" alt=""></div>
+    </div>
+    <div class="p-comment__wrap2">
+
+        <div class="d-flex flex-row justify-between">
+            <span class="p-comment__author">{{comment.customer_user.first_name|capfirst}} {{comment.customer_user.last_name|capfirst}}</span>
+            {% if user.id == comment.customer_user.id %}
+            <a onclick="delete_blog_comment('{{comment.id}}')" class="far fa-trash-alt" style="color: red;"></a>
+            {% endif %}
+        </div>
+
+        <span class="p-comment__timestamp">
+
+                <a href="#">
+
+                    <span>{{comment.comment_date_time|date:"y F Y"}} at {{comment.comment_date_time|time}}</span></a>
+        </span>
+        <p class="p-comment__paragraph">{{comment.comment|capfirst}}</p>
+
+        <div class="d-flex justify-between blog-comment-action">
+            <div class="col-6 reply-anchor-container" id="reply-id-{{comment.id}}">
+                <a class="p-comment__reply" onclick="reply_containt_show('{{comment.id}}','{{comment.customer_user.username}}')">Reply</a>
+            </div>
+            <div class="col-6 d-flex justify-between" style="margin-top: 7px;">
+                {% with blog_item.id|concat_limit:comment.id|get_comment_upvote:user.id as comments_upvotes %}
+                    <label for="blog-comment-up_vote-{{comment.id}}">
+                        <i id="up_vote-icon-{{comment.id}}" onclick="blog_comment_voting('{{blog_item.id}}','{{comment.id}}','up-vote')" {% if comments_upvotes %} class="fas fa-arrow-alt-circle-up" style="cursor:pointer;color:rgb(38, 110, 243);" {%else%} class="far fa-arrow-alt-circle-up" {% endif %}></i>
+                    </label><span style="font-size:13px; margin-top:3px; margin-right:10px;" id="blog-comment-up_vote_counter-{{comment.id}}">&nbsp;{{blog_item.id|get_comment_total_upvote:comment.id|object_count}}</span>
+                    <div id="up-checkbox-wrapper-{{comment.id}}"> 
+                        <input type="checkbox" name="blog-comment-up_vote-checkbox-{{comment.id}}" id="blog-comment-up_vote-{{comment.id}}" {% if comments_upvotes %} checked {% endif %} value="up-vote" hidden>
+                    </div>
+                {% endwith %}
+                
+                {% with blog_item.id|concat_limit:comment.id|get_comment_downvote:user.id as comments_downvotes %}
+                    <label for="blog-comment-down_vote-{{comment.id}}">
+                        <i id="down_vote-icon-{{comment.id}}" onclick="blog_comment_voting('{{blog_item.id}}','{{comment.id}}','down-vote')"{% if comments_downvotes %} class="fas fa-arrow-alt-circle-down" style="cursor:pointer;color:rgb(38, 110, 243);" {%else%} class="far fa-arrow-alt-circle-down" {% endif %}></i>
+                    </label><span style="font-size:13px; margin-top:3px;" id="blog-comment-down_vote_counter-{{comment.id}}">&nbsp;{{blog_item.id|get_comment_total_downvote:comment.id|object_count}}</span>
+                    <div id="down-checkbox-wrapper-{{comment.id}}" > 
+                        <input type="checkbox" name="blog-comment-down_vote-checkbox-{{comment.id}}" id="blog-comment-down_vote-{{comment.id}}" {% if comments_downvotes %} checked {% endif %} value="down-vote" hidden>
+                    </div>
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>
+<ol class="comment-children children-comment" id="reply-data-{{comment.id}}" style="display: none;">
+    <li>                                                 
+        {% with comment.id|get_blog_comment_reply as comment_reply %}   
+            <!--====== End - Comment ======-->
+            {% if comment_reply|object_count != 0 %}
+                <!-- CHILDREN COMMENT -->
+                {% for comment in comment_reply %}
+                <ol class="comment-children" id="reply-comment-target-{{comment.id}}-{{comment.customer_user.id}}">
+                    <li>
+                        <div class="d-meta__p-comment">
+                            <div class="p-comment__wrap1">
+                                <div class="aspect aspect--square p-comment__img-wrap">
+                        
+                                    <img src="{{MEDIA_URL}}{{comment.customer_user.profile_pic}}" alt=""></div>
+                            </div>
+                            <div class="p-comment__wrap2">
+                        
+                                <div class="d-flex flex-row justify-between">
+                                    <span class="p-comment__author">{{comment.customer_user.first_name|capfirst}} {{comment.customer_user.last_name|capfirst}}</span>
+                                    {% if user.id == comment.customer_user.id %}
+                                    <a onclick="delete_reply_blog_comment('{{comment.id}}','{{blog_item.id}}','{{comment.customer_user.id}}')" class="far fa-trash-alt" style="color: red;"></a>
+                                    {% endif %}
+                                </div>
+                        
+                                <span class="p-comment__timestamp">
+                        
+                                        <a href="#">
+                        
+                                            <span>{{comment.reply_date_time|date:"y F Y"}} at {{comment.reply_date_time|time}}</span></a>
+                                </span>
+                                <p class="p-comment__paragraph">{{comment.comment_reply|capfirst}}</p>
+                        
+                                <div class="reply-anchor-container" id="reply-id-{{comment.id}}">
+                                    <a class="p-comment__reply" onclick="set_children_comment('{{comment.customer_user.username}}')">Reply</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+                {% endfor %}
+            {%endif%}
+            {% if comment_reply|object_count == 0 or comment_reply|object_count != 0 %}
+
+                {% if user.is_authenticated %}
+                    <ol class="comment-children" style="padding: 20px 20px;">
+                        <li>
+                            <div id="blog-comment-reply-{{comment.id}}" style="display: none;">
+                                <form class="respond__form" action="/blogs/blog-comment-reply/" method="GET" id="comment-reply-form">
+                                    {% csrf_token %}
+                                    <div class="respond__group">
+                                        <div class="u-s-m-b-15">
+                                            
+                                            <label class="gl-label" for="comment"></label><textarea name="comment" class="text-area text-area--primary-style reply-comment" placeholder="Write your reply to here..." > @{{comment.customer_user.username}}</textarea>
+                                        </div>
+                                        <div>
+                                            <input type="hidden" name="comment-id" id="reply-comment-id" value="{{comment.id}}">
+                                            <input type="hidden" name="blog-id" id="reply-blog-id" value="{{blog_item.id}}">
+                                        </div>
+                                    </div>
+                                    <div>
+
+                                        <button class="btn btn--e-brand-shadow" type='submit' >POST REPLY</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    </ol>
+                {% endif %}
+            {% endif %}
+        {% endwith %}
+    </li>
+</ol>

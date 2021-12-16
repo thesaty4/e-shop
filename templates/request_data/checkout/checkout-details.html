@@ -1,0 +1,25 @@
+{%load filter_tags%}
+<div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+    <div class='d-flex' style="background-color:gray;border-radius:20px 20px 0px 0px;">
+          <div style=""><h2 class="dash__h2 u-s-p-xy-20" style="color:white;">CHECKOUT DETAILS</h2></div>
+          <div style="margin-left:auto;margin-right:50px;"><a style='color:white;margin-top:20px;margin-left:auto;' class="fas fa-print" onclick="print_receipt()">Print</a></div>
+    </div>
+      <table style="padding:50px;font-size:14px;font-family:Lucida Sans Typewriter;" border='0'>
+      <tr style="border:none;"><td align="left">CLIENT</td><td align="left">          :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.customer_user.first_name|capfirst}} {{checkout.customer_user.last_name|capfirst}}</td></tr>
+      <tr style="border:none;"><td align="left">CLIENT EMAIL</td><td align="left">     :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.customer_user.email|lower}} {{checkout.customer_user.last_name|capfirst}}</td></tr>
+      <tr style="border:none;"><td align="left">INVOICE ID </td><td align="left">     :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.order_id}}</td></tr>
+      <tr style="border:none;"><td align="left">TRANSACTION ID </td><td align="left"> :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.transaction_id}}</td></tr>
+      <tr style="border:none;"><td align="left">SELLED BY</td><td align="left">       :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{checkout.id|get_product_owner}}</td></tr>
+      <tr style="border:none;"><td align="left">SELLER EMAIL</td><td align="left">    :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{checkout.id|get_product_owner_mail}}</td></tr>
+      <tr style="border:none;"><td align="left">PRODUCT NAME</td><td align="left">    :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.product.title}}</td></tr>
+      <tr style="border:none;"><td align="left">PRODUCT MRP</td><td align="left">    :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.product.m_r_p|to_comma}}/-</td></tr>
+      <tr style="border:none;"><td align="left">PRODUCT PRICE</td><td align="left">    :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.product.price|to_comma}}/-</td></tr>
+      <tr style="border:none;"><td align="left">BRAND NAME</td><td align="left">      :&nbsp;&nbsp;&nbsp;&nbsp; {% if checkout.product.brand|lower == 'another'%}Not Available {%else%}{{checkout.product.brand|lower}}{%endif%}</td></tr>
+      <tr style="border:none;"><td align="left">PURCEASING DATE</td><td align="left"> :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.checkout_date_time}}</td></tr>
+      <tr style="border:none;"><td align="left">PAYMENT METHOD</td><td align="left"> :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.delevery_mode}}</td></tr>
+      <tr style="border:none;"><td align="left">DELIVERY STATUS</td><td align="left"> :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.order_status}}</td></tr>
+      <tr style="border:none;"><td align="left">DISPATCH FROM</td><td align="left"> :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.id|get_product_owner_id|get_user_address}}</td></tr>
+      <tr style="border:none;"><td align="left">DELIVERD TO</td><td align="left"> :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.customer_user.id|get_user_address}}</td></tr>
+    </table>
+    
+</div>

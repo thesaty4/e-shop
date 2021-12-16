@@ -1,0 +1,111 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{% load filter_tags %}
+<body>
+    <script>
+        window.addEventListener("load",myInit,true);function myInit(){
+            blogTextFun()
+            boldEditBlog()
+            defaultMessages("{%if messages%}{% for message in messages%}{{message}}{%endfor%}{%endif%}")
+        }
+    </script>
+    <!--====== App Content ======-->
+        <!--====== App Content ======-->
+        <div class="app-content">
+            <div class="u-s-p-y-90">
+                <div class="container">
+                <!--====== Section 1 ======-->
+                    <div class="row">
+                        {% include "include/blog/left-sidebar-bash.html" %}
+                        <div class="col-lg-9 col-md-8 col-sm-12">
+                            <div class="u-s-p-b-60">
+
+                                <!--====== Section Content ======-->
+                                <div class="section__content">
+                                    <div class="dash">
+                                        <div class="container">
+                                            <div class="row">
+                                                <!-- BLOG DATA CONTAINER -->
+                                                <div class="col-12">
+                                                    <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+                                                        <div class="row" style=" padding-left:30px; padding-right:30px;">
+                                                            <div class="col">
+                                                                <h2 class="dash__h2 u-s-p-xy-20 fas fa-clock"> RECENT UPLOADED BLOG</h2>
+                                                            </div>
+                                                        </div>
+                                                        <table class="dash__table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th> <span class="fas fa-calendar-alt"> DATE</span></th>
+                                                                    <th> <span class="fas fa-cog"> MANAGE</span></th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <div class="dash__table-wrap gl-scroll " style="height: 500px;">
+                                                            <table class="dash__table" id='product-table'>
+                                                                {%if user.id|get_all_blogs%}
+                                                                <tbody>
+                                                                    {%for blog_item in user.id|get_all_blogs%}
+                                                                        <tr class="blog-wrapper-{{blog_item.id}}">
+                                                                            <td style="float: right;"> {{blog_item.at_date_time|date:'y F Y'}}</td>
+                                                                            <td>
+                                                                                <span style="float:right;">
+                                                                                    {{blog_item.title|slice:35}}...
+                                                                                    <a  style="margin:0px 5px 0px 5px;" href="#update-blog-section" onclick="edit_blog('{{MEDIA_URL}}','{{blog_item.id}}')"><i class="fas fa-edit"></i></a>
+                                                                                    <a  style="margin:0px 5px 0px 5px;color: red;" onclick="delete_blog('{{blog_item.id}}')"><i class="fas fa-trash-alt"></i></a>
+                                                                                </span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {%endfor%}
+                                                                </tbody>
+                                                                {%else%}
+                                                                <tbody><tr><td>No Data Available</td></tr></tbody>
+                                                                {%endif%}
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END- BLOG DATA CONTAINER -->
+
+                                                <!-- BLOG EDIT FORM SECTION -->
+                                                <div class="col-12" style="margin-top: 100px;">
+                                                    <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+                                                        <div class="row" style=" padding-left:30px; padding-right:30px;">
+                                                            <div class="col">
+                                                                <h2 class="dash__h2 u-s-p-xy-20 fas fa-edit" id="update-blog-section"> UPDATE BLOGS</h2>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <form class="dash-edit-p" action="/blogs/update-blog-post/" method="post" enctype="multipart/form-data" id="update-blog-post-form">
+                                                                {%csrf_token%}
+                                                                {% include "include/blog/new-blog-form.html" %}
+                                                                <div class="gl-inline">
+                                                                    <div class="u-s-m-b-30">
+                                                                        <button class="btn btn--e-brand-b-2" style="background-color: transparent; color:rgb(255, 72, 0);" type="submit"><i class="fas fa-refresh"></i> UPDATE</button>
+                                                                        <a class="btn btn--e-brand-b-2" style="background:red;" id="delete-blog-from-form"> <i class="fas fa-trash-alt"></i> DELETE</a>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END - BLOG EDIT FORM SECTION -->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--====== End - Section Content ======-->
+                            </div>
+                        </div>
+                    </div>
+                <!--====== End - Section 1 ======-->
+                </div>
+            </div>
+        </div>
+        <!--====== End - App Content ======-->
+
+    <!--====== End - App Content ======-->
+{% include "imageCropperModal.html" %}
+{% include "include/blog/blog-response-modal.html" %}
+</body>
+{%endblock%}

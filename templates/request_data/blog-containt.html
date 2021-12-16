@@ -1,0 +1,83 @@
+{% load filter_tags %}
+{% load static %}
+<div class="row blog-m-init">
+    {% for blog in blogs %}
+    <div class="blog-m__element" >
+        <div class="bp-mini bp-mini--img">
+            <div class="bp-mini__thumbnail">
+                
+                {% if blog.image %}
+                    <!--====== Image Code ======-->
+
+                    <a class="aspect aspect--bg-grey aspect--1366-768 u-d-block" href="/blogs/blogDetails/{{blog.id}}">
+
+                        <img class="aspect__img" src="{{MEDIA_URL}}{{blog.image}}" alt=""></a>
+                    <!--====== End - Image Code ======-->
+                {%elif blog.audio%}
+                <div class="aspect aspect--bg-grey aspect--1366-768">
+                    <img class="aspect__img" src="{%static '/images/music-gif/1fTO.gif' %}" alt="">
+                </div>
+                    <!--====== Audio ======-->
+                    <audio controls>
+                        <source src="{{MEDIA_URL}}{{blog.audio}}"></audio>
+                    <!--====== End - Audio ======-->
+                {%elif blog.video%}
+                    <!--====== Embed Video Youtube ======-->
+                    <!-- <iframe src="https://www.youtube.com/embed/qKqSBm07KZk" allowfullscreen></iframe> -->
+                    <iframe src="{{blog.video}}" allowfullscreen></iframe>
+                    <!--====== End - Embed Video Youtube ======-->
+                {%else%}
+                    <a class="aspect aspect--bg-grey aspect--1366-768 u-d-block" href="/blogs/blogDetails/{{blog.id}}">
+                        <img class="aspect__img" src="{%static 'images/blog/blog2.jpg'%}" alt="">
+                    </a>
+    
+                {% endif %}
+            </div>
+            <div class="bp-mini__content" style="padding: 15px;">
+                <div class="bp-mini__stat">
+                    <span class="blog-vote-wrapper">
+                        {% with blog as blog_item %}
+                            {% include "include/blog/blog-vote.html" %}
+                        {% endwith %}
+                    </span>
+
+                    <span class="bp-mini__stat-wrap">
+
+                        <span class="bp-mini__publish-date">
+
+                            <a href="/blogs/blogContaint/{{blog.id}}">
+
+                                <span><i class="fas fa-calendar-alt"></i> {{blog.at_date_time|date:"d F Y"}}</span>
+                            </a>
+                        </span>
+                    </span>
+                    
+                    
+
+                    <span class="bp-mini__stat">
+
+                        <span class="bp-mini__comment">
+
+                            <a href="/blogs/blogDetails/{{blog.id}}"><i class="far fa-comments u-s-m-r-4"></i>
+
+                                <span>{{blog.id|get_blog_comments|object_count}}</span>
+                            </a>
+                        </span>
+                    </span>
+
+                </div>
+
+                <span class="bp-mini__h1">
+
+                    <a href="/blogs/blogDetails/{{blog.id}}">{{blog.title|capfirst}}</a></span>
+                <p class="bp-mini__p">{{blog.discription|capfirst|striptags|nbsp2space|slice:100}}...</p>
+                <div class="blog-t-w">
+                    {% for tag in blog.tags|split_data:","|slice:3 %}
+                        <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q={{tag}}">{{tag|lower|capfirst}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

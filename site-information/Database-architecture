@@ -1,0 +1,427 @@
+[-------------------------------------DONE-------------------------------------]
+SUPER ADMIN
+    |- gender
+    |- profile_img
+    |- country-code
+    |- mobile
+    |- position
+    |- country
+    |- pin_code
+    |- address
+    
++_________________________+
+|                         |
+|         E-SHOP          |
+|    https://eshop.com    |
+|_________________________|
+[+] ESHOP 
+ |   |- eshop_id (pk)
+ |   |- shop_name
+ |   |- mobile
+ |   |- email
+ |   |- logo
+ |   |- preloader
+ |   |- fevi_icon
+ |   |- copyright
+ |   |- url_domain
+ |   |- address
+ |   |- facebook
+ |   |- instagram
+ |   |- twitter
+ |   |- youtube
+ |   |- linkedin
+ |   |- change_time
+ |   |- change_date
+ |   [_____________________________
+ |
+ |
+ |______________+_________________+
+                |                 |
+                |   IMAGE TABLE   |
+                |_________________|
+                [+] IMAGE_INFO
+                    |- i_info_id (pk)
+                    |- eshop_id (fk)
+                    |- image_lable
+                    |- image_path
+
+
+[+]_______________+
+|                 |
+|    USER TABLE   |
+|_________________|
+[+] USER
+ |   |- uid (pk)
+ |   |- uname (UNIQUE)
+ |   |- fname
+ |   |- lname
+ |   |- email (UNIQUE)
+ |   |- gender
+ |   |- profile_pic
+ |   |- password
+ |   |- reg_time
+ |   |- reg_date
+ |   [___________+_________________+
+ |               |                 |
+ |               | USER_INFO TABLE |
+ |               |_________________|
+ |               [+] USER_INFO
+ |                   |- ui_id (pk)
+ |                   |- uid (fk)
+ |                   |- address
+ |                   |- region
+ |                   |- mobile
+ |                   |- pin_code
+ |                   [_____________________________
+ |
+ |
+ |__________+___________________+
+ |           |                   |
+ |           |   PRODUCT TABELE  |
+ |           |___________________|
+ |           [+] PRODUCT
+ |            |   |- pid (pk)
+ |            |   |- uid (fk)
+ |            |   |- brand (fk)
+ |            |   |- category (fk)
+ |            |   |- subcategory (fk)
+ |            |   |- model
+ |            |   |- price
+ |            |   |- discount_percentage
+ |            |   |- available_product
+ |            |   |- offer_limit
+ |            |   |- color_code
+ |            |   |- size (DEFAULT_NULL)
+ |            |   |- shipping_charge
+ |            |   |- add_time
+ |            |   |- add_date
+ |            |   |- product_policy
+ |            |   |- discription
+ |            |   |- tags
+ |            |   [_____________________________
+ |            |
+ |            |
+ |            +________________+_______________________+
+ |            |                |                       |
+ |            |                |  PRODUCT_IMAGE TABLE  |
+ |            |                |_______________________|
+ |            |                [+] PRODUCT_IMAGE
+ |            |                     |- pi_id (pk)
+ |            |                     |- pid (fk of PRODUCT TABLE)
+ |            |                     |- path
+ |            |                     [_____________________________
+ |            |
+ |            |
+ |            |
+ |            |
+ |            +________________+__________________+
+ |            |                |                  |
+ |            |                |  CHECKOUT TABLE  |
+ |            |                |__________________|
+ |            |                [+] CHECKOUT
+ |            |                 |   |- checkout_id (pk)
+ |            |                 |   |- pid (fk of PRODUCT TABLE)
+ |            |                 |   |- uid (fk of USER TABEL)
+ |            |                 |   |- price
+ |            |                 |   |- how_many
+ |            |                 |   |- delevery_charge
+ |            |                 |   |- delevery_mode
+ |            |                 |   |- status
+ |            |                 |   |- c_time
+ |            |                 |   |- c_date
+ |            |                 |   [_____________________________
+ |            |                 |
+ |            |                 |
+ |            |                 |______________+__________________+
+ |            |                                |                  |
+ |            |                                |    TRACK TABEL   |
+ |            |                                |__________________|
+ |            |                                [+] TRACKING
+ |            |                                    |- tracking_id (pk)
+ |            |                                    |- checkout_id (fk of CHECKOUT TABLE)
+ |            |                                    |- uid (fk of USER TABLE)
+ |            |                                    |- latitude
+ |            |                                    |- langitude
+ |            |                                    |- location
+ |            |                                    |- region
+ |            |                                    |- arrival_time
+ |            |                                    |- arrival_date
+ |            |                                    |- leaved_time
+ |            |                                    |- leaved_date
+ |            |                                    |- status
+ |            |                                    [_____________________________
+ |            |
+ |            |
+ |            |     
+ |            |     
+ |            |______________+___________________________+
+ |                           |                           |
+ |                           |    PRODUCT_REVIEW TABEL   |
+ |                           |___________________________|
+ |                           [+] PRODUCT_REVIEW
+ |                            |   |- pr_id (pk)
+ |                            |   |- pid (fk)
+ |                            |   |- uid (fk)
+ |                            |   |- rating
+ |                            |   |- review_comment
+ |                            |   |- rate_time
+ |                            |   |- rate_date
+ |                            |   [_____________________________
+ |                            |
+ |                            |
+ |                            |
+ |                            +_______________+___________________________+
+ |                            |               |                           |
+ |                            |               |    REVIEW_IMAGE TABEL     |
+ |                            |               |___________________________|
+ |                            |               [+] REVIEW_IMAGE
+ |                            |                   |- ri_id (pk)
+ |                            |                   |- pr_id (fk)
+ |                            |                   |- path 
+ |                            |                   [_____________________________
+ |                            |
+ |                            |
+ |                            +_______________+___________________________+
+ |                            |               |                           |
+ |                            |               |    REVIEW_REPLY TABEL     |
+ |                            |               |___________________________|
+ |                            |                [+] REVIEW_REPLY
+ |                            |                 |    |- rr_id (pk)
+ |                            |                 |    |- uid (fk)
+ |                            |                 |    |- reply
+ |                            |                 |    [_____________________________
+ |                            |                 |
+ |                            |                 |___________________+_________________________+
+ |                            |                                     |                         |     
+ |                            |                                     | REVIEW_REPLY_VOTE_TABLE |        
+ |                            |                                     |_________________________|
+ |                            |                                      [+] REVIEW_REPLY_VOTE
+ |                            |                                          |- rrv_id (pk)    
+ |                            |                                          |- uid (fk)
+ |                            |                                          |- is_up_vote (boolean)
+ |                            |                                          [_____________________________
+ |                            |
+ |                            |________________+_______________________+
+ |                                             |                       |
+ |                                             |      REVIEW_VOTE      |
+ |                                             |_______________________|
+ |                                             [+] REVIEW_VOTE
+ |                                                  |- rv_id (pk)
+ |                                                  |- pid (fk)
+ |                                                  |- uid (fk)
+ |                                                  |- is_up_vote (boolean)
+ |                                                  [_____________________________
+ |
+ |
+ |_______________+_____________________________+
+ |               |                             |
+ |               |   USER RECENT SEARCH TABLE  |
+ |               |_____________________________|
+ |               [+] RECENT_query
+ |                    |- urs_id (pk)
+ |                    |- uid (fk)
+ |                    |- query
+ |                    |- query_time
+ |                    |- query_date
+ |                    [_____________________________
+ |
+ |
+ |_______________+___________________________+
+ |               |                           |
+ |               |       USER_CLICK          |
+ |               |___________________________|
+ |               [+] CLICK_COUNTER
+ |                    |- cc_id (pk)
+ |                    |- pid (fk)
+ |                    |- uid (fk)
+ |                    |- category
+ |                    |- subcategory 
+ |                    |- click_time
+ |                    |- click_date
+ |                    [_____________________________
+ |
+ |
+ |________________+_____________________________+
+ |                |                             |
+ |                |         BLOG TABLE          |
+ |                |_____________________________|
+ |                [+] BLOGING
+ |                 |   |- blog_id (pk)
+ |                 |   |- uid (fk)
+ |                 |   |- title
+ |                 |   |- discription
+ |                 |   |- category
+ |                 |   |- tags
+ |                 |   |- media_type
+ |                 |   |- at_time
+ |                 |   |- at_date
+ |                 |   [_____________________________
+ |                 |
+ |                 |
+ |                 |
+ |                 |__________________+_______________________________+
+ |                 |                  |                               |
+ |                 |                  |      BLOG DETAIL TABLE        |
+ |                 |                  |_______________________________|
+ |                 |                  [+] BLOG_DETAIL
+ |                 |                        |- bd_id (pk)
+ |                 |                        |- blog_id (fk)
+ |                 |                        |- path
+ |                 |                        [___________________________
+ |                 |
+ |                 |
+ |                 |
+ |                 |_____________________+______________________________+
+ |                 |                     |                              |
+ |                 |                     |       BLOG VOTE TABLE        |
+ |                 |                     |______________________________|
+ |                 |                     [+] BLOG_VOTE
+ |                 |                          |- bv_id (pk)
+ |                 |                          |- uid (fk)
+ |                 |                          |- is_up_vote
+ |                 |                          |- vote_time
+ |                 |                          |- vote_date
+ |                 |                          [_____________________________
+ |                 |
+ |                 |
+ |                 |_____________________+_______________________________+
+ |                                       |                               |
+ |                                       |       BLOG COMMENT TABLE      |
+ |                                       |_______________________________|
+ |                                        [+] BLOG_COMMENT
+ |                                         |    |- bc_id (pk)
+ |                                         |    |- uid (fk)
+ |                                         |    |- comment
+ |                                         |    |- comment_time
+ |                                         |    |- comment_date
+ |                                         |    [_______________________________
+ |                                         |
+ |                                         |
+ |                                         |___________+_______________________________+
+ |                                         |           |                               |
+ |                                         |           |    BLOG_COMMENT_VOTE TABLE    |
+ |                                         |           |_______________________________+
+ |                                         |             [+] BLOG_COMMENT_VOTE
+ |                                         |                  |- bcv_id (pk)
+ |                                         |                  |- bc_id (fk)
+ |                                         |                  |- uid (fk)
+ |                                         |                  |- is_up_vote
+ |                                         |                  [______________________________
+ |                                         |
+ |                                         |______________+_________________________________+
+ |                                                        |                                 |
+ |                                                        |     BLOG_COMMENT_REPLY TABLE    |
+ |                                                        |_________________________________|
+ |                                                        [+] BLOG_COMMENT_REPLY
+ |                                                         |     |- bcr_id (pk)
+ |                                                         |     |- uid (fk)
+ |                                                         |     |- reply
+ |                                                         |     |- reply_time
+ |                                                         |     |- reply_date
+ |                                                         |     [______________________________
+ |                                                         |
+ |                                                         |
+ |                                                         |____________________+___________________________________+
+ |                                                                              |                                   |
+ |                                                                              |   BLOG_COMMENT_REPLY_VOTE TABLE   |
+ |                                                                              |___________________________________|
+ |                                                                              [+] BLOG_COMMENT_REPLY_VOTE
+ |                                                                                  |- bcrv_id (pk)
+ |                                                                                  |- bcr_id (fk)
+ |                                                                                  |- ui_id (fk)
+ |                                                                                  |- is_up_vote
+ |                                                                                  [___________________________________
+ |
+ |______________+_________________+
+ |              |                 |
+ |              | FEEDBACK TABLE  |
+ |              |_________________|
+ |              [+] FEEDBACK
+ |                  |- feedback_id (pk)
+ |                  |- uid (fk)
+ |                  |- feedback
+ |                  |_____________________
+ |
+ | 
+ |______________+__________________+
+                |                  |
+                |    TEAM TABLE    |
+                |__________________|   
+                [+] TEAM
+                    |- team_id (pk)
+                    |- uid (fk)
+                    |- position
+                    |- twitter
+                    |- facebook
+                    |- instagram
+                    |- linkedin
+                    |_______________________
+
+
+[-------------------------------------DONE-------------------------------------]
++__________________+
+|                  |
+|    EXTRA TABLE   |
+|__________________|
+[+] FAQ
+    |- faq_id(pk)
+    |- title
+    |- discription
+    [_____________________________
+
+[+] ABOUT 
+    |- about_id (pk)
+    |- title
+    |- discription
+    [_____________________________
+
+[+] PRODUCT CATEGORY
+ |  |- pc_id (pk)
+ |  |- category
+ |  [_____________________________
+ |
+ |___________+__________________+
+             |                  |
+             | SUBCATEGORY      |
+             |__________________|
+             [+] SUBCATEGORY
+                  |- subcat_id (pk)
+                  |- pc_id(fk)
+                  |- subcategory
+                  [__________________________
+
+[+] SUBSCRIBED
+    |- subscribe_id (pk)
+    |- gender
+    |- email (UNIQUE)
+    [_____________________________
+
+[+] CONTECT US
+ |    |- contect_id (pk)
+ |    |- name 
+ |    |- email (UNIQUE)
+ |    |_____________________________
+ |
+ |
+ |_______________+_____________________________+
+                 |                             |
+                 |     contect_us_info         |
+                 |_____________________________|
+                 [+] contect_us_info
+                      |- cui_id (pk)
+                      |- contect_id (fk)
+                      |- subject
+                      |- message
+                      |- at_time
+                      |- at_date
+                      [______________________________
+                    
+           
+  
+  
+
+
+
+
+
+

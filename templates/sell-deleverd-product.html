@@ -1,0 +1,101 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated%}
+<body onload="deleverdProduct()">
+
+    <!-- Start : Application Data  -->
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+            {%with section1 as sec%} {%include 'sell-section-base.html'%} {%endwith%}
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+                                <!-- Dashboard Feature -->
+                                {% with bar as var %} {% include 'sell-base.html' %} {% endwith %}
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+                            <div class="col-lg-9 col-md-12">
+                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+                                    <h2 class="dash__h2 u-s-p-xy-20 "><i class="fas fa-recycle"></i> RETURNS PRODUCT
+                                    </h2>
+                                    {%if deliveries %}
+                                    <table class="dash__table ">
+                                        <thead>
+                                            <tr>
+                                                <th>Order #</th>
+                                                <th>Checkout Date</th>
+                                                <th>Item</th>
+                                                <th>Quantity</th>
+                                                <th>Details</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="dash__table-wrap gl-scroll ">
+                                        <table class="dash__table ">
+                                            <tbody>
+                                            {%for checkout in deliveries%}
+                                                <tr>
+                                                    <td>{{checkout.id}}</td>
+                                                    <td>{{checkout.checkout_date_time|date:"d/m/Y"}}</td>
+                                                    <td>
+                                                        <div class="dash__table-img-wrap ">
+                                                            <img class="u-img-fluid "
+                                                                src="{{MEDIA_URL}}{{checkout.product.image}}" alt=" ">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span>{{checkout.quantity}}</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="dash__table-total ">
+                                                            <div class="dash__link dash__link--brand ">
+                                                                <a class="fas fa-eye" onclick='view_deliveries({{checkout.id}})' >VIEW</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {%endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    {%else%}
+                                    <div style="padding-left:30px;padding-bottom:30px;font-size:12px;">No any deliveries yet.</div>
+                                    {%endif%}
+                                </div>
+                                <div class="item-loader w-100" style="display: none;"><img class="ml-auto mr-auto" width='100px;' src="{%static 'images/loader/loading_with_setting.gif'%}" alt=""></div>
+
+                                {% comment %} THIS DATA CAME AFTER CLICK VIEW BUTTON {% endcomment %}
+                                <br><br>
+                                <div id="checkout_details"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+    <!-- End : Application Data  -->
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

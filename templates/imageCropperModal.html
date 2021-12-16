@@ -1,0 +1,35 @@
+<!-- ######################################## IMAGE CROPPER ########################################### -->
+ <!-- MODAL TO CROP THE IMAGE -->
+ <div class="modal fade" id="modalCrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Crop the photo</h4>
+          <a  class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </a>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <img src="" id="image">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <div class="col">
+            <div class="btn-group pull-left" role="group">
+                <a class="js-zoom-in">
+                    &#10133;
+                </a>
+                <a class="js-zoom-out">
+                    &#10134;
+                </a>
+              </div>
+          </div>
+          <div class="col" id="croppingButton">
+            <button type="button" class="btn btn-primary js-crop-and-upload" id="cropMe">Crop and upload</button>
+            <button type="button" class="btn btn-default" id="exitMe" data-dismiss="modal" >Another</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

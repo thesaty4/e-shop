@@ -1,0 +1,40 @@
+{% load filter_tags %}
+<div class="review-vote d-flex flex-row">
+    <div>
+        <label for="id-review-up_vote-input-{{review.id}}">
+            <span id="id-review-up_vote-checkbox-{{review.id}}">
+                <input type="checkbox" name="product-review-up_vote-{{review.id}}" id="id-review-up_vote-input-{{review.id}}" value='up vote' 
+                    {%for vote in review.id|get_upvote_by_review%}
+                        {%if vote.customer_user.id == user.id %}checked{%endif%} 
+                    {%endfor%}
+                hidden>
+            </span>
+            <span id='id-review-up_vote-{{review.id}}' {%if user.is_authenticated%} onclick="action_for_voting('{{review.id}}','{{product.id}}','{{user.id}}','up-vote')"{%else%} onclick='window.location.href="/accounts/login/"' {%endif%}> 
+                {%for vote in review.id|get_upvote_by_review%} 
+                    {%if vote.customer_user.id == user.id %}<i class="fas fa-arrow-alt-circle-up" style="color: rgb(38, 110, 243);"></i>{%endif%}
+                {%endfor%}
+                {% if user.id|check_upvote_by_user:review.id == 0%}<i class="far fa-arrow-alt-circle-up"></i>{% endif %}
+            </span>    
+        </label>
+        <span id='id-review-up_vote-count-{{review.id}}' style="font-size: 13px;">{{review.id|get_upvote_by_review|object_count}}</span>
+    </div>
+    <div style="margin-left: 15px;">
+        <label for="id-review-down_vote-input-{{review.id}}">
+            <span id="id-review-down_vote-checkbox-{{review.id}}">
+                <input type="checkbox" name="product-review-down_vote-{{review.id}}" id="id-review-down_vote-input-{{review.id}}" value='down vote' 
+                    {%for vote in review.id|get_downvote_by_review%} 
+                        {%if vote.customer_user.id == user.id %}checked{%endif%} 
+                    {%endfor%} 
+                hidden>
+            </span>
+            <span id='id-review-down_vote-{{review.id}}' {%if user.is_authenticated%} onclick="action_for_voting('{{review.id}}','{{product.id}}','{{user.id}}','down-vote')" {%else%} onclick='window.location.href="/accounts/login/"' {%endif%}>
+                {%for vote in review.id|get_downvote_by_review%} 
+                    {%if vote.customer_user.id == user.id %}<i class="fas fa-arrow-alt-circle-down" style="color: rgb(38, 110, 243);"></i>
+                    {%endif%} 
+                {%endfor%}
+                {% if user.id|check_downvote_by_user:review.id == 0%}<i class="far fa-arrow-alt-circle-down"></i>{% endif %}
+            </span>
+        </label>
+        <span id='id-review-down_vote-count-{{review.id}}' style="font-size: 13px;">{{review.id|get_downvote_by_review|object_count}}</span>
+    </div>
+</div>

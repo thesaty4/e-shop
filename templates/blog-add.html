@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{% load widget_tweaks %}
+<body onload="blogTextFun()">
+    <script>
+        window.addEventListener("load",myInit,true);function myInit(){
+            blogTextFun()
+            boldNewBlog()
+            defaultMessages("{%if messages%}{% for message in messages%}{{message}}{%endfor%}{%endif%}")
+        }
+    </script>
+    <!--====== App Content ======-->
+        <!--====== App Content ======-->
+        <div class="app-content">
+            <div class="u-s-p-y-90">
+                <div class="container">
+                <!--====== Section 1 ======-->
+                    <div class="row">
+                        {% include "include/blog/left-sidebar-bash.html" %}
+                        <div class="col-lg-9 col-md-8 col-sm-12">
+                            <div class="u-s-p-b-60">
+
+                                    <!--====== Section Content ======-->
+                                    <div class="section__content">
+                                        <div class="dash">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+                                                            <div class="row" style=" padding-left:30px; padding-right:30px; padding-top:30px;">
+                                                                <div class="col-12">
+                                                                    <h2 class="dash__h2 u-s-p-xy-20 fas fa-book"> CREATE NEW BLOG</h2>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <form class="dash-edit-p" action="/blogs/new-blog-post/" method="post" enctype="multipart/form-data" id="new-blog-post-form">
+                                                                        {%csrf_token%}
+                                                                        {% include "include/blog/new-blog-form.html" %}
+                                                                        <div class="gl-inline">
+                                                                            <div class="u-s-m-b-30">
+                                                                                <button class="btn btn--e-brand-b-2" type="submit">SAVE</button>
+                                                                                <a class="btn btn--e-brand-b-2" onclick="history.back()">Back</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--====== End - Section Content ======-->
+                            </div>
+                        </div>
+                    </div>
+                <!--====== End - Section 1 ======-->
+                </div>
+            </div>
+        </div>
+        <!--====== End - App Content ======-->
+
+    <!--====== End - App Content ======-->
+{% include "imageCropperModal.html" %}
+{% include "include/blog/blog-response-modal.html" %}
+
+</body>
+{%endblock%}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+
+<body>
+
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 u-s-m-b-30">
+                            <div class="empty">
+                                <div class="empty__wrap">
+
+                                    <span class="empty__big-text">SORRY</span>
+
+                                    <span class="empty__text-1">Your search, did not match any Blog. A partial match
+                                        of your keywords is listed below.</span>
+
+                                    <span class="empty__text-2">Related searches:
+
+                                        <a href="/blogs/blogContaint/?csrfmiddlewaretoken=F4f5k2siCbvHtoC88g7oSExCwJrsDpYBmAqfaKEKZ1i2h1nvEAbp0sfvrpjD0nPm&q=men+clothing">men's clothing</a>
+
+                                        <a href="/blogs/blogContaint/?csrfmiddlewaretoken=F4f5k2siCbvHtoC88g7oSExCwJrsDpYBmAqfaKEKZ1i2h1nvEAbp0sfvrpjD0nPm&q=mobile+&+tablets">mobiles & tablets</a>
+
+                                        <a href="/blogs/blogContaint/?csrfmiddlewaretoken=F4f5k2siCbvHtoC88g7oSExCwJrsDpYBmAqfaKEKZ1i2h1nvEAbp0sfvrpjD0nPm&q=book+&+audible">books & audible</a></span>
+                                        <form method="GET" action="/blogs/blogContaint/" class="blog-search-form" id="blog-search-form">
+                                            {% csrf_token %}
+                        
+                                            <input class="input-text input-text--primary-style" type="text" name="q" value="{{query}}" id="blog-search" placeholder="Search">
+                        
+                                            <button class="btn btn--icon fas fa-search" type="submit"></button>
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 1 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+</body>
+{%endblock%}

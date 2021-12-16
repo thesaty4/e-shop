@@ -1,0 +1,6 @@
+{% load filter_tags %}
+<li id="page-{{page}}" {% if page == 1 %} class="blog-pg--active" {% endif %}>
+    <a {% if blogs %}
+    onclick="get_blog_pagination('{{page}}',9,'{{total_pages}}','{{q}}')"
+    {% else %} onclick="get_blog_pagination('{{page}}',9,'{{total_pages}}','')" {%endif%}>{{page}}</a>
+</li>

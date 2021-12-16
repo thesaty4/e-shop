@@ -1,0 +1,109 @@
+{% extends 'base.html'%}{%load static%}{% static 'images' as baseUrl%}{% block content %}
+{%if user.is_authenticated%}
+<body  onload="myProfile()">
+<!--====== App Content ======-->
+<div class="app-content">
+
+    <!--====== Section 1 ======-->
+    <div class="u-s-p-y-60">
+        {%with section1 as sec%}
+        {%include 'sectionBase.html'%}
+        {%endwith%}
+    </div>
+    <!--====== End - Section 1 ======-->
+
+
+    <!--====== Section 2 ======-->
+    <div class="u-s-p-b-60">
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="dash">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+
+                            <!--====== Dashboard Features ======-->
+                            {% with bar as var %}
+                            {% include 'dashBase.html' %}
+                            {% endwith %}
+                            <!--====== End - Dashboard Features ======-->
+                        </div>
+                        <div class="col-lg-9 col-md-12">
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                <div class="dash__pad-2">
+                                    <h1 class="dash__h1 u-s-m-b-14">My Profile</h1>
+
+                                    <span class="dash__text u-s-m-b-30">Look all your info, you could customize your
+                                        profile.</span>
+                                    <div class="row">
+                                        <div class="col-lg-4 u-s-m-b-30">
+                                            <h2 class="dash__h2 u-s-m-b-8"><i class="fas fa-user"></i> Full Name</h2>
+
+                                            <span class="dash__text">{{user.first_name|capfirst}} {{user.last_name|capfirst}}</span>
+                                        </div>
+                                        <div class="col-lg-4 u-s-m-b-30">
+                                            <h2 class="dash__h2 u-s-m-b-8"><i class="fas fa-envelope"></i> E-mail</h2>
+
+                                            <span class="dash__text">{{user.email}}</span>
+                                            <div class="dash__link dash__link--secondary">
+
+                                                <a href="/dashboard/dashEditProfile/">Change</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 u-s-m-b-30">
+                                            <h2 class="dash__h2 u-s-m-b-8"><i class="fas fa-users"></i> Gender</h2>
+
+                                            <span class="dash__text">
+                                                {%if user.gender == 'M'%}
+                                                Male
+                                                {%elif user.gender == "F"%}
+                                                Female
+                                                {%else%}
+                                                Other
+                                                {%endif%}
+                                            </span>
+                                        </div>
+                                        <div class="col-lg-4 u-s-m-b-30">
+                                            <h2 class="dash__h2 u-s-m-b-8"><i class="fas fa-calendar-alt"></i> Birthday</h2>
+
+                                            <span class="dash__text">{{user.dob}}</span>
+                                        </div>
+                                        <div class="col-lg-4 u-s-m-b-30">
+                                            <h2 class="dash__h2 u-s-m-b-8"><i class="fas fa-map-marked-alt"></i> Country</h2>
+                                            <span class="dash__text">{{user.country}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="u-s-m-b-16">
+
+                                                <a class="dash__custom-link btn--e-transparent-brand-b-2"
+                                                    href="/dashboard/dashEditProfile">Edit Profile</a>
+                                            </div>
+                                            <div>
+
+                                                <a class="dash__custom-link btn--e-brand-b-2" href="/dashboard/dash-change-password/">Change
+                                                    Password</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section Content ======-->
+    </div>
+    <!--====== End - Section 2 ======-->
+</div>
+<!--====== End - App Content ======-->
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{% endblock %}

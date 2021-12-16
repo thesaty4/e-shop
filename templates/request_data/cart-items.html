@@ -1,0 +1,20 @@
+{%load filter_tags%}
+<!--====== Card for mini cart ======-->
+<div class="card-mini-product cart-id-{{product.id}}">
+    <div class="mini-product">
+        <div class="mini-product__image-wrapper">
+            <a class="mini-product__link" href="/productDetails/{{product.id}}">
+                <img class="u-img-fluid" src="{{MEDIA_URL}}{{product.image}}" alt=""></a>
+        </div>
+        <div class="mini-product__info-wrapper">
+            <span class="mini-product__category">
+                <a href="/shop/">{{product.category|lower|capfirst}}</a></span>
+            <span class="mini-product__name">
+                <a href="/productDetails/{{product.id}}">{{product.title}}</a></span>
+            <span class="mini-product__quantity">{{quantity}} x</span>
+            <span class="mini-product__price"><i class="fas fa-rupee-sign"></i> {{product.price|to_comma}}</span>
+        </div>
+    </div>
+    <a class="mini-product__delete-link far fa-trash-alt" onclick="remove_cart_item('{{site_info_data.shop_name}}','{{product.id}}')"></a>
+</div>
+<!--====== End - Card for mini cart ======-->

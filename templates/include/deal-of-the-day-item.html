@@ -1,0 +1,43 @@
+{% load filter_tags %}
+{% for product in 2|get_product_for_deal_of_day %}
+<div class="col-lg-6 col-md-6 u-s-m-b-30">
+    <div class="product-o product-o--radius product-o--hover-off u-h-100">
+        <div class="product-o__wrap">
+            {% if product.discount_percentage > 0 %}
+                <div class="product-discount-wrapper" style="background-color:red; padding:10px 0px 10px 0px">
+                    <span class="discount"><b>{{product.discount_percentage}}% OFF</b></span>
+                </div>
+            {% endif %}
+            <a class="aspect aspect--bg-grey aspect--square u-d-block"
+                href="/productDetails/{{product.id}}">
+
+                <img class="aspect__img" src="{{MEDIA_URL}}{{product.image}}"
+                    alt=""></a>
+            <div class="product-o__special-count-wrap">
+                <div class="countdown countdown--style-special" data-countdown="{{product.offer_end|rev_date}}" >
+                </div>
+            </div>
+            <div class="product-o__action-wrap">
+                <ul class="product-o__action-list">
+                    {% include "include/product-action-list.html" %}
+                </ul>
+            </div>
+        </div>
+
+        <span class="product-o__category">
+
+            <a href="/shop/">{{product.category|lower|upper}}</a></span>
+
+        <span class="product-o__name">
+
+            <a href="/productDetails/{{product.id}}">{{product.title}}</a></span>
+        <div class="product-o__rating gl-rating-style">
+            {% include "include/rating-management.html" %}
+        </div>
+
+        <span class="product-o__price fas fa-rupee-sign">{{product.price|to_comma}}
+
+            <span class="product-o__discount fas fa-rupee-sign">{{product.m_r_p|to_comma}}</span></span>
+    </div>
+</div>
+{% endfor %}

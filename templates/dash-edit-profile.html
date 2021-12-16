@@ -1,0 +1,162 @@
+{% extends 'base.html' %} {% load static %} {% static 'images' as baseUrl%} {% block content %}
+{%if user.is_authenticated%}
+{%load widget_tweaks%}
+<body>
+    <script>
+        window.addEventListener("load", myInit, true); function myInit(){
+            myAc();
+            default_profile_data('{{user.gender}}',"{{user.country}}");
+        }; 
+    </script>
+    <!--======Start: App Content ======-->
+    <div class="app-content">
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+            <!--====== Section Content ======-->
+            {%with section1 as sec%} {%include 'sectionBase.html'%} {%endwith%}
+        </div>
+        <!--====== End - Section 1 ======-->
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+                                <!--====== Dashboard Features ======-->
+                                {% with bar as var %} {% include 'dashBase.html' %} {% endwith %}
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+                            <div class="col-lg-9 col-md-12">
+                                <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                    <div class="dash__pad-2">
+                                        <h1 class="dash__h1 u-s-m-b-14"><i class="fas fa-cogs"></i> Edit Profile</h1>
+                                        <span class="dash__text u-s-m-b-30">Looks like you haven't update your profile</span>
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <form class="dash-edit-p" action="/dashboard/update-profile-pic/" method="POST" enctype="multipart/form-data" id="updateProfilePic">
+                                                    {%csrf_token%}
+                                                    <div class="gl-s-api">
+                                                        <!-- ######################## Image Previou ########################### -->
+                                                      <div class="row" style=" display:flex;flex-direction:row;justify-content:center;">
+                                                          <div>
+                                                            <div class="image_area" id="reg_profile">
+                                                                <label for="upload_image">
+                                                                    {%if user.profile_pic%}
+                                                                    <img src="{{MEDIA_URL}}{{user.profile_pic}}" id="uploaded_image" class="img-responsive img-circle" />
+                                                                    {%else%}
+                                                                    <img src="{%static 'images/user-icon.png'%}" id="uploaded_image" class="img-responsive img-circle" />
+                                                                    {%endif%}
+                                                                    <div class="overlay">
+                                                                    <a style="font-size: 10px;" class="text"><b>Change</b></a>
+                                                                  </div>
+                                                                  {%render_field profilePicForm.profile_pic class='image' id="upload_image" name="profile_pic" style='display:none;'%}
+                                                                  {{profilePicForm.x}}
+                                                                  {{profilePicForm.y}}
+                                                                  {{profilePicForm.width}}
+                                                                  {{profilePicForm.height}}
+                                                                  <input type="hidden" name="loggedUserId" value="{{user.id}}">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                                <form class="dash-edit-p" id="edit-user-profile">
+                                                    {%csrf_token%}
+                                                    <input type="hidden" id="loggedUserId" value="{{user.id}}">
+                                                    <div class="gl-inline" style="margin-top:20px;">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="reg-fname"><i class="fas fa-user-cog"></i> USERNAME *</label>
+                                                            {%render_field userInfo.username class="input-text input-text--primary-style" placeholder='Name' value=user.username%}
+                                                            <div id="username-validate-response" style="position: absolute;"></div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="reg-lname"><i class="fas fa-envelope"></i> Email *</label>
+                                                            {%render_field userInfo.email class="input-text input-text--primary-style" placeholder='Email' value=user.email %}
+                                                            <div id="email-validate-response" style="position: absolute;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="reg-fname"><i class="fas fa-address-book"></i> First Name *</label>
+                                                            {%render_field userInfo.first_name class="input-text input-text--primary-style"  placeholder='First Name' value=user.first_name %}
+                                                            <div id="fname-validate-response"></div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="reg-lname"><i class="fas fa-address-book"></i> Last Name </label>
+                                                            {%render_field userInfo.last_name class="input-text input-text--primary-style"  placeholder='Last Name' value=user.last_name %}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="reg-gender"><i class="fas fa-users"></i> Gender *</label>
+                                                            <select name="gender" class="input-text input-text--primary-style" id="reg-gender">
+                                                                {%for options in userInfo.gender%}
+                                                                {{options}}
+                                                                {%endfor%}
+                                                            </select>
+                                                            <div id="gender-validate-response"></div>
+                                                        </div>
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="reg-dob"><i class="fas fa-calendar-alt"></i> Date Of Birth *</label>
+                                                            {%render_field userInfo.last_name class="input-text input-text--primary-style" id="reg_dob" placeholder='YYYY-MM-DD' value=user.dob %}
+                                                            <div id="dob-validate-response" style="position: absolute;"></div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <label class="gl-label" for="reg-country"><i class="fas fa-map-marked-alt"></i> COUNTRY *</label>
+                                                            {%render_field userInfo.country class='input-text input-text--primary-style' id='reg-country'%}
+                                                            <div id="country-validate-response"></div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="gl-inline">
+                                                        <div class="u-s-m-b-30">
+                                                            <button class="btn btn--e-brand-b-2" type="submit"><i class="fas fa-save"></i> SAVE</button>
+                                                        </div>
+                                                </form>
+                                                        <div class="u-s-m-b-30">
+                                                            <a href='/dashboard/dash-change-password/' class="btn btn--e-brand-b-2" type="button"><i class="fas fa-recycle"></i> Change password</a>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--======End: App Content ======-->
+    <!--====== End - Section 2 ======-->
+    </div>
+    <!--======End: App Content ======-->
+
+    <!-- ######### CROPPING IMAGE HTML MODAL ########### -->
+    {%include 'imageCropperModal.html'%}
+
+    <!-- ######### UPDATE MESSAGE HTML MODAL ########### -->
+    <div id="ourModal"></div>
+</body>
+
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}
+
+{% block javascript %}
+<script src="{% static 'my_actions/crop.js'%}"></script>
+{% endblock %}

@@ -1,0 +1,301 @@
+{% extends 'base.html'%}{%load static%}{% static 'images' as baseUrl%}{% block content %}
+{%if user.is_authenticated%}
+{%load filter_tags%}
+<body onload="trackOrder()">
+<!--====== App Content ======-->
+<div class="app-content">
+
+    <!--====== Section 1 ======-->
+    <div class="u-s-p-y-60">
+
+        <!--====== Section Content ======-->
+        {%with section1 as sec%}
+        {%include 'sectionBase.html'%}
+        {%endwith%}
+    </div>
+    <!--====== End - Section 1 ======-->
+
+
+    <!--====== Section 2 ======-->
+    <div class="u-s-p-b-60">
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="dash">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+
+                            <!--====== Dashboard Features ======-->
+                            {%with bas as var%}
+                            {%include 'dashBase.html'%}
+                            {%endwith%}
+                            <!--====== End - Dashboard Features ======-->
+                        </div>
+                        <div class="col-lg-9 col-md-12">
+
+                            {% comment %} TRACKING AREA {% endcomment %}
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                    <div class="dash__pad-2">
+                                        <h1 class="dash__h1 u-s-m-b-14">Track your Order</h1>
+
+                                        <span class="dash__text u-s-m-b-30">To track your order please enter your Order ID
+                                            in the box below and press the "Track" button. This was given to you on your
+                                            receipt and in the confirmation email you should have received.</span>
+                                        <form class="dash-track-order">
+                                            <div class="gl-inline">
+                                                <div class="u-s-m-b-30">
+
+                                                    <label class="gl-label" for="order-id">Order ID *</label>
+
+                                                    <input value="{{tracking_order.order_id}}" class="input-text input-text--primary-style" type="text"
+                                                        id="order-id" placeholder="Found in your confirmation email">
+                                                </div>
+                                                {% comment %} <div class="u-s-m-b-30">
+
+                                                    <label class="gl-label" for="track-email">Email *</label>
+
+                                                    <input class="input-text input-text--primary-style" type="text"
+                                                        id="track-email" placeholder="Email you used during checkout">
+                                                </div> {% endcomment %}
+                                            </div>
+
+                                            <a class="btn btn--e-brand-b-2" onclick="track_order()">TRACK</a>
+                                        </form>
+                                    </div>
+                            </div>
+
+                            {% comment %} ORDER DETAILS {% endcomment %}
+                            <div id="order-tracking-manage" style='margin-top:20px;'>
+                                {%if invalid_order %}
+                                    <div class="blink_me" style="color:red">Opps ! Invalid Order ID. Please check again..</div>
+                                {%elif tracking_order%}
+                                    <h1 class="dash__h1 u-s-m-b-30">Order Details</h1>
+                                    
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                            <div class="dash__pad-2">
+                                                <div class="dash-l-r">
+                                                    <div>
+                                                        <div class="manage-o__text-2 u-c-secondary">Order #{{tracking_order.id}}</div>
+                                                        <div class="manage-o__text u-c-silver">Placed on {{tracking_order.checkout_date_time|date:"d-m-y"}} {{tracking_order.checkout_date_time|time}}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="manage-o__text-2 u-c-silver">Total:
+
+                                                            <span class="manage-o__text-2 u-c-secondary fas fa-rupee-sign">{{tracking_order.total_amount|to_comma}}/-</span>
+                                                            <div class="dash__link dash__link--brand">
+                                                                <a href="/genrate-invoice/{{tracking_order.order_id}}" class='fas fa-download'> Get Invoice</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                            <div class="dash__pad-2">
+                                                <div class="manage-o">
+                                                    <div class="manage-o__header u-s-m-b-30 d-flex justify-between">
+                                                        <div class="manage-o__icon"><i class="fas fa-box u-s-m-r-5"></i>
+
+                                                            <span class="manage-o__text">Package {{tracking_order.quantity}}</span></div>
+                                                        
+                                                        <div class="manage-o__icon"><i class="u-s-m-r-5"></i>
+                                                            {%if tracking_order.order_status == 'delivered' %}
+                                                            <span class="manage-o__text"><a class="btn btn--e-brand-b-2" href="/return-my-order/{{tracking_order.order_id}}" style="border-radius: 30px;padding:10px;font-size:13px;background-color:red;">Return Order</a></span>
+                                                            {%elif tracking_order.order_status == "processing" or tracking_order.order_status == "shipped"%}
+                                                            <span class="manage-o__text"><a class="btn btn--e-brand-b-2" href="/cancel-my-order/{{tracking_order.order_id}}" style="border-radius: 30px;padding:10px;font-size:13px;background-color:red;">Cancel Order</a></span>
+                                                            {%endif%}
+                                                        
+                                                        </div>
+
+                                                        
+                                                    </div>
+                                                    <div class="dash-l-r">
+                                                        <div class="manage-o__text u-c-secondary">Expected Deliverey 5 days after Order</div>
+                                                        
+                                                        <div class="manage-o__icon"><i class="fas fa-truck u-s-m-r-5"></i>
+
+                                                            <span class="manage-o__text">Standard</span></div>
+                                                    </div>
+
+                                                    <div class="manage-o__timeline">
+                                                        <div class="timeline-row">
+                                                            <div class="col-lg-4 u-s-m-b-30">
+                                                                <div class="timeline-step">
+                                                                    <div 
+                                                                        {%if tracking_order.order_status == 'processing' or tracking_order.order_status == 'shipped' or tracking_order.order_status == 'delivered' or tracking_order.order_status == 'return' %}
+                                                                            class="timeline-l-i timeline-l-i--finish" 
+                                                                        {%else%} class="timeline-l-i" 
+                                                                        {%endif%}
+                                                                    >
+
+                                                                        <span class="timeline-circle"></span></div>
+
+                                                                    <span class="timeline-text">Processing</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 u-s-m-b-30">
+                                                                <div class="timeline-step">
+                                                                    <div {%if tracking_order.order_status == 'shipped' or tracking_order.order_status == 'delivered' or tracking_order.order_status == 'return' %}
+                                                                            class="timeline-l-i timeline-l-i--finish" 
+                                                                        {%else%} class="timeline-l-i" 
+                                                                        {%endif%}
+                                                                    >
+
+                                                                        <span class="timeline-circle"></span></div>
+
+                                                                    <span class="timeline-text">Shipped</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 u-s-m-b-30">
+                                                                <div class="timeline-step">
+                                                                
+                                                                    <div {%if tracking_order.order_status == 'delivered' or tracking_order.order_status == 'return' %}
+                                                                            class="timeline-l-i timeline-l-i--finish" 
+                                                                        {%else%} class="timeline-l-i" 
+                                                                        {%endif%}
+                                                                    >
+
+                                                                        <span class="timeline-circle"></span></div>
+
+                                                                    <span class="timeline-text">Delivered</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="manage-o__description">
+                                                        <div class="description__container">
+                                                            <div class="description__img-wrap">
+
+                                                                <img class="u-img-fluid" src="{{MEDIA_URL}}{{tracking_order.product.image}}" alt=""></div>
+                                                            <div class="description-title">{{tracking_order.product.title}}</div>
+                                                        </div>
+                                                        <div class="description__info-wrap">
+                                                            <div>
+
+                                                                <span class="manage-o__text-2 u-c-silver">Quantity:
+
+                                                                        <span class="manage-o__text-2 u-c-secondary">{{tracking_order.quantity}}</span></span>
+                                                            </div>
+                                                            <div>
+
+                                                                <span class="manage-o__text-2 u-c-silver">Total:
+
+                                                                        <span class="manage-o__text-2 u-c-secondary fas fa-rupee-sign">{{tracking_order.product.price|mul:tracking_order.quantity|to_comma}}/-</span></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            {%if tracking_order.order_status == 'processing' or tracking_order.order_status == 'shipped' or tracking_order.order_status == 'delivered'%}
+                                            <div class="col-lg-6">
+                                                <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                                    <div class="dash__pad-3">
+                                                        <h2 class="dash__h2 u-s-m-b-8">Shipping Address</h2>
+                                                        {%for address in user.id|shipping_info%}
+                                                            <h2 class="dash__h2 u-s-m-b-8">{{address.first_name|capfirst}} {{address.last_name|capfirst}}</h2>
+
+                                                            <span class="dash__text-2">{{address.full_address}}</span>
+
+                                                            <span class="dash__text-2">(+91) {{address.mobile}}</span>
+                                                        {%endfor%}
+                                                    </div>
+                                                </div>
+
+                                                <div class="dash__box dash__box--bg-white dash__box--shadow dash__box--w">
+                                                    <div class="dash__pad-3">
+                                                        <h2 class="dash__h2 u-s-m-b-8">Billing Address</h2>
+                                                        {%for address in user.id|billing_info%}
+                                                            <h2 class="dash__h2 u-s-m-b-8">{{address.first_name|capfirst}} {{address.last_name|capfirst}}</h2>
+
+                                                            <span class="dash__text-2">{{address.full_address}}</span>
+
+                                                            <span class="dash__text-2">(+91) {{address.mobile}}</span>
+                                                        {%endfor%}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="dash__box dash__box--bg-white dash__box--shadow u-h-100">
+                                                    <div class="dash__pad-3">
+                                                        <h2 class="dash__h2 u-s-m-b-8">Total Summary</h2>
+                                                        <div class="dash-l-r u-s-m-b-8">
+                                                            <div class="manage-o__text-2 u-c-secondary">Subtotal</div>
+                                                            <div class="manage-o__text-2 u-c-secondary fas fa-rupee-sign">{{tracking_order.product.price|mul:tracking_order.quantity|to_comma}}/-</div>
+                                                        </div>
+                                                        <div class="dash-l-r u-s-m-b-8">
+                                                            <div class="manage-o__text-2 u-c-secondary">Shipping Fee</div>
+                                                            <div class="manage-o__text-2 u-c-secondary fas fa-rupee-sign">{{tracking_order.product.shipping_charge|to_comma}}/-</div>
+                                                        </div>
+                                                        <div class="dash-l-r u-s-m-b-8">
+                                                            <div class="manage-o__text-2 u-c-secondary">Tax</div>
+                                                            <div class="manage-o__text-2 u-c-secondary fas fa-rupee-sign">{{tracking_order.product.tax|mul:tracking_order.quantity|to_comma}}/-</div>
+                                                        </div>
+                                                        <div class="dash-l-r u-s-m-b-8">
+                                                            <div class="manage-o__text-2 u-c-secondary">Total</div>
+                                                            <div class="manage-o__text-2 u-c-secondary fas fa-rupee-sign">{{tracking_order.product.price|add:tracking_order.product.tax|mul:tracking_order.quantity|add:tracking_order.product.shipping_charge|to_comma}}/-</div>
+                                                        </div>
+
+                                                        <span class="dash__text-2">Paid by {{tracking_order.delevery_mode}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {%elif tracking_order.order_status == 'cancel' or tracking_order.order_status == 'return'%}
+                                             <div class='col-12'>
+                                              <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                                <div style="padding:20px; font-size:15px; color:red;" class="blink_me">This Order May be Requested for {%if tracking_order.order_status == 'return'%}Returning. {%else%}Cancelling.{%endif%}</div>
+                                              </div>
+                                             </div>
+                                            {%endif%}
+                                        </div>
+                                {%endif%}
+                            </div>
+
+                            {% comment %} TRACKING DETAILS {% endcomment %}
+                            <div style='margin-top:20px;' class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                    <div class="dash__pad-2">
+                                        <h1 class="dash__h1 u-s-m-b-14">Order Tracking Details</h1>
+
+                                        <div class='u-s-m-30' style="padding:40px;" font-type="Courier">
+
+                                            {%for tracking_data in tracking_order.id|track_order%}
+                                                <div class="d-flex"><div style="height:20px;width:20px;background-color:aqua;box-shadow:0px 0px 6px 0.5px black;"></div><hr class="w-100"></div>
+                                                <ul>
+                                                <li style="font-size:12px;">Item Reached on Date : {{tracking_data.arrival_date|date:"d-M-Y"}} Time : {{tracking_data.arrival_time}}
+                                                    <span>{{tracking_data.office_code.full_address|safe}}</span>
+                                                    <p style="font-size:12px;">Item Dispatch and delivered to next hub at Date : {{tracking_data.leaved_date|date:"d-M-Y"}} Time : {{tracking_data.leaved_time}}</p>
+                                                    <span style="font-size:12px;"><strong>Status : {{tracking_data.status|upper}}</strong>, Helpline : {{tracking_data.office_code.helpline_number}}, Email : <b>{{tracking_data.office_code.helpline_email|lower}}</b></span>
+                                                </li>
+                                                </ul>
+                                                <br>
+                                                <br>
+                                                <br>
+                                            {%endfor%}
+
+                                            {%if tracking_order.id|track_order|counter == 0%}
+                                                <div class="d-flex"><div style="height:20px;width:20px;background-color:aqua;box-shadow:0px 0px 6px 0.5px black;"></div><hr class="w-100"></div>
+                                                <ul><li style="font-size:13px;">Your Order is under processing. Order dispatch after processing.</li></ul>
+                                            {%endif%}
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section Content ======-->
+    </div>
+    <!--====== End - Section 2 ======-->
+</div>
+<!--====== End - App Content ======-->
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

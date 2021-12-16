@@ -1,0 +1,60 @@
+{%load filter_tags%}
+{%for order in our_orders%}
+                                        <div class="m-order__get">
+                                            <div class="manage-o__header u-s-m-b-30">
+                                                <div class="dash-l-r">
+                                                    <div>
+                                                        <div class="manage-o__text-2 u-c-secondary">Order #{{order.id}}
+                                                        </div>
+                                                        <div class="manage-o__text u-c-silver">Placed on {{order.checkout_date_time}}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="dash__link dash__link--brand">
+
+                                                            <a href="/dashboard/dashManageOrder/{{order.order_id}}">MANAGE</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="/dashboard/dashManageOrder/{{order.order_id}}">
+                                            <div class="manage-o__description">
+                                                <div class="description__container">
+                                                    <div class="description__img-wrap">
+
+                                                        <img class="u-img-fluid"
+                                                            src="{{MEDIA_URL}}{{order.product.image}}" alt="">
+                                                    </div>
+                                                    <div class="description-title">{{order.product.title}}</div>
+                                                </div>
+                                                <div class="description__info-wrap">
+                                                    <div>
+                                                        {%if order.order_status == 'processing' %}
+                                                        <span class="manage-o__badge badge--processing">Processing</span>
+                                                        {%elif order.order_status == 'shipped'%}
+                                                        <span class="manage-o__badge badge--shipped">Shipped</span>
+                                                        {%elif order.order_status == 'delivered'%}
+                                                        <span class="manage-o__badge badge--delivered">Delivered</span>
+                                                        {%elif order.order_status == 'cancel'%}
+                                                        <span class="manage-o__badge badge--delivered">Cancelled</span>
+                                                        {%elif order.order_status == 'return'%}
+                                                        <span class="manage-o__badge badge--delivered">Returned</span>
+                                                        {%endif%}
+                                                    </div>
+                                                    <div>
+
+                                                        <span class="manage-o__text-2 u-c-silver">Quantity:
+
+                                                            <span class="manage-o__text-2 u-c-secondary">{{order.quantity}}</span></span>
+                                                    </div>
+                                                    <div>
+
+                                                        <span class="manage-o__text-2 u-c-silver">Total:
+
+                                                            <span
+                                                                class="manage-o__text-2 u-c-secondary fas fa-rupee-sign">{{order.product.price|mul:order.quantity|add:order.tax|to_comma}}/-</span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </a>
+                                        </div>
+                                        {%endfor%}

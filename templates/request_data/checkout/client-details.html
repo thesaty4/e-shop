@@ -1,0 +1,43 @@
+{%load filter_tags%}
+<div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius ">
+    <div class='d-flex' style="background-color:gray;border-radius:20px 20px 0px 0px;">
+          <div style=""><h2 class="dash__h2 u-s-p-xy-20" style="color:white;">CLIENT PURCEASING DETAILS</h2></div>
+          <div style="margin-left:auto;margin-right:50px;"><a style='color:white;margin-top:20px;margin-left:auto;' class="fas fa-print" onclick="print_receipt()">Print</a></div>
+    </div>
+      {%for checkout in checkouts%}
+        <table style="padding:50px;font-size:14px;font-family:Lucida Sans Typewriter;" border='0'>
+          <tr style="border:none;"><td align="left">CLIENT</td><td align="left">          :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.customer_user.first_name|capfirst}} {{checkout.customer_user.last_name|capfirst}}</td></tr>
+          <tr style="border:none;"><td align="left">CLIENT EMAIL</td><td align="left">     :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.customer_user.email|lower}} {{checkout.customer_user.last_name|capfirst}}</td></tr>
+          <tr style="border:none;"><td align="left">INVOICE ID </td><td align="left">     :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.order_id}}</td></tr>
+          <tr style="border:none;"><td align="left">TRANSACTION ID </td><td align="left"> :&nbsp;&nbsp;&nbsp;&nbsp; {{checkout.transaction_id}}</td></tr>
+          <tr style="border:none;"><td align="left">SELLED BY</td><td align="left">       :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{user.first_name|capfirst}}</td></tr>
+          <tr style="border:none;"><td align="left">SELLER EMAIL</td><td align="left">    :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{user.email|lower}}</td></tr>
+          <tr style="border:none;"><td align="left">TOTAL BUY</td><td align="left">    :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{checkout_detail|length}} items</td></tr>
+      </table>
+    {%endfor%}
+    <div class='col-12'><strong style='margin-left:40px;font-size:15px;font-family:Cambria;'>PURCEASING HISTORY OF YOUR PRODUCT</strong></div>
+    {% comment %} <div class="dash__table-wrap gl-scroll "> {% endcomment %}
+    <div>
+    <table class="dash__table " style=" font-family:Cambria;">
+        <thead>
+            <tr>
+                <th>ITEM NAME</th>
+                <th>QUANTITY</th>
+                <th>BUY DATE</th>
+                <th>PAYMENT METHOD</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+          {%for checkout in checkout_detail%}
+          <tr>
+            <td>{{checkout.product.title}}</td>
+            <td>{{checkout.quantity}}pcs</td>
+            <td>{{checkout.checkout_date_time|date:"d-m-Y"}}</td>
+            <td>{{checkout.delevery_mode|upper}}</td>
+            <td>{{checkout.order_status|upper}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+    </table>
+</div>

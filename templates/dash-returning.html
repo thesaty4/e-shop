@@ -1,0 +1,108 @@
+{% extends 'base.html'%}{%load static%}{% static 'images' as baseUrl%}{% block content %}
+{%if user.is_authenticated%}
+{%load filter_tags%}
+<body  onload="returnOrder()">
+<!--====== App Content ======-->
+<div class="app-content">
+
+    <!--====== Section 1 ======-->
+    <div class="u-s-p-y-60">
+        <!--====== Section Content ======-->
+        {%with section1 as sec%}
+        {%include 'sectionBase.html'%}
+        {%endwith%}
+    </div>
+    <!--====== End - Section 1 ======-->
+
+
+    <!--====== Section 2 ======-->
+    <div class="u-s-p-b-60">
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="dash">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+
+                            <!--====== Dashboard Features ======-->
+                            {% with bar as var %}
+                            {% include 'dashBase.html' %}
+                            {% endwith %}
+                            <!--====== End - Dashboard Features ======-->
+                        </div>
+                        <div class="col-lg-9 col-md-12">
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                <div class="dash__pad-2">
+                                    <h1 class="dash__h1 u-s-m-b-14">My Returns</h1>
+                                    {%for order in user.id|returning_checkout%}
+                                        <div class="m-order__get">
+                                            <div class="manage-o__header u-s-m-b-30">
+                                                <div class="dash-l-r">
+                                                    <div>
+                                                        <div class="manage-o__text-2 u-c-secondary">Order #{{order.id}}
+                                                        </div>
+                                                        <div class="manage-o__text u-c-silver">Placed on {{order.checkout_date_time}}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="dash__link dash__link--brand">
+
+                                                        <div>
+                                                            <span class="manage-o__badge badge--delivered">Returning</span>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="manage-o__description">
+                                                <a href="/productDetails/{{order.product.id}}">
+                                                <div class="description__container">
+                                                    <div class="description__img-wrap">
+
+                                                        <img class="u-img-fluid"
+                                                            src="{{MEDIA_URL}}{{order.product.image}}" alt="">
+                                                    </div>
+                                                    <div class="description-title">{{order.product.title}}</div>
+                                                </div>
+                                                </a>
+                                                <div class="description__info-wrap">
+                                                    <div>
+
+                                                        <span class="manage-o__text-2 u-c-silver">Quantity:
+
+                                                            <span class="manage-o__text-2 u-c-secondary">{{order.quantity}}</span></span>
+                                                    </div>
+                                                    <div>
+
+                                                        <span class="manage-o__text-2 u-c-silver">Total:
+
+                                                            <span
+                                                                class="manage-o__text-2 u-c-secondary fas fa-rupee-sign">{{order.product.price|mul:order.quantity|add:order.tax|to_comma}}/-</span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    {%endfor%}
+                                    {%if user.id|returning_checkout|counter == 0%}
+                                        <span class="dash__text">There are no Returning yet.</span>
+                                    {%endif%}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section Content ======-->
+    </div>
+    <!--====== End - Section 2 ======-->
+</div>
+<!--====== End - App Content ======-->
+</body>
+{%else%}
+<script>
+    window.location.href="/accounts/login"
+</script>
+{%endif%}
+{%endblock%}

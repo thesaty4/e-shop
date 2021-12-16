@@ -1,0 +1,108 @@
+{% load filter_tags %}
+<div class="col-lg-3 col-md-4 col-sm-12">
+    <div class="blog-w-master">
+        <div class="u-s-m-b-60">
+            <div class="blog-w">
+
+                <label for="blog-search"><span class="blog-w__h">SEARCH</span></label>
+                <form method="GET" action="/blogs/blogContaint/" class="blog-search-form" id="blog-search-form">
+                    {% csrf_token %}
+
+                    <input class="input-text input-text--primary-style" type="text" name="q" value="{{query}}" id="blog-search" placeholder="Search">
+
+                    <button class="btn btn--icon fas fa-search" type="submit"></button></form>
+            </div>
+        </div>
+        <div class="u-s-m-b-60">
+            <div class="blog-w">
+
+                <span class="blog-w__h"><i class="fas fa-blog"></i> MANAGEMENT</span>
+                <ul class="blog-w__list">
+                    <li>
+
+                        <a href="/blogs/blogContaint/" id="blogs"><i class="fas fa-book"></i> Blogs</a></li>
+                    {% if user.is_authenticated %}
+                        <li>
+
+                            <a href="/blogs/new-blog-post/" id="new-blog"><i class="fas fa-pen-alt"></i> New Blog</a></li>
+                        <li>
+
+                            <a href="/blogs/blog-update/" id="edit-blog"><i class="fas fa-edit"></i> Edit Blogs</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="u-s-m-b-60">
+                <div class="blog-w">
+
+                    <span class="blog-w__h"><i class="fas fa-clock"></i> RECENT POSTS</span>
+                    <ul class="blog-w__b-l" {% if user.id|get_recent_blog|object_count|gt:3 %} style="height: 450px;overflow-y:scroll;" {% endif %}>
+                        {% for recent_blog in user.id|get_recent_blog %}
+                            <li class="blog-wrapper-{{recent_blog.id}}">
+                                <div class="b-l__block">
+                                    <div class="b-l__date fas fa-calendar-alt">
+                                        {{recent_blog.at_date_time|date:'y F Y'}}
+                                    </div>
+
+                                    <span class="b-l__h">
+
+                                        <a href="/blogs/blogDetails/{{recent_blog.id}}">{{recent_blog.title}}</a>
+                                        <a onclick="edit_blog('{{MEDIA_URL}}','{{recent_blog.id}}')" href="/blogs/blog-update/#update-blog-section"><i class="fas fa-edit"></i></a>
+                                    </span>
+
+                                    <span class="b-l__p">{{recent_blog.discription|striptags|nbsp2space|slice:100}}...</span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="u-s-m-b-60">
+                <div class="blog-w">
+
+                    <span class="blog-w__h"><i class="fas fa-comments"></i> RECENT COMMENTS</span>
+                    <ul class="blog-w__b-l-2"  {%if user.id|who_commented_at_myblog|length|gt:8%} style="height:250px;overflow-y:scroll;" {%endif%}>
+
+                        {% for comment in user.id|who_commented_at_myblog %}
+                            <li class="blog-wrapper-{{comment.blogs.id}}">
+                                <div class="b-l__block">
+                                    <span class="b-l__text"> <i class="fas fa-comment"></i> admin</span>
+                                    <span class="b-l__text">on</span>
+                                    <span class="b-l__h-2">
+                                        <a href="/blogs/blogDetails/{{comment.blogs.id}}#blog-comment-id-{{comment.id}}">{{comment.comment|slice:25}}</a>
+                                    </span>
+                                </div>
+                            </li>
+                        {% endfor %}
+
+
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+        <div>
+            <div class="blog-w">
+
+                <span class="blog-w__h"><i class="fas fa-tags"></i> TAGS</span>
+                <div class="blog-t-w">
+
+                    <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q=dresses">Dresses</a>
+
+                    <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q=shirt+tops">Shirts & Tops</a>
+
+                    <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q=mobile">Mobile</a>
+
+                    <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q=sweater">Sweaters</a>
+
+                    <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q=laptop">Laptop</a>
+
+                    <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q=electronics">Electronics</a>
+
+                    <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="/blogs/blogContaint/?csrfmiddlewaretoken=EBVIvTHdEIyheqQxVlrRx08GWFzCSJ7BFdcOz4a5l87qJZ5yJ1GpUkasz0SyAo0v&q=jacket">Jackets</a></div>
+            </div>
+        </div>
+    </div>
+</div>
